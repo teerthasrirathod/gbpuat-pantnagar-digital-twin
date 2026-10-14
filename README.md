@@ -6,6 +6,11 @@ A lightweight, browser-based 3D digital twin of the **G.B. Pant University of Ag
 - Combines **OpenStreetMap**, **Overture / Google / Microsoft building footprints**, **Sentinel-2 satellite imagery**, **ESA WorldCover**, **Meta/WRI canopy height** and **Copernicus terrain**.
 - Low compute: merged and instanced geometry, on-demand rendering, distance culling, no shadows or post-processing.
 
+## Just want to run it?
+
+1. Download **`GBPUAT-Pantnagar-Digital-Twin.html`** from the [latest release](https://github.com/teerthasrirathod/gbpuat-pantnagar-digital-twin/releases/latest) (about 4 MB).
+2. Double-click it. It opens in your browser (Chrome, Edge, Firefox or Brave) and works offline. There is nothing to install.
+
 ## Open it (browser only)
 
 Double-click **`GBPUAT-Pantnagar-Digital-Twin.html`**. It is a single 3.8 MB file that holds the page, Three.js, all data and the satellite image, so it needs no server, no install and no internet. You can move it, email it or put it on a USB stick. It was tested by loading it from an otherwise empty folder in Chrome.
