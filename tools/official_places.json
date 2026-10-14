@@ -1,0 +1,23 @@
+{
+  "_comment": "Names taken from the official GBPUAT website (gbpuat.ac.in homepage, retrieved 2026-10-14). 'match' is a case-insensitive regex tested against OpenStreetMap feature names to locate each place; entries that match nothing are skipped. 'official' is the name as the university writes it.",
+  "places": [
+    { "group": "Colleges", "official": "College of Agriculture", "match": "^College of Agriculture$" },
+    { "group": "Colleges", "official": "College of Basic Sciences & Humanities", "match": "Basic Sciences" },
+    { "group": "Colleges", "official": "College of Technology", "match": "^College of Technology$" },
+    { "group": "Colleges", "official": "College of Veterinary & Animal Sciences", "match": "Veterinary" },
+    { "group": "Colleges", "official": "College of Community Science (College of Home Science in OSM)", "match": "Home Science|Community Science" },
+    { "group": "Colleges", "official": "College of Agribusiness Management", "match": "Agribusiness" },
+    { "group": "Colleges", "official": "College of Fisheries", "match": "^Fisheries College$|^College of Fisheries$" },
+    { "group": "Colleges", "official": "College of Post Graduate Studies", "match": "Post Graduate" },
+    { "group": "Facilities", "official": "University Library", "match": "University Library" },
+    { "group": "Facilities", "official": "University Hospital", "match": "University Hospital" },
+    { "group": "Facilities", "official": "Convocation Ground", "match": "^Convocation Ground$" },
+    { "group": "Facilities", "official": "Stevenson Stadium", "match": "Stevenson" },
+    { "group": "Facilities", "official": "Directorate of University Farm", "match": "Directorate Of University Farm" },
+    { "group": "Facilities", "official": "NAHEP University Centre", "match": "NAHEP" },
+    { "group": "Facilities", "official": "Centre for Plant Genetic Resources", "match": "Plant Genetic" },
+    { "group": "Facilities", "official": "Krishak Bhawan", "match": "Krishak" },
+    { "group": "Facilities", "official": "University Farm (OSM farmyard)", "match": "^University Farm$|^Pantnagar University Farms$" },
+    { "group": "Hostels & bhawans (OSM names)", "official": "*", "match": "Bhawan$|Bhavan$|Hostel$", "exclude": "Biotech|Krishak|Rawat" }
+  ]
+}

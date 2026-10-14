@@ -1,0 +1,13 @@
+# Python build tools
+.venv/
+__pycache__/
+*.pyc
+
+# Local secrets / machine-specific config (never commit API keys)
+.env
+config.local.js
+
+# OS / editor noise
+Thumbs.db
+.DS_Store
+*.log

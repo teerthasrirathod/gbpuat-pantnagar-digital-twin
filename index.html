@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GBPUAT Pantnagar - 3D Digital Twin</title>
+  <meta name="description" content="Lightweight 3D digital twin of the G.B. Pant University of Agriculture & Technology campus, Pantnagar, built from OpenStreetMap, Overture, Copernicus and ESA open data with Three.js.">
+  <style>
+    :root {
+      --bg: #0e1620;
+      --panel: rgba(14, 22, 32, 0.9);
+      --line: #243446;
+      --text: #e7eef6;
+      --muted: #8fa3b8;
+      --accent: #7fd1a6;
+      --btn: #1b2b3d;
+      --btn-hover: #263d55;
+    }
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) {
+        --bg: #dfe8ef;
+        --panel: rgba(255, 255, 255, 0.92);
+        --line: #c5d2de;
+        --text: #15202b;
+        --muted: #55697d;
+        --accent: #2f8f63;
+        --btn: #e9f0f6;
+        --btn-hover: #d7e3ee;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #0e1620;
+      --panel: rgba(14, 22, 32, 0.9);
+      --line: #243446;
+      --text: #e7eef6;
+      --muted: #8fa3b8;
+      --accent: #7fd1a6;
+      --btn: #1b2b3d;
+      --btn-hover: #263d55;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.4 system-ui, "Segoe UI", Roboto, sans-serif;
+    }
+    #view {
+      position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none;
+      background: linear-gradient(180deg, #7fb0dc 0%, #b7d3ea 38%, #d9e5ec 62%, #e4e2d6 100%);
+    }
+    #labels { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
+    #labels.off { display: none; }
+    .lbl {
+      position: absolute; left: 0; top: 0; white-space: nowrap;
+      font: 11px/1.2 system-ui, "Segoe UI", sans-serif;
+      color: #fff; background: rgba(10, 16, 24, 0.7);
+      padding: 2px 5px; border-radius: 4px;
+      transform: translate(-50%, -110%); display: none;
+    }
+    .lbl.k-poi { background: rgba(150, 40, 30, 0.8); }
+    .lbl.k-campus, .lbl.k-bld { background: rgba(60, 50, 30, 0.75); }
+    .lbl.k-water { background: rgba(20, 70, 110, 0.8); }
+    .lbl.k-sport, .lbl.k-grass, .lbl.k-farm { background: rgba(40, 90, 50, 0.8); }
+
+    #panel {
+      position: fixed; left: 12px; top: 12px; width: 300px;
+      max-height: calc(100vh - 24px); overflow: auto;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+      padding: 14px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    }
+    #panel .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    #panel h1 { font-size: 16px; margin: 0 0 4px; }
+    #panel.collapsed { width: auto; padding: 8px 10px; }
+    #panel.collapsed .head { margin-bottom: 0; }
+    #panel.collapsed .sub, #panel.collapsed #panel-body { display: none; }
+    #panel.collapsed h1 { font-size: 14px; margin: 0; }
+    #panel .sub { color: var(--muted); font-size: 12px; margin-bottom: 12px; }
+    #panel h2 {
+      font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--muted); margin: 14px 0 6px; font-weight: 600;
+    }
+    .row { display: flex; flex-wrap: wrap; gap: 6px; }
+    button, input[type="search"] {
+      font: inherit; color: var(--text); background: var(--btn);
+      border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; cursor: pointer;
+    }
+    button:hover { background: var(--btn-hover); }
+    button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    input[type="search"] { width: 100%; cursor: text; }
+    label.toggle { display: flex; align-items: center; gap: 8px; padding: 3px 0; cursor: pointer; }
+    label.toggle input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
+    dl.stats { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; margin: 0; font-size: 12px; }
+    dl.stats dt { color: var(--muted); }
+    dl.stats dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+    .legend { display: grid; grid-template-columns: 14px 1fr; gap: 4px 8px; font-size: 12px; align-items: center; }
+    .swatch { width: 14px; height: 10px; border-radius: 2px; border: 1px solid rgba(0,0,0,.15); }
+    .note { color: var(--muted); font-size: 12px; margin-top: 10px; }
+    details { margin: 2px 0; }
+    summary { cursor: pointer; padding: 3px 0; font-weight: 600; font-size: 13px; }
+    button.place { display: block; width: 100%; text-align: left; padding: 4px 8px; margin: 2px 0; font-size: 12px; }
+    ul.sources { margin: 6px 0 0; padding-left: 16px; color: var(--muted); font-size: 11px; }
+    ul.sources li { margin: 2px 0; }
+    #hint {
+      position: fixed; right: 12px; bottom: 12px; color: var(--muted);
+      font-size: 12px; background: var(--panel); border: 1px solid var(--line);
+      padding: 6px 10px; border-radius: 8px; pointer-events: none;
+    }
+    #status {
+      position: fixed; inset: auto 12px 12px auto; color: var(--muted); font-size: 12px;
+    }
+    @media (max-width: 640px) {
+      #panel { left: 8px; right: 8px; top: auto; bottom: 8px; width: auto; max-height: 46vh; padding: 12px; }
+      #hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="view" aria-label="3D map of the GBPUAT campus"></canvas>
+  <div id="labels" aria-hidden="true"></div>
+
+  <aside id="panel" aria-label="Controls">
+    <div class="head">
+      <h1>GBPUAT Pantnagar - 3D digital twin</h1>
+      <button type="button" id="panel-toggle" aria-expanded="true" aria-controls="panel-body">Hide</button>
+    </div>
+    <div class="sub">G.B. Pant University of Agriculture &amp; Technology, Udham Singh Nagar, Uttarakhand</div>
+
+    <div id="panel-body">
+    <div class="row" role="group" aria-label="Camera presets">
+      <button type="button" data-view="overview">Overview</button>
+      <button type="button" data-view="top">Top-down</button>
+      <button type="button" data-view="core">Core campus</button>
+      <button type="button" data-view="farms">Farms</button>
+    </div>
+
+    <h2>Basemap</h2>
+    <label class="toggle"><input type="radio" name="basemap" value="satellite" checked> Satellite (Sentinel-2, 10 m)</label>
+    <label class="toggle"><input type="radio" name="basemap" value="map"> Land-cover map (ESA WorldCover)</label>
+
+    <h2>Official places</h2>
+    <div id="places-list"></div>
+
+    <h2>Find a place</h2>
+    <input type="search" id="find" list="places" placeholder="Hostel, college, bhawan, farm..." autocomplete="off">
+    <datalist id="places"></datalist>
+
+    <h2>Layers</h2>
+    <label class="toggle"><input type="checkbox" id="ly-bld" checked> Mapped buildings (OSM, extruded)</label>
+    <label class="toggle"><input type="checkbox" id="ly-ml" checked> Detected buildings (ML footprints)</label>
+    <label class="toggle"><input type="checkbox" id="ly-outline" checked> Campus &amp; farm outlines (OSM)</label>
+    <label class="toggle"><input type="checkbox" id="ly-roads" checked> Roads &amp; tracks</label>
+    <label class="toggle"><input type="checkbox" id="ly-rail" checked> Railway &amp; power lines</label>
+    <label class="toggle"><input type="checkbox" id="ly-land" checked> Land use (fields, lawns, sports)</label>
+    <label class="toggle"><input type="checkbox" id="ly-water" checked> Water &amp; waterways</label>
+    <label class="toggle"><input type="checkbox" id="ly-trees" checked> Trees (from canopy-height data)</label>
+    <label class="toggle"><input type="checkbox" id="ly-pins" checked> Points of interest</label>
+    <label class="toggle"><input type="checkbox" id="ly-labels" checked> Labels</label>
+
+    <h2>Legend</h2>
+    <div class="legend">
+      <div class="swatch" style="background:#d9c7a3"></div><div>Campus buildings</div>
+      <div class="swatch" style="background:#e6dccb"></div><div>Other mapped buildings</div>
+      <div class="swatch" style="background:#d9cdb8"></div><div>Detected buildings (boxes, size-based height)</div>
+      <div class="swatch" style="background:#4d8a3f"></div><div>Trees (height from canopy data)</div>
+      <div class="swatch" style="background:#6e6e6e"></div><div>Main roads</div>
+      <div class="swatch" style="background:#c7b56a"></div><div>Farmland</div>
+      <div class="swatch" style="background:#9cc27f"></div><div>Lawns &amp; grass</div>
+      <div class="swatch" style="background:#4f7f43"></div><div>Forest / woodland</div>
+      <div class="swatch" style="background:#3d7fb3"></div><div>Water &amp; canals</div>
+    </div>
+
+    <h2>Model</h2>
+    <dl class="stats">
+      <dt>Mapped buildings (OSM)</dt><dd id="st-bld">-</dd>
+      <dt>Detected buildings (ML)</dt><dd id="st-ml">-</dd>
+      <dt>Trees</dt><dd id="st-trees">-</dd>
+      <dt>Land-use areas</dt><dd id="st-area">-</dd>
+      <dt>Road segments</dt><dd id="st-road">-</dd>
+      <dt>Triangles (on screen)</dt><dd id="st-tri">-</dd>
+      <dt>Draw calls</dt><dd id="st-calls">-</dd>
+      <dt>Frame render time</dt><dd id="st-ms">-</dd>
+    </dl>
+
+    <h2>Data sources</h2>
+    <ul class="sources" id="sources"></ul>
+    <p class="note">
+      Official figures (gbpuat.ac.in): campus 16,000 acres (about 65 km&sup2;), of which the University
+      Farm is nearly 6,000 acres (about 24 km&sup2;). The yellow outlines show only the parts mapped in OSM.
+      Building heights are estimated (from tags, or from footprint size for detected buildings).
+      Detected footprints are machine-generated from satellite images and can be wrong. The official
+      campus boundary is not published as GIS data, so the model covers the whole study window.
+      Not survey-grade; for visualisation and planning discussions only.
+    </p>
+    </div>
+  </aside>
+
+  <div id="hint">Drag: orbit &middot; Right-drag / Shift-drag: pan &middot; Wheel: zoom &middot; Arrow keys: pan</div>
+  <div id="status">Loading...</div>
+
+  <script src="vendor/three.min.js"></script>
+  <script src="data/campus-data.js"></script>
+  <script src="data/imagery.js"></script>
+  <script src="js/viewer.js"></script>
+</body>
+</html>

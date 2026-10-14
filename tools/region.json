@@ -1,0 +1,14 @@
+{
+  "_comment": "Single source of truth for the study window (WGS84) and the local origin. Read by tools/geo.mjs and the Python tools.",
+  "region": {
+    "south": 28.99,
+    "north": 29.07,
+    "west": 79.44,
+    "east": 79.56
+  },
+  "origin": {
+    "lat": 29.0205,
+    "lon": 79.4935
+  },
+  "grid_spacing_m": 100
+}
