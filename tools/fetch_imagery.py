@@ -58,6 +58,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--scene", help="Earth Search item id, e.g. S2C_44RLT_20251211_0_L2A")
     ap.add_argument("--list", action="store_true")
+    ap.add_argument("--composite", type=int, default=0,
+                    help="per-pixel median of the N clearest Nov-Jan scenes instead of one scene")
+    ap.add_argument("--no-raw", action="store_true", help="do not write data/raw/satellite_10m.json (for previews)")
     ap.add_argument("--width", type=int, default=2340, help="output width in pixels (10 m native = 1170)")
     ap.add_argument("--out", default=str(ROOT / "data" / "imagery" / "satellite.jpg"))
     args = ap.parse_args()
@@ -67,11 +70,19 @@ def main():
         for f in feats:
             print(f["id"], f["properties"]["datetime"][:10], "cloud %.4f" % f["properties"]["eo:cloud_cover"])
         return
-    item = next((f for f in feats if f["id"] == args.scene), None) if args.scene else feats[0]
-    if item is None:
-        sys.exit("scene not found among candidates; use --list")
-    href = item["assets"]["visual"]["href"]
-    print("scene:", item["id"], item["properties"]["datetime"][:10], "cloud", item["properties"]["eo:cloud_cover"])
+    if args.composite:
+        # Dry-season scenes only (crops and light are comparable; monsoon scenes are rarely clear).
+        dry = [f for f in feats if f["properties"]["datetime"][5:7] in ("11", "12", "01")]
+        items = dry[: args.composite]
+        if len(items) < 2:
+            sys.exit("not enough clear dry-season scenes for a composite")
+    else:
+        item = next((f for f in feats if f["id"] == args.scene), None) if args.scene else feats[0]
+        if item is None:
+            sys.exit("scene not found among candidates; use --list")
+        items = [item]
+    for it in items:
+        print("scene:", it["id"], it["properties"]["datetime"][:10], "cloud", it["properties"]["eo:cloud_cover"])
 
     # Output grid: width x height pixels over the study window, in lon/lat.
     metres_w = (R["east"] - R["west"]) * 111320 * math.cos(math.radians(O["lat"]))
@@ -84,14 +95,17 @@ def main():
     dst_transform = from_bounds(R["west"], R["south"], R["east"], R["north"], native_w, native_h)
 
     env = dict(GDAL_DISABLE_READDIR_ON_OPEN="EMPTY_DIR", CPL_VSIL_CURL_ALLOWED_EXTENSIONS=".tif")
+    stack = []
     with rasterio.Env(**env):
-        with rasterio.open(href) as src:
-            print("source:", src.crs, src.width, "x", src.height, "px, res", src.res)
-            with WarpedVRT(
-                src, crs="EPSG:4326", transform=dst_transform, width=native_w, height=native_h,
-                resampling=Resampling.cubic,
-            ) as vrt:
-                rgb = vrt.read([1, 2, 3])  # (3, h, w) uint8
+        for it in items:
+            with rasterio.open(it["assets"]["visual"]["href"]) as src:
+                with WarpedVRT(
+                    src, crs="EPSG:4326", transform=dst_transform, width=native_w, height=native_h,
+                    resampling=Resampling.cubic,
+                ) as vrt:
+                    stack.append(vrt.read([1, 2, 3]))  # (3, h, w) uint8
+    # Median across dates removes haze, cloud specks and one-off shadows.
+    rgb = stack[0] if len(stack) == 1 else np.median(np.stack(stack), axis=0).astype(np.uint8)
 
     img = Image.fromarray(np.moveaxis(rgb, 0, -1), "RGB").resize((width, height), Image.LANCZOS)
     img = img.filter(ImageFilter.UnsharpMask(radius=2, percent=70, threshold=2))
@@ -102,23 +116,26 @@ def main():
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     img.save(out, "JPEG", quality=90, optimize=True)
+    dates = sorted(it["properties"]["datetime"][:10] for it in items)
     meta = {
-        "scene": item["id"],
-        "date": item["properties"]["datetime"][:10],
-        "cloud_cover_pct": item["properties"]["eo:cloud_cover"],
+        "scene": items[0]["id"] if len(items) == 1 else f"median of {len(items)} scenes",
+        "scenes": [it["id"] for it in items],
+        "date": dates[0] if len(dates) == 1 else f"{dates[0]} to {dates[-1]}",
+        "cloud_cover_pct": max(it["properties"]["eo:cloud_cover"] for it in items),
         "bbox": [R["west"], R["south"], R["east"], R["north"]],
         "size_px": [width, height],
         "native_resolution_m": 10,
         "attribution": "Contains modified Copernicus Sentinel data (ESA), via Earth Search / AWS",
-        "source_asset": href,
+        "source_assets": [it["assets"]["visual"]["href"] for it in items],
     }
     (out.parent / "satellite.json").write_text(json.dumps(meta, indent=2))
     # Native 10 m RGB (interleaved, north-up) for build-time sampling of roof colours.
     native = np.ascontiguousarray(np.moveaxis(rgb, 0, -1))
-    (ROOT / "data" / "raw" / "satellite_10m.json").write_text(json.dumps({
+    if not args.no_raw:
+      (ROOT / "data" / "raw" / "satellite_10m.json").write_text(json.dumps({
         "bbox": meta["bbox"], "width": int(native.shape[1]), "height": int(native.shape[0]),
         "data": base64.b64encode(zlib.compress(native.tobytes(), 9)).decode(),
-    }))
+      }))
     print("wrote", out, "%.0f KB" % (out.stat().st_size / 1024), "size", (width, height))
 
 

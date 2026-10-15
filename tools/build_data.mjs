@@ -382,27 +382,6 @@ const bboxOf = (r) => {
   return [x0, z0, x1, z1];
 };
 
-// Minimum-area oriented rectangle of a ring (tests the direction of every edge).
-function minRect(ring) {
-  let best = null;
-  const n = ring.length;
-  for (let i = 0; i < n; i++) {
-    const [x1, z1] = ring[i], [x2, z2] = ring[(i + 1) % n];
-    const ang = Math.atan2(z2 - z1, x2 - x1);
-    const c = Math.cos(ang), sn = Math.sin(ang);
-    let u0 = Infinity, u1 = -Infinity, v0 = Infinity, v1 = -Infinity;
-    for (const [x, z] of ring) {
-      const u = x * c + z * sn, v = -x * sn + z * c;
-      if (u < u0) u0 = u; if (u > u1) u1 = u; if (v < v0) v0 = v; if (v > v1) v1 = v;
-    }
-    const area = (u1 - u0) * (v1 - v0);
-    if (!best || area < best.area) best = { area, ang, u0, u1, v0, v1 };
-  }
-  const cu = (best.u0 + best.u1) / 2, cv = (best.v0 + best.v1) / 2;
-  const c = Math.cos(best.ang), sn = Math.sin(best.ang);
-  return { cx: cu * c - cv * sn, cz: cu * sn + cv * c, w: best.u1 - best.u0, d: best.v1 - best.v0, ang: best.ang };
-}
-
 // Uniform-grid index of polygon rings, for fast "is this point/footprint inside a building?" tests.
 class RingIndex {
   constructor(cell = 100) { this.cell = cell; this.cells = new Map(); this.rings = []; }
@@ -478,6 +457,57 @@ function measuredHeight(ring) {
 }
 const clampH = (h) => Math.min(60, Math.max(2.5, h));
 
+// Same product for 2016: a building that is clearly present in 2023 but not in 2016 is flagged
+// "new since 2016" (indicative only: the 2016 layer is less complete than 2023).
+let HT16 = null;
+const ht16Path = path.join(RAW_DIR, "building_heights_2016.json");
+if (fs.existsSync(ht16Path)) {
+  const j = JSON.parse(fs.readFileSync(ht16Path, "utf8"));
+  HT16 = { w: j.width, h: j.height, data: zlib.inflateSync(Buffer.from(j.data, "base64")) };
+}
+// Share of the raster pixels inside a footprint that show a building (null if no pixel centre falls inside).
+function presence(R4, ring) {
+  if (!R4) return null;
+  const W = RECT.x1 - RECT.x0, D = RECT.z1 - RECT.z0;
+  const [x0, z0, x1, z1] = bboxOf(ring);
+  const i0 = Math.max(0, Math.floor(((x0 - RECT.x0) / W) * R4.w)), i1 = Math.min(R4.w - 1, Math.floor(((x1 - RECT.x0) / W) * R4.w));
+  const j0 = Math.max(0, Math.floor(((z0 - RECT.z0) / D) * R4.h)), j1 = Math.min(R4.h - 1, Math.floor(((z1 - RECT.z0) / D) * R4.h));
+  let n = 0, nz = 0;
+  for (let j = j0; j <= j1; j++)
+    for (let i = i0; i <= i1; i++)
+      if (pointInRing([RECT.x0 + ((i + 0.5) / R4.w) * W, RECT.z0 + ((j + 0.5) / R4.h) * D], ring)) {
+        n++;
+        if (R4.data[j * R4.w + i]) nz++;
+      }
+  return n ? nz / n : null;
+}
+const newStats = { newSince2016: 0, checked: 0 };
+function isNewSince2016(ring) {
+  const p23 = presence(HT, ring), p16 = presence(HT16, ring);
+  if (p23 == null || p16 == null) return false;
+  newStats.checked++;
+  const isNew = p23 >= 0.4 && p16 < 0.15;
+  if (isNew) newStats.newSince2016++;
+  return isNew;
+}
+
+// Drop near-duplicate and nearly collinear vertices (keeps shapes, shrinks the data).
+function simplifyRing(ring, tol = 0.35) {
+  let pts = ring.slice();
+  if (pts.length > 1 && Math.hypot(pts[0][0] - pts[pts.length - 1][0], pts[0][1] - pts[pts.length - 1][1]) < 0.01) pts.pop();
+  let changed = true;
+  while (changed && pts.length > 3) {
+    changed = false;
+    for (let i = 0; i < pts.length && pts.length > 3; i++) {
+      const a = pts[(i - 1 + pts.length) % pts.length], b = pts[i], c = pts[(i + 1) % pts.length];
+      const len = Math.hypot(c[0] - a[0], c[1] - a[1]) || 1e-9;
+      const dist = Math.abs((c[0] - a[0]) * (a[1] - b[1]) - (a[0] - b[0]) * (c[1] - a[1])) / len;
+      if (dist < tol || Math.hypot(b[0] - a[0], b[1] - a[1]) < tol) { pts.splice(i, 1); changed = true; i--; }
+    }
+  }
+  return pts;
+}
+
 // ---------- roof colours sampled from the Sentinel-2 image ------------------
 // Mean colour of the 10 m pixels inside a footprint. Samples dominated by vegetation (crowns
 // overhanging small roofs) are rejected, so those buildings keep their default roof colour.
@@ -511,10 +541,11 @@ function roofColour(ring) {
   return (Math.round(r) << 16) | (Math.round(g) << 8) | Math.round(b);
 }
 for (const b of out.buildings) {
-  if (b.tagged) { heightStats.osmTagged++; continue; }
+  if (b.tagged) { heightStats.osmTagged++; b.ht = 1; continue; }
   const m = measuredHeight(toRing(b.r[0]));
-  if (m) { b.h = round1(clampH(m)); heightStats.osmMeasured++; } else heightStats.osmGuessed++;
+  if (m) { b.h = round1(clampH(m)); b.hm = 1; heightStats.osmMeasured++; } else heightStats.osmGuessed++;
 }
+for (const b of out.buildings) if (isNewSince2016(toRing(b.r[0]))) b.nw = 1;
 for (const b of out.buildings) {
   delete b.tagged;
   const rc = roofColour(toRing(b.r[0]));
@@ -527,8 +558,9 @@ for (const b of out.buildings) osmIndex.add(toRing(b.r[0]));
 // ---------- Overture ML building footprints (fill gaps in OSM) --------------
 // Overture merges OSM, Microsoft ML, Google Open Buildings and Esri; OSM-sourced features are
 // skipped (we use fresh OSM directly) and ML footprints that overlap an OSM building are dropped.
-out.mlBoxes = []; // flat: cx, cz, w, d, angle (rad), h  per building (oriented box)
-out.mlRoof = [];  // satellite roof colour per box (0 = none)
+// Each entry: [source (0 Microsoft, 1 Google, 2 other), flags (1 = measured height, 2 = new since 2016),
+//              height m, roof colour (0 = none), x1, z1, x2, z2, ...]  footprint ring, local metres
+out.mlBld = [];
 const mlStats = { total: 0, fromOsm: 0, overlapOsm: 0, tooSmall: 0, kept: 0, withHeight: 0, release: null, bySource: {} };
 const mlIndex = new RingIndex();
 const ovPath = path.join(RAW_DIR, "overture_buildings.json");
@@ -551,14 +583,15 @@ if (fs.existsSync(ovPath)) {
       let h = Number(b.height) > 0 ? Number(b.height) : Number(b.floors) > 0 ? Number(b.floors) * 3.3 + 0.6 : 0;
       if (h > 0) mlStats.withHeight++;
       const m = h > 0 ? null : measuredHeight(clipped[0]);
-      if (m) { h = clampH(m); heightStats.mlMeasured++; }
+      let flags = 0;
+      if (m) { h = clampH(m); heightStats.mlMeasured++; flags |= 1; }
       else if (!(h > 0)) { h = area < 40 ? 3.2 : area < 150 ? 4.5 : area < 500 ? 6 : 9; heightStats.mlGuessed++; } // size-based guess
       const s = SRC(b.source || "");
       mlStats.bySource[s] = (mlStats.bySource[s] || 0) + 1;
-      const rect = minRect(clipped[0]);
-      out.mlBoxes.push(round1(rect.cx), round1(rect.cz), round1(Math.max(rect.w, 2)), round1(Math.max(rect.d, 2)),
-        Math.round(rect.ang * 1000) / 1000, round1(Math.min(h, 60)));
-      out.mlRoof.push(roofColour(clipped[0]));
+      if (isNewSince2016(clipped[0])) flags |= 2;
+      const ring = simplifyRing(clipped[0]);
+      if (ring.length < 3) continue;
+      out.mlBld.push([s === "ms" ? 0 : s === "go" ? 1 : 2, flags, round1(Math.min(h, 60)), roofColour(clipped[0]), ...flat(ring)]);
       mlIndex.add(clipped[0]);
       mlStats.kept++;
     }
@@ -569,6 +602,7 @@ if (fs.existsSync(ovPath)) {
 }
 
 console.log("roof colours:", roofStats);
+console.log("new since 2016:", newStats, HT16 ? "" : "(no building_heights_2016.json)");
 console.log("building heights:", heightStats, HT ? "" : "(no building_heights.json: heights are estimated)");
 
 // ---------- campus core (mean of named university buildings) ----------------
@@ -585,7 +619,8 @@ const treeStats = { detected: 0, kept: 0, core: 0, outer: 0 };
 const canopyPath = path.join(RAW_DIR, "canopy.json");
 if (fs.existsSync(canopyPath)) {
   const c = JSON.parse(fs.readFileSync(canopyPath, "utf8"));
-  const CORE_RADIUS = 2200, BUDGET_CORE = 7000, BUDGET_OUTER = 3000;
+  // The viewer draws trees with two levels of detail, so the campus core can keep every crown.
+  const CORE_RADIUS = 2200, BUDGET_CORE = 12000, BUDGET_OUTER = 9000;
   const rng = mulberry32(20261014);
   const core = [], outer = [];
   for (const [lon, lat, h] of c.trees) {
@@ -609,6 +644,33 @@ if (fs.existsSync(canopyPath)) {
   console.log("trees:", treeStats);
 } else {
   console.log("no canopy.json: viewer falls back to procedural trees");
+}
+
+// ---------- Overture places (points of interest) ---------------------------
+// Added to the OSM points unless OSM already has the same name within 150 m.
+const placeStats = { total: 0, added: 0, duplicateOfOsm: 0, outside: 0 };
+const pvPath = path.join(RAW_DIR, "overture_places.json");
+const LABEL_CATS = new Set(["college_university", "hostel", "hospital", "library", "stadium_arena", "post_office", "police_station", "bank", "museum"]);
+if (fs.existsSync(pvPath)) {
+  const pv = JSON.parse(fs.readFileSync(pvPath, "utf8"));
+  const norm = (t) => String(t || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const existing = [...out.points, ...out.labels].map((p) => ({ n: norm(p.n), x: p.x, z: p.z }));
+  for (const p of pv.places) {
+    placeStats.total++;
+    const [x, z] = proj(p.lat, p.lon);
+    if (!inRect(x, z)) { placeStats.outside++; continue; }
+    const n = norm(p.name);
+    if (existing.some((e) => Math.hypot(e.x - x, e.z - z) < 150 && (e.n === n || e.n.includes(n) || n.includes(e.n)))) {
+      placeStats.duplicateOfOsm++;
+      continue;
+    }
+    const cat = p.category || "place";
+    out.points.push({ n: p.name, k: cat, x: round1(x), z: round1(z), src: "ov", ...(p.website ? { w: p.website } : {}) });
+    if (LABEL_CATS.has(cat)) out.labels.push({ n: p.name, k: "poi", x: round1(x), z: round1(z) });
+    existing.push({ n, x, z });
+    placeStats.added++;
+  }
+  console.log("Overture places:", placeStats);
 }
 
 // ---------- official places -> map positions --------------------------------
@@ -722,6 +784,7 @@ const data = {
       { layer: "Satellite image", name: satInfo ? satInfo.attribution : "n/a", licence: "Copernicus Sentinel data: free, full and open", scene: satInfo && satInfo.scene, date: satInfo && satInfo.date },
       { layer: "Land cover", name: "ESA WorldCover 2021 (10 m)", licence: "CC BY 4.0" },
       { layer: "Trees", name: "Meta + WRI high-resolution canopy height", licence: "CC BY 4.0" },
+      { layer: "Points of interest", name: "OpenStreetMap + Overture Maps places", licence: "ODbL / CDLA-Permissive-2.0" },
       { layer: "Building heights", name: HT ? HT.source.replace(/ (.*)$/, "") : "estimated", licence: "CC BY 4.0 / ODbL" },
       { layer: "Terrain", name: "Copernicus DEM GLO-30 (ESA/EU)", licence: "Copernicus: free, full and open" },
     ],
@@ -731,12 +794,11 @@ const data = {
       z0: Math.floor(RECT.z0), z1: Math.ceil(RECT.z1),
     },
     core: { x: round1(CORE.x), z: round1(CORE.z) },
-    counts: { ...stats, ml: mlStats, heights: heightStats, trees: treeStats, landcover: landcoverStats, places: places.length },
+    counts: { ...stats, ml: mlStats, heights: heightStats, newSince2016: newStats, places: placeStats, trees: treeStats, landcover: landcoverStats, places: places.length },
   },
   terrain,
   buildings: out.buildings,
-  mlBoxes: out.mlBoxes,
-  mlRoof: out.mlRoof,
+  mlBld: out.mlBld,
   trees: out.trees,
   places,
   areas: out.areas,

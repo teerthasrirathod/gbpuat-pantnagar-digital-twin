@@ -57,6 +57,7 @@ def list_manifests(epsg, year):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--year", type=int, default=2023)
+    ap.add_argument("--out", help="output path (default data/raw/building_heights.json, or _<year> for other years)")
     args = ap.parse_args()
 
     epsg = utm_epsg((R["west"] + R["east"]) / 2, (R["south"] + R["north"]) / 2)
@@ -104,7 +105,8 @@ def main():
     built = q > 0
     print("window %dx%d px at %.0f m | building cover %.2f %% | height median %.1f m, p95 %.1f m, max %.1f m"
           % (W, H, CELL_M, 100 * built.mean(), np.median(height[built]), np.percentile(height[built], 95), height.max()))
-    out = ROOT / "data" / "raw" / "building_heights.json"
+    default_name = "building_heights.json" if args.year == 2023 else f"building_heights_{args.year}.json"
+    out = Path(args.out) if args.out else ROOT / "data" / "raw" / default_name
     out.write_text(json.dumps({
         "source": f"Google Open Buildings 2.5D Temporal v1, {args.year} (CC BY 4.0 / ODbL)",
         "bbox": [R["west"], R["south"], R["east"], R["north"]],

@@ -2,203 +2,442 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>GBPUAT Pantnagar - 3D Digital Twin</title>
-  <meta name="description" content="Lightweight 3D digital twin of the G.B. Pant University of Agriculture & Technology campus, Pantnagar, built from OpenStreetMap, Overture, Copernicus and ESA open data with Three.js.">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>GBPUAT Pantnagar 3D Twin</title>
+  <meta name="description" content="Lightweight, offline 3D digital twin of G.B. Pant University of Agriculture & Technology, Pantnagar, built from open data with Three.js.">
   <style>
+    /* Layout: full-bleed 3D map; floating chrome hugs the edges - search and panel top-left,
+       map controls right, scale and cursor readout bottom-left, info card right. */
     :root {
-      --bg: #0e1620;
-      --panel: rgba(14, 22, 32, 0.9);
-      --line: #243446;
-      --text: #e7eef6;
-      --muted: #8fa3b8;
-      --accent: #7fd1a6;
-      --btn: #1b2b3d;
-      --btn-hover: #263d55;
+      --ink: #17201a;
+      --ink-2: #4f5d53;
+      --ink-3: #7b877e;
+      --chrome: rgba(249, 250, 246, 0.93);
+      --chrome-solid: #f9faf6;
+      --field: #edf0e8;
+      --field-hover: #e2e7dc;
+      --line: rgba(23, 32, 26, 0.12);
+      --accent: #b97c0c;          /* mustard - the Tarai's winter fields */
+      --accent-soft: rgba(185, 124, 12, 0.14);
+      --accent-ink: #ffffff;
+      --link: #2b6896;            /* canal blue */
+      --new: #d9602a;             /* built since 2016 */
+      --shadow: 0 8px 28px rgba(14, 22, 16, 0.18), 0 1px 3px rgba(14, 22, 16, 0.12);
+      --font-ui: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Roboto, sans-serif;
+      --font-display: "Segoe UI Variable Display", "Segoe UI Semibold", "Segoe UI", system-ui, -apple-system, sans-serif;
+      --font-data: "Cascadia Mono", ui-monospace, Consolas, "SF Mono", monospace;
+      --r-lg: 14px;
+      --r-md: 10px;
+      --r-sm: 7px;
+      color-scheme: light;
     }
-    @media (prefers-color-scheme: light) {
-      :root:not([data-theme="dark"]) {
-        --bg: #dfe8ef;
-        --panel: rgba(255, 255, 255, 0.92);
-        --line: #c5d2de;
-        --text: #15202b;
-        --muted: #55697d;
-        --accent: #2f8f63;
-        --btn: #e9f0f6;
-        --btn-hover: #d7e3ee;
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --ink: #e8eee7; --ink-2: #a3b2a7; --ink-3: #75847a;
+        --chrome: rgba(19, 25, 21, 0.9); --chrome-solid: #131915;
+        --field: #1f2822; --field-hover: #29342d; --line: rgba(232, 238, 231, 0.12);
+        --accent: #e2aa3d; --accent-soft: rgba(226, 170, 61, 0.16); --accent-ink: #1a1404;
+        --link: #8cc0e6; --new: #f2905c;
+        --shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.35);
+        color-scheme: dark;
       }
     }
     :root[data-theme="dark"] {
-      --bg: #0e1620;
-      --panel: rgba(14, 22, 32, 0.9);
-      --line: #243446;
-      --text: #e7eef6;
-      --muted: #8fa3b8;
-      --accent: #7fd1a6;
-      --btn: #1b2b3d;
-      --btn-hover: #263d55;
+      --ink: #e8eee7; --ink-2: #a3b2a7; --ink-3: #75847a;
+      --chrome: rgba(19, 25, 21, 0.9); --chrome-solid: #131915;
+      --field: #1f2822; --field-hover: #29342d; --line: rgba(232, 238, 231, 0.12);
+      --accent: #e2aa3d; --accent-soft: rgba(226, 170, 61, 0.16); --accent-ink: #1a1404;
+      --link: #8cc0e6; --new: #f2905c;
+      --shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.35);
+      color-scheme: dark;
     }
+
     * { box-sizing: border-box; }
-    html, body {
-      margin: 0;
-      height: 100%;
-      overflow: hidden;
-      background: var(--bg);
-      color: var(--text);
-      font: 14px/1.4 system-ui, "Segoe UI", Roboto, sans-serif;
+    html, body { margin: 0; height: 100%; overflow: hidden; }
+    body {
+      background: #c9d9e3;
+      color: var(--ink);
+      font: 13.5px/1.45 var(--font-ui);
+      -webkit-font-smoothing: antialiased;
     }
+    button, input { font: inherit; color: inherit; }
+    a { color: var(--link); }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    [hidden] { display: none !important; }
+    svg.i { width: 18px; height: 18px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+    /* ---- map canvas & sky ---------------------------------------------------- */
     #view {
-      position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none;
+      position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: grab;
       background: linear-gradient(180deg, #7fb0dc 0%, #b7d3ea 38%, #d9e5ec 62%, #e4e2d6 100%);
     }
+    #view.dragging { cursor: grabbing; }
     #labels { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
     #labels.off { display: none; }
     .lbl {
-      position: absolute; left: 0; top: 0; white-space: nowrap;
-      font: 11px/1.2 system-ui, "Segoe UI", sans-serif;
-      color: #fff; background: rgba(10, 16, 24, 0.7);
-      padding: 2px 5px; border-radius: 4px;
-      transform: translate(-50%, -110%); display: none;
+      position: absolute; left: 0; top: 0; white-space: nowrap; display: none;
+      font: 600 11px/1.15 var(--font-ui); letter-spacing: 0.01em;
+      color: #fff; padding: 3px 7px; border-radius: 999px;
+      background: rgba(18, 26, 21, 0.72);
+      transform: translate(-50%, -125%);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
     }
-    .lbl.k-poi { background: rgba(150, 40, 30, 0.8); }
-    .lbl.k-campus, .lbl.k-bld { background: rgba(60, 50, 30, 0.75); }
-    .lbl.k-water { background: rgba(20, 70, 110, 0.8); }
-    .lbl.k-sport, .lbl.k-grass, .lbl.k-farm { background: rgba(40, 90, 50, 0.8); }
+    .lbl.k-college { background: rgba(140, 92, 6, 0.9); }
+    .lbl.k-poi { background: rgba(122, 42, 32, 0.85); }
+    .lbl.k-water { background: rgba(26, 78, 118, 0.85); }
+    .lbl.k-sport, .lbl.k-grass, .lbl.k-farm { background: rgba(38, 86, 50, 0.85); }
+
+    /* ---- floating chrome ------------------------------------------------------ */
+    .chrome {
+      background: var(--chrome); color: var(--ink);
+      border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow);
+      backdrop-filter: blur(10px) saturate(1.2); -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    }
+
+    #topbar {
+      position: fixed; left: 12px; top: calc(12px + env(safe-area-inset-top, 0px));
+      width: min(360px, calc(100vw - 24px));
+      display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px;
+      padding: 8px 8px 8px 12px; z-index: 5;
+    }
+    .brand { display: grid; line-height: 1.15; min-width: 0; }
+    .brand b { font: 650 15px/1.15 var(--font-display); letter-spacing: -0.01em; }
+    .brand span { font-size: 11px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mark { width: 30px; height: 30px; border-radius: 9px; background: var(--accent); display: grid; place-items: center; color: var(--accent-ink); }
+    .mark svg { width: 18px; height: 18px; stroke-width: 2; }
+    .icon-btn {
+      display: inline-grid; place-items: center; width: 34px; height: 34px; padding: 0;
+      border: 0; border-radius: var(--r-sm); background: transparent; cursor: pointer; color: var(--ink-2);
+    }
+    .icon-btn:hover { background: var(--field-hover); color: var(--ink); }
+    .icon-btn[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); }
 
     #panel {
-      position: fixed; left: 12px; top: 12px; width: 300px;
-      max-height: calc(100vh - 24px); overflow: auto;
-      background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
-      padding: 14px; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+      position: fixed; left: 12px; top: calc(70px + env(safe-area-inset-top, 0px));
+      width: min(360px, calc(100vw - 24px));
+      max-height: calc(100% - 128px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); /* leaves room for the readout */
+      display: flex; flex-direction: column; overflow: hidden; z-index: 4;
     }
-    #panel .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-    #panel h1 { font-size: 16px; margin: 0 0 4px; }
-    #panel.collapsed { width: auto; padding: 8px 10px; }
-    #panel.collapsed .head { margin-bottom: 0; }
-    #panel.collapsed .sub, #panel.collapsed #panel-body { display: none; }
-    #panel.collapsed h1 { font-size: 14px; margin: 0; }
-    #panel .sub { color: var(--muted); font-size: 12px; margin-bottom: 12px; }
-    #panel h2 {
-      font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
-      color: var(--muted); margin: 14px 0 6px; font-weight: 600;
+    #panel.collapsed { display: none; }
+    .search { position: relative; padding: 10px 10px 6px; }
+    .search input {
+      width: 100%; height: 38px; padding: 0 12px 0 36px; border-radius: var(--r-md);
+      border: 1px solid var(--line); background: var(--field);
     }
-    .row { display: flex; flex-wrap: wrap; gap: 6px; }
-    button, input[type="search"] {
-      font: inherit; color: var(--text); background: var(--btn);
-      border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; cursor: pointer;
+    .search input::placeholder { color: var(--ink-3); }
+    .search svg.i { position: absolute; left: 21px; top: 20px; width: 16px; height: 16px; color: var(--ink-3); }
+    #results {
+      list-style: none; margin: 6px 0 0; padding: 4px; max-height: 260px; overflow: auto;
+      border: 1px solid var(--line); border-radius: var(--r-md); background: var(--chrome-solid);
     }
-    button:hover { background: var(--btn-hover); }
-    button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-    input[type="search"] { width: 100%; cursor: text; }
-    label.toggle { display: flex; align-items: center; gap: 8px; padding: 3px 0; cursor: pointer; }
-    label.toggle input { accent-color: var(--accent); width: 16px; height: 16px; margin: 0; }
-    dl.stats { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; margin: 0; font-size: 12px; }
-    dl.stats dt { color: var(--muted); }
-    dl.stats dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
-    .legend { display: grid; grid-template-columns: 14px 1fr; gap: 4px 8px; font-size: 12px; align-items: center; }
-    .swatch { width: 14px; height: 10px; border-radius: 2px; border: 1px solid rgba(0,0,0,.15); }
-    .note { color: var(--muted); font-size: 12px; margin-top: 10px; }
-    details { margin: 2px 0; }
-    summary { cursor: pointer; padding: 3px 0; font-weight: 600; font-size: 13px; }
-    button.place { display: block; width: 100%; text-align: left; padding: 4px 8px; margin: 2px 0; font-size: 12px; }
-    ul.sources { margin: 6px 0 0; padding-left: 16px; color: var(--muted); font-size: 11px; }
-    ul.sources li { margin: 2px 0; }
-    #hint {
-      position: fixed; right: 12px; bottom: 12px; color: var(--muted);
-      font-size: 12px; background: var(--panel); border: 1px solid var(--line);
-      padding: 6px 10px; border-radius: 8px; pointer-events: none;
+    #results li {
+      display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center;
+      padding: 7px 9px; border-radius: var(--r-sm); cursor: pointer;
     }
-    #status {
-      position: fixed; inset: auto 12px 12px auto; color: var(--muted); font-size: 12px;
+    #results li[aria-selected="true"], #results li:hover { background: var(--field-hover); }
+    #results .t { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #results .k { font-size: 11px; color: var(--ink-3); white-space: nowrap; }
+    #results .empty { color: var(--ink-3); cursor: default; }
+
+    .tabs { display: flex; gap: 4px; padding: 4px 10px 0; border-bottom: 1px solid var(--line); }
+    .tabs button {
+      border: 0; background: none; padding: 9px 10px 10px; cursor: pointer; color: var(--ink-2);
+      font-weight: 600; border-bottom: 2px solid transparent; margin-bottom: -1px;
     }
-    @media (max-width: 640px) {
-      #panel { left: 8px; right: 8px; top: auto; bottom: 8px; width: auto; max-height: 46vh; padding: 12px; }
-      #hint { display: none; }
+    .tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+    .tabpanel { overflow: auto; padding: 12px 14px 16px; display: grid; gap: 14px; align-content: start; }
+    h3 {
+      margin: 0 0 7px; font: 650 10.5px/1.2 var(--font-ui); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3);
     }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip {
+      border: 1px solid var(--line); background: var(--field); border-radius: 999px;
+      padding: 5px 11px; cursor: pointer; font-weight: 550;
+    }
+    .chip:hover { background: var(--field-hover); }
+    details { border-top: 1px solid var(--line); }
+    details:first-of-type { border-top: 0; }
+    summary {
+      cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0; font-weight: 600;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary .n { font: 500 11px var(--font-data); color: var(--ink-3); margin-left: auto; }
+    summary::after { content: "+"; color: var(--ink-3); margin-left: 10px; width: 10px; text-align: center; }
+    details[open] > summary::after { content: "\2212"; }
+    .placelist { display: grid; gap: 2px; padding-bottom: 8px; }
+    .placelist button {
+      display: grid; grid-template-columns: 1fr auto; gap: 8px; text-align: left; border: 0; background: none;
+      padding: 6px 8px; border-radius: var(--r-sm); cursor: pointer;
+    }
+    .placelist button:hover { background: var(--field-hover); }
+    .placelist small { color: var(--ink-3); }
+
+    .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; padding: 3px; background: var(--field); border-radius: var(--r-md); }
+    .seg button { border: 0; background: none; border-radius: var(--r-sm); padding: 7px 8px; cursor: pointer; font-weight: 600; color: var(--ink-2); }
+    .seg button[aria-pressed="true"] { background: var(--chrome-solid); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+    .toggles { display: grid; gap: 2px; }
+    .toggle {
+      display: grid; grid-template-columns: 12px 1fr auto; gap: 10px; align-items: center;
+      padding: 6px 2px; cursor: pointer;
+    }
+    .toggle .sw { width: 12px; height: 12px; border-radius: 3px; border: 1px solid rgba(0,0,0,.2); }
+    .toggle input { appearance: none; width: 30px; height: 18px; border-radius: 999px; background: var(--field-hover); position: relative; cursor: pointer; margin: 0; transition: background .15s; }
+    .toggle input::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: var(--chrome-solid); box-shadow: 0 1px 2px rgba(0,0,0,.3); transition: transform .15s; }
+    .toggle input:checked { background: var(--accent); }
+    .toggle input:checked::after { transform: translateX(12px); }
+    .toggle small { display: block; color: var(--ink-3); font-size: 11px; }
+
+    dl.facts { display: grid; grid-template-columns: 1fr auto; gap: 5px 12px; margin: 0; }
+    dl.facts dt { color: var(--ink-2); }
+    dl.facts dd { margin: 0; text-align: right; font: 500 12px var(--font-data); font-variant-numeric: tabular-nums; }
+    ul.sources { margin: 0; padding-left: 16px; color: var(--ink-2); font-size: 12px; display: grid; gap: 4px; }
+    p.note { margin: 0; color: var(--ink-2); font-size: 12px; max-width: 60ch; }
+
+    /* ---- map controls ---------------------------------------------------------- */
+    #controls {
+      position: fixed; right: 12px; bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+      display: grid; gap: 8px; z-index: 4;
+    }
+    #controls .stack { display: grid; padding: 4px; gap: 2px; }
+    #compass .needle-n { fill: var(--new); stroke: none; }
+    #compass .needle-s { fill: var(--ink-3); stroke: none; }
+
+    #readout {
+      position: fixed; left: 12px; bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+      display: flex; align-items: center; gap: 12px; padding: 5px 10px; z-index: 3;
+      font: 500 11.5px var(--font-data); font-variant-numeric: tabular-nums; color: var(--ink-2);
+      border-radius: var(--r-md);
+    }
+    #scalebar { display: grid; gap: 2px; justify-items: start; }
+    #scalebar i { display: block; height: 5px; border: 2px solid var(--ink-2); border-top: 0; }
+    #attrib {
+      position: fixed; right: 12px; bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+      font-size: 10.5px; color: var(--ink-2); padding: 3px 8px; border-radius: var(--r-sm); z-index: 3;
+      max-width: calc(100vw - 420px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* ---- info card ----------------------------------------------------------- */
+    #info {
+      position: fixed; right: 64px; top: calc(12px + env(safe-area-inset-top, 0px));
+      width: min(330px, calc(100vw - 24px)); padding: 14px 14px 12px; z-index: 6;
+      display: grid; gap: 10px;
+    }
+    #info header { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: start; }
+    #info h2 { margin: 0; font: 650 16px/1.25 var(--font-display); text-wrap: balance; overflow-wrap: anywhere; }
+    #info .sub { color: var(--ink-2); font-size: 12px; margin-top: 2px; }
+    .pills { display: flex; flex-wrap: wrap; gap: 5px; }
+    .pills:empty { display: none; }
+    .pill { font: 600 10.5px var(--font-ui); letter-spacing: .02em; padding: 3px 8px; border-radius: 999px; background: var(--field); color: var(--ink-2); }
+    .pill.measured { background: rgba(43, 104, 150, .14); color: var(--link); }
+    .pill.estimated { background: var(--accent-soft); color: var(--accent); }
+    .pill.new { background: rgba(217, 96, 42, .15); color: var(--new); }
+    .actions { display: flex; flex-wrap: wrap; gap: 6px; }
+    .actions a, .actions button {
+      display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+      border: 1px solid var(--line); background: var(--field); color: var(--ink); border-radius: var(--r-sm);
+      padding: 6px 10px; font-weight: 600; font-size: 12px; cursor: pointer;
+    }
+    .actions a:hover, .actions button:hover { background: var(--field-hover); }
+    .actions svg.i { width: 15px; height: 15px; }
+
+    /* ---- loading & help ------------------------------------------------------ */
+    #loading {
+      position: fixed; inset: 0; display: grid; place-items: center; z-index: 20;
+      background: radial-gradient(ellipse at 50% 40%, rgba(249,250,246,.94), rgba(222,229,220,.97));
+    }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) #loading { background: radial-gradient(ellipse at 50% 40%, rgba(19,25,21,.94), rgba(10,14,11,.98)); } }
+    :root[data-theme="dark"] #loading { background: radial-gradient(ellipse at 50% 40%, rgba(19,25,21,.94), rgba(10,14,11,.98)); }
+    #loading .box { display: grid; gap: 10px; justify-items: center; text-align: center; padding: 24px; }
+    #loading b { font: 650 20px var(--font-display); }
+    #loading .bar { width: 220px; height: 4px; border-radius: 4px; background: var(--field-hover); overflow: hidden; }
+    #loading .bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .2s; }
+    #loading small { color: var(--ink-2); min-height: 1.4em; }
+    #help { position: fixed; inset: 0; display: grid; place-items: center; z-index: 15; background: rgba(0,0,0,.25); }
+    #help .chrome { padding: 18px 20px; width: min(420px, calc(100vw - 32px)); display: grid; gap: 10px; }
+    #help h2 { margin: 0; font: 650 16px var(--font-display); }
+    #help dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; }
+    #help dt { font: 600 11.5px var(--font-data); color: var(--ink); }
+    #help dd { margin: 0; color: var(--ink-2); }
+
+    @media (max-width: 700px) {
+      #topbar { width: calc(100vw - 24px); }
+      #panel { top: auto; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); width: calc(100vw - 24px); max-height: 52vh; }
+      #controls { top: calc(72px + env(safe-area-inset-top, 0px)); bottom: auto; }
+      #readout, #attrib { display: none; }
+      #info { right: 12px; top: auto; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
   </style>
 </head>
 <body>
-  <canvas id="view" aria-label="3D map of the GBPUAT campus"></canvas>
+  <canvas id="view" aria-label="3D map of the GBPUAT campus, Pantnagar"></canvas>
   <div id="labels" aria-hidden="true"></div>
 
-  <aside id="panel" aria-label="Controls">
-    <div class="head">
-      <h1>GBPUAT Pantnagar - 3D digital twin</h1>
-      <button type="button" id="panel-toggle" aria-expanded="true" aria-controls="panel-body">Hide</button>
+  <header id="topbar" class="chrome">
+    <div class="mark" aria-hidden="true">
+      <svg class="i" viewBox="0 0 24 24"><path d="M3 20h18M5 20V10l7-5 7 5v10M9 20v-5h6v5"/></svg>
     </div>
-    <div class="sub">G.B. Pant University of Agriculture &amp; Technology, Udham Singh Nagar, Uttarakhand</div>
+    <div class="brand"><b>GBPUAT Pantnagar</b><span>3D campus twin · Tarai, Uttarakhand</span></div>
+    <button class="icon-btn" id="panel-toggle" type="button" aria-expanded="true" aria-controls="panel" title="Show or hide the panel">
+      <svg class="i" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+    </button>
+  </header>
 
-    <div id="panel-body">
-    <div class="row" role="group" aria-label="Camera presets">
-      <button type="button" data-view="overview">Overview</button>
-      <button type="button" data-view="top">Top-down</button>
-      <button type="button" data-view="core">Core campus</button>
-      <button type="button" data-view="farms">Farms</button>
+  <aside id="panel" class="chrome" aria-label="Explore and layers">
+    <div class="search" role="search">
+      <svg class="i" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>
+      <input id="find" type="search" placeholder="Search colleges, hostels, banks, places" autocomplete="off"
+             role="combobox" aria-expanded="false" aria-controls="results" aria-autocomplete="list">
+      <ul id="results" role="listbox" hidden></ul>
     </div>
-
-    <h2>Basemap</h2>
-    <label class="toggle"><input type="radio" name="basemap" value="satellite" checked> Satellite (Sentinel-2, 10 m)</label>
-    <label class="toggle"><input type="radio" name="basemap" value="map"> Land-cover map (ESA WorldCover)</label>
-
-    <h2>Official places</h2>
-    <div id="places-list"></div>
-
-    <h2>Find a place</h2>
-    <input type="search" id="find" list="places" placeholder="Hostel, college, bhawan, farm..." autocomplete="off">
-    <datalist id="places"></datalist>
-
-    <h2>Layers</h2>
-    <label class="toggle"><input type="checkbox" id="ly-bld" checked> Mapped buildings (OSM, extruded)</label>
-    <label class="toggle"><input type="checkbox" id="ly-ml" checked> Detected buildings (ML footprints)</label>
-    <label class="toggle"><input type="checkbox" id="ly-outline" checked> Campus &amp; farm outlines (OSM)</label>
-    <label class="toggle"><input type="checkbox" id="ly-roads" checked> Roads &amp; tracks</label>
-    <label class="toggle"><input type="checkbox" id="ly-rail" checked> Railway &amp; power lines</label>
-    <label class="toggle"><input type="checkbox" id="ly-land" checked> Land use (fields, lawns, sports)</label>
-    <label class="toggle"><input type="checkbox" id="ly-water" checked> Water &amp; waterways</label>
-    <label class="toggle"><input type="checkbox" id="ly-trees" checked> Trees (from canopy-height data)</label>
-    <label class="toggle"><input type="checkbox" id="ly-pins" checked> Points of interest</label>
-    <label class="toggle"><input type="checkbox" id="ly-labels" checked> Labels</label>
-
-    <h2>Legend</h2>
-    <div class="legend">
-      <div class="swatch" style="background:#d9c7a3"></div><div>Campus buildings</div>
-      <div class="swatch" style="background:#e6dccb"></div><div>Other mapped buildings</div>
-      <div class="swatch" style="background:#d9cdb8"></div><div>Detected buildings (boxes, size-based height)</div>
-      <div class="swatch" style="background:#4d8a3f"></div><div>Trees (height from canopy data)</div>
-      <div class="swatch" style="background:#6e6e6e"></div><div>Main roads</div>
-      <div class="swatch" style="background:#c7b56a"></div><div>Farmland</div>
-      <div class="swatch" style="background:#9cc27f"></div><div>Lawns &amp; grass</div>
-      <div class="swatch" style="background:#4f7f43"></div><div>Forest / woodland</div>
-      <div class="swatch" style="background:#3d7fb3"></div><div>Water &amp; canals</div>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" id="tab-explore" aria-selected="true" aria-controls="pane-explore">Explore</button>
+      <button type="button" role="tab" id="tab-layers" aria-selected="false" aria-controls="pane-layers">Layers</button>
+      <button type="button" role="tab" id="tab-data" aria-selected="false" aria-controls="pane-data">Data</button>
     </div>
 
-    <h2>Model</h2>
-    <dl class="stats">
-      <dt>Mapped buildings (OSM)</dt><dd id="st-bld">-</dd>
-      <dt>Detected buildings (ML)</dt><dd id="st-ml">-</dd>
-      <dt>Trees</dt><dd id="st-trees">-</dd>
-      <dt>Land-use areas</dt><dd id="st-area">-</dd>
-      <dt>Road segments</dt><dd id="st-road">-</dd>
-      <dt>Triangles (on screen)</dt><dd id="st-tri">-</dd>
-      <dt>Draw calls</dt><dd id="st-calls">-</dd>
-      <dt>Frame render time</dt><dd id="st-ms">-</dd>
-    </dl>
+    <section class="tabpanel" id="pane-explore" role="tabpanel" aria-labelledby="tab-explore">
+      <div>
+        <h3>Views</h3>
+        <div class="chips">
+          <button class="chip" type="button" data-view="overview">Whole area</button>
+          <button class="chip" type="button" data-view="core">Campus core</button>
+          <button class="chip" type="button" data-view="farms">University farms</button>
+          <button class="chip" type="button" data-view="top">Top-down</button>
+        </div>
+      </div>
+      <div>
+        <h3>Official places</h3>
+        <div id="places-list"></div>
+      </div>
+      <div>
+        <h3>Around campus</h3>
+        <div id="poi-list"></div>
+      </div>
+    </section>
 
-    <h2>Data sources</h2>
-    <ul class="sources" id="sources"></ul>
-    <p class="note">
-      Official figures (gbpuat.ac.in): campus 16,000 acres (about 65 km&sup2;), of which the University
-      Farm is nearly 6,000 acres (about 24 km&sup2;). The yellow outlines show only the parts mapped in OSM.
-      Building heights are estimated (from tags, or from footprint size for detected buildings).
-      Detected footprints are machine-generated from satellite images and can be wrong. The official
-      campus boundary is not published as GIS data, so the model covers the whole study window.
-      Not survey-grade; for visualisation and planning discussions only.
-    </p>
-    </div>
+    <section class="tabpanel" id="pane-layers" role="tabpanel" aria-labelledby="tab-layers" hidden>
+      <div>
+        <h3>Basemap</h3>
+        <div class="seg" role="group" aria-label="Basemap">
+          <button type="button" id="bm-satellite" aria-pressed="true">Satellite</button>
+          <button type="button" id="bm-map" aria-pressed="false">Land cover</button>
+        </div>
+      </div>
+      <div>
+        <h3>Buildings</h3>
+        <div class="toggles">
+          <label class="toggle"><span class="sw" style="background:#d9c7a3"></span><span>Mapped buildings<small>OpenStreetMap footprints</small></span><input type="checkbox" id="ly-bld" checked></label>
+          <label class="toggle"><span class="sw" style="background:#d9cdb8"></span><span>Detected buildings<small>Google and Microsoft footprints</small></span><input type="checkbox" id="ly-ml" checked></label>
+          <label class="toggle"><span class="sw" style="background:#d9602a"></span><span>Highlight new since 2016<small>Open Buildings 2016 vs 2023</small></span><input type="checkbox" id="ly-new"></label>
+        </div>
+      </div>
+      <div>
+        <h3>Nature</h3>
+        <div class="toggles">
+          <label class="toggle"><span class="sw" style="background:#4d8a3f"></span><span>Trees<small>Measured crowns and heights</small></span><input type="checkbox" id="ly-trees" checked></label>
+          <label class="toggle"><span class="sw" style="background:#3d7fb3"></span><span>Water and canals</span><input type="checkbox" id="ly-water" checked></label>
+          <label class="toggle"><span class="sw" style="background:#c7b56a"></span><span>Land use<small>Fields, lawns, sports grounds</small></span><input type="checkbox" id="ly-land" checked></label>
+        </div>
+      </div>
+      <div>
+        <h3>Network and labels</h3>
+        <div class="toggles">
+          <label class="toggle"><span class="sw" style="background:#8a8a8a"></span><span>Roads and tracks</span><input type="checkbox" id="ly-roads" checked></label>
+          <label class="toggle"><span class="sw" style="background:#6b6258"></span><span>Railway and power lines</span><input type="checkbox" id="ly-rail" checked></label>
+          <label class="toggle"><span class="sw" style="background:#e2c23a"></span><span>Campus and farm outlines</span><input type="checkbox" id="ly-outline" checked></label>
+          <label class="toggle"><span class="sw" style="background:#e4572e"></span><span>Points of interest</span><input type="checkbox" id="ly-pins" checked></label>
+          <label class="toggle"><span class="sw" style="background:#1d2a22"></span><span>Labels</span><input type="checkbox" id="ly-labels" checked></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="tabpanel" id="pane-data" role="tabpanel" aria-labelledby="tab-data" hidden>
+      <div>
+        <h3>In this model</h3>
+        <dl class="facts" id="facts"></dl>
+      </div>
+      <div>
+        <h3>Rendering</h3>
+        <dl class="facts">
+          <dt>Triangles on screen</dt><dd id="st-tri">-</dd>
+          <dt>Draw calls</dt><dd id="st-calls">-</dd>
+          <dt>Last frame</dt><dd id="st-ms">-</dd>
+        </dl>
+      </div>
+      <div>
+        <h3>Sources</h3>
+        <ul class="sources" id="sources"></ul>
+      </div>
+      <p class="note">
+        The university states the campus is 16,000 acres (about 65 km²), with nearly 6,000 acres of farm.
+        No official boundary is published, so the model covers an 11.7 × 8.9 km window. Heights are measured
+        where Open Buildings has them and estimated otherwise. Not survey-grade.
+      </p>
+    </section>
   </aside>
 
-  <div id="hint">Drag: orbit &middot; Right-drag / Shift-drag: pan &middot; Wheel: zoom &middot; Arrow keys: pan</div>
-  <div id="status">Loading...</div>
+  <div id="controls">
+    <div class="stack chrome">
+      <button class="icon-btn" type="button" id="zoom-in" title="Zoom in"><svg class="i" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button class="icon-btn" type="button" id="zoom-out" title="Zoom out"><svg class="i" viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+    </div>
+    <div class="stack chrome">
+      <button class="icon-btn" type="button" id="compass" title="Face north">
+        <svg viewBox="0 0 24 24" width="22" height="22"><path class="needle-n" d="M12 3 15 12H9Z"/><path class="needle-s" d="M12 21 9 12h6Z"/></svg>
+      </button>
+      <button class="icon-btn" type="button" id="tilt" title="Switch between 3D and top-down" aria-pressed="false">
+        <svg class="i" viewBox="0 0 24 24"><path d="M12 3 3 8l9 5 9-5-9-5ZM3 13l9 5 9-5"/></svg>
+      </button>
+    </div>
+    <div class="stack chrome">
+      <button class="icon-btn" type="button" id="shot" title="Save a picture of this view"><svg class="i" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></button>
+      <button class="icon-btn" type="button" id="fullscreen" title="Full screen"><svg class="i" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
+      <button class="icon-btn" type="button" id="help-btn" title="Controls (?)"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.5M12 17h.01"/></svg></button>
+    </div>
+  </div>
+
+  <div id="readout" class="chrome">
+    <div id="scalebar"><span id="scale-text">-</span><i id="scale-bar"></i></div>
+    <span id="cursor">Move over the map</span>
+  </div>
+  <div id="attrib" class="chrome">© OpenStreetMap contributors · Overture Maps · Google Open Buildings · Copernicus Sentinel-2 · ESA WorldCover · Meta/WRI</div>
+
+  <section id="info" class="chrome" aria-live="polite" hidden>
+    <header>
+      <div><h2 id="info-title">-</h2><div class="sub" id="info-sub"></div></div>
+      <button class="icon-btn" type="button" id="info-close" title="Close"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </header>
+    <div class="pills" id="info-pills"></div>
+    <dl class="facts" id="info-facts"></dl>
+    <div class="actions" id="info-actions"></div>
+  </section>
+
+  <div id="help" hidden>
+    <div class="chrome" role="dialog" aria-modal="true" aria-labelledby="help-title">
+      <h2 id="help-title">Moving around</h2>
+      <dl>
+        <dt>Drag</dt><dd>Orbit. Let go while moving to glide.</dd>
+        <dt>Right-drag</dt><dd>Pan (or Shift + drag)</dd>
+        <dt>Wheel</dt><dd>Zoom toward the cursor</dd>
+        <dt>Double-click</dt><dd>Fly to that spot</dd>
+        <dt>Click</dt><dd>Inspect a building, place or patch of ground</dd>
+        <dt>Arrows</dt><dd>Pan · Q / E rotate · + / − zoom</dd>
+        <dt>R</dt><dd>Back to the whole area · / to search</dd>
+      </dl>
+      <div class="actions"><button type="button" id="help-close">Close</button></div>
+    </div>
+  </div>
+
+  <div id="loading" role="status">
+    <div class="box">
+      <div class="mark" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M3 20h18M5 20V10l7-5 7 5v10M9 20v-5h6v5"/></svg></div>
+      <b>GBPUAT Pantnagar</b>
+      <div class="bar"><i id="load-bar"></i></div>
+      <small id="load-text">Loading data</small>
+    </div>
+  </div>
 
   <script src="vendor/three.min.js"></script>
   <script src="data/campus-data.js"></script>
