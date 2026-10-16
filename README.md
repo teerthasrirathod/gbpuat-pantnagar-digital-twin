@@ -20,6 +20,27 @@ To use it offline:
 
 The site updates by itself: the `pages` workflow republishes both files whenever they change on `main`.
 
+## Grand Tour Pantnagar: the campus as an open-world game (new)
+
+**Play: [teerthasrirathod.github.io/gbpuat-pantnagar-digital-twin/game](https://teerthasrirathod.github.io/gbpuat-pantnagar-digital-twin/game/)**, or press **Play** in the twin.
+
+- **Get around**: walk the real campus, then take a scooter, car, auto-rickshaw, tractor or bus. Traffic drives the real road network, keeping left; pedestrians walk the paths.
+- **Jobs at real places**:
+  - Chai Express from Brijwasi Canteen;
+  - Campus Cab from the Library;
+  - the Pantnagar Circuit race from Stevenson Stadium;
+  - Lost and Found from the Post Office.
+- **Campus security**: taking a vehicle from its driver, hitting people or ramming the security jeeps earns wanted stars, and security jeeps chase you over the road network. Lose them, or get busted.
+- **World and HUD**:
+  - a day-to-night cycle with headlights and street lamps;
+  - a satellite minimap with a route to your target, and a big map for waypoints;
+  - cash, synthesised engine, horn and siren sounds;
+  - touch controls on phones.
+
+Controls: `W A S D` move or drive, `Shift` sprint, `Space` jump or handbrake, `F` vehicle, `E` job, `H` horn, `C` camera, `M` map, `Esc` pause. There are no weapons: it is a real campus, so the fun is driving, jobs and chases.
+
+The game reuses the twin's world and lives in [`campus/js/game.js`](campus/js/game.js). Vehicles and people are instanced, so the whole cast costs a handful of draw calls.
+
 ## Pantnagar Sandbox: try changes before spending (new in v2.0)
 
 Press **Plan** in the campus twin to change Pantnagar on its digital twin, see what works and what does not, and only then put a budget on it.
@@ -239,6 +260,7 @@ node tools/build_standalone.mjs
 | `twin/sim/` | Sandbox engine (Rust): scenario format, catalogue and rates, custom item types, Wi-Fi, lighting, access, routes, budget, green metrics |
 | `twin/sim-wasm/` | WebAssembly exports of the engine for the page |
 | `campus/js/plan.js` | Plan mode: scenarios, design tools, items in 3D, category simulation and targets, budget, item types, report, share links |
+| `campus/js/game.js` | Grand Tour Pantnagar: open-world game (vehicles, traffic, people, jobs, campus security, HUD, sound) |
 | `scenarios/` | Sample scenarios (GeoJSON) |
 | `docs/` | Sandbox guide, scenario format, ADD VALUE proposal, research notes |
 | `.github/workflows/sandbox.yml` | Evaluates plans submitted by pull request |

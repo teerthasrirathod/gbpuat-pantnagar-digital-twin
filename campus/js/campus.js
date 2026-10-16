@@ -24,6 +24,8 @@
   let dirty = true;
   // Plan mode (js/plan.js) registers hooks here; planDrag is true while it owns a pointer drag.
   let PLAN = null, planDrag = false, streetFrom = "aerial";
+  // Game mode (js/game.js) takes over the camera and input while mode === "game".
+  let GAME = null;
 
   // ---------------------------------------------------------------------------------------
   // Utilities
@@ -1070,6 +1072,9 @@
     else if (m === "aerial" || m === "plan") streetFrom = "aerial";
     document.body.classList.toggle("street", m === "street");
     document.body.classList.toggle("planning", m === "plan");
+    document.body.classList.toggle("game", m === "game");
+    if ($("mode-play")) $("mode-play").setAttribute("aria-pressed", m === "game");
+    if (GAME && prev !== m) GAME.mode(m, prev);
     $("mode-aerial").setAttribute("aria-pressed", m === "aerial");
     $("mode-street").setAttribute("aria-pressed", m === "street" || m === "pick");
     if ($("mode-plan")) $("mode-plan").setAttribute("aria-pressed", m === "plan");
@@ -1079,8 +1084,8 @@
     $("sv-hint").hidden = m !== "pick";
     document.body.classList.toggle("picking", m === "pick");
     // Map overlays are for the aerial view; street view shows the place itself.
-    for (const [g, id] of [["blocks", "ly-blocks"], ["blockfill", "ly-blockfill"], ["villages", "ly-villages"]]) groups[g].visible = m !== "street" && $(id).checked;
-    if (m === "street") {
+    for (const [g, id] of [["blocks", "ly-blocks"], ["blockfill", "ly-blockfill"], ["villages", "ly-villages"]]) groups[g].visible = m !== "street" && m !== "game" && $(id).checked;
+    if (m === "street" || m === "game") {
       scene.fog = new THREE.Fog(SKY, 140, 1100);
       $("info").hidden = true;
       if (panelBeforeStreet === null) panelBeforeStreet = !$("panel").classList.contains("closed");
@@ -1266,7 +1271,7 @@
   canvas.addEventListener("pointerup", endTouch);
   canvas.addEventListener("pointercancel", endTouch);
   canvas.addEventListener("pointermove", (e) => {
-    if (!touches.has(e.pointerId)) return;
+    if (mode === "game" || !touches.has(e.pointerId)) return;
     touches.set(e.pointerId, [e.clientX, e.clientY]);
     if (touches.size !== 2) return;
     const [a, b] = [...touches.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]);
@@ -1279,6 +1284,7 @@
     pinchD = d;
   });
   canvas.addEventListener("pointerdown", (e) => {
+    if (mode === "game") return;
     if (mode === "plan" && PLAN && e.button === 0 && !e.shiftKey && touches.size < 2 && PLAN.down(e)) { planDrag = true; canvas.setPointerCapture(e.pointerId); return; }
     dragging = true; dragBtn = e.button === 2 || e.shiftKey ? 2 : 0;
     lastX = downX = e.clientX; lastY = downY = e.clientY;
@@ -1286,6 +1292,7 @@
     canvas.classList.add("dragging");
   });
   canvas.addEventListener("pointermove", (e) => {
+    if (mode === "game") return;
     if (planDrag) { PLAN.move(e); return; }
     if (!dragging) { if (mode === "aerial" || mode === "plan") hoverReadout(e); if (mode === "plan" && PLAN) PLAN.hover(e); return; }
     if (touches.size >= 2) { lastX = e.clientX; lastY = e.clientY; return; } // pinching, not orbiting
@@ -1306,6 +1313,7 @@
     dirty = true;
   });
   canvas.addEventListener("pointerup", (e) => {
+    if (mode === "game") return;
     if (planDrag) { planDrag = false; PLAN.up(e); return; }
     dragging = false;
     canvas.classList.remove("dragging");
@@ -1315,6 +1323,7 @@
   });
   canvas.addEventListener("wheel", (e) => {
     e.preventDefault();
+    if (mode === "game") return;
     if (mode === "street") { SV.fov = Math.max(30, Math.min(95, SV.fov + Math.sign(e.deltaY) * 5)); dirty = true; return; }
     const f = Math.exp(Math.sign(e.deltaY) * 0.18);
     const hit = groundHit(e.clientX, e.clientY);
@@ -1324,6 +1333,7 @@
     dirty = true;
   }, { passive: false });
   canvas.addEventListener("dblclick", (e) => {
+    if (mode === "game") return;
     if (mode === "plan") { if (PLAN) PLAN.dblclick(e); return; }
     if (mode !== "aerial") return;
     const hit = groundHit(e.clientX, e.clientY);
@@ -1332,6 +1342,7 @@
   const keyMap = { ArrowUp: "fwd", KeyW: "fwd", ArrowDown: "back", KeyS: "back", KeyA: "left", KeyD: "right", ShiftLeft: "run", ShiftRight: "run", KeyQ: "turnL", KeyE: "turnR" };
   window.addEventListener("keydown", (e) => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA" || e.target.isContentEditable) return;
+    if (mode === "game") return;
     if (mode === "plan" && PLAN && $("help").hidden && PLAN.key(e)) return;
     if (e.key === "Escape") { if (!$("help").hidden) $("help").hidden = true; else if (mode === "street") exitStreet(); else if (mode === "pick") setMode(streetFrom === "plan" ? "plan" : "aerial"); else if (mode !== "aerial") setMode("aerial"); else $("info").hidden = true; return; }
     if (e.key === "?") { $("help").hidden = false; return; }
@@ -1761,14 +1772,15 @@
     for (const l of labels) {
       if (l.bld && l.bld.hidden) { if (l.shown) { l.el.style.display = "none"; l.shown = false; } continue; }
       const d = Math.hypot(l.x - camPos.x, l.z - camPos.z, (l.y - camPos.y) * 0.5);
-      if (mode === "street" && l.kind === "block") { if (l.shown) { l.el.style.display = "none"; l.shown = false; } continue; }
-      const range = mode === "street" ? Math.min(l.range, 400) : l.range;
+      const atStreet = mode === "street" || mode === "game";
+      if (atStreet && l.kind === "block") { if (l.shown) { l.el.style.display = "none"; l.shown = false; } continue; }
+      const range = atStreet ? Math.min(l.range, mode === "game" ? 260 : 400) : l.range;
       if (d > range) { if (l.shown) { l.el.style.display = "none"; l.shown = false; } continue; }
       v3.set(l.x, l.y + 3, l.z).project(camera);
       if (v3.z > 1 || v3.x < -1.1 || v3.x > 1.1 || v3.y < -1.1 || v3.y > 1.1) { if (l.shown) { l.el.style.display = "none"; l.shown = false; } continue; }
       vis.push({ l, sx: ((v3.x + 1) / 2) * w, sy: ((1 - v3.y) / 2) * h, d });
     }
-    if (mode === "street") {
+    if (mode === "street" || mode === "game") {
       const cx = camPos.x, cz = camPos.z, cy = camPos.y;
       for (let i = vis.length - 1; i >= 0; i--) {
         const l = vis[i].l, dx = l.x - cx, dz = l.z - cz, D2 = Math.hypot(dx, dz);
@@ -1784,6 +1796,7 @@
       }
     }
     vis.sort((a, b) => a.l.prio - b.l.prio || a.d - b.d);
+    if (mode === "game") vis.length = Math.min(vis.length, 8);
     for (const { l, sx, sy } of vis) {
       if (!l.w) { l.el.style.display = "block"; l.w = l.el.offsetWidth || 80; l.el.style.display = l.shown ? "block" : "none"; }
       const box = [sx - l.w / 2, sy - 30, sx + l.w / 2, sy - 8];
@@ -1854,7 +1867,10 @@
     const dt = Math.min(0.1, (now - last) / 1000);
     last = now;
     let moving = false;
-    if (mode === "street") {
+    if (mode === "game") {
+      moving = true;
+      if (GAME) GAME.frame(dt);
+    } else if (mode === "street") {
       moving = SV.free ? stepFree(dt) : stepFollow(dt);
       applyStreet();
       if (moving) updateArrows();
@@ -2058,6 +2074,13 @@
     // Test hook: advance street-view movement by n steps of dt seconds (works while rAF is paused).
     step(n, dt = 1 / 30) { for (let i = 0; i < n; i++) { if (mode === "street") (SV.free ? stepFree(dt) : stepFollow(dt)); } if (mode === "street") { applyStreet(); updateArrows(); } },
     updateArrows,
+    game: {
+      setHooks(h) { GAME = h; }, mode: () => mode, setMode, buildingAt, nearestEdge, H, inCB, CB, toast, setPanel,
+      edgeOk: (k) => !!edgeOk[k], satImage: () => SAT_IMG, satGrid: SG, bounds: B, SKY,
+      lamps: () => { const out = []; for (const lc of lightChunks.values()) for (const l of lc.list) out.push(l); return out; },
+      setExposure(v) { renderer.toneMappingExposure = v; },
+      labels: (on) => labelLayer.classList.toggle("off", !on),
+    },
     plan: {
       setHooks(h) { PLAN = h; }, mode: () => mode, setMode, groundHit, pickBuilding, raycast, buildingAt, blockAt, nearestEdge, H,
       makeBuilding, makeRoad, makeTree, makeLamp, setHiddenBuildings, setHiddenTrees, applyPlanGraph, setNight, setXray, setPlanLabels,
