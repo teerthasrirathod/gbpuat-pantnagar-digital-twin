@@ -771,6 +771,23 @@ if (fs.existsSync(elevPath)) {
 }
 if (!terrain) console.log("no elevation.json found: terrain will be flat");
 
+// ---------- census village boundaries (Uttarakhand State GIS Portal) ---------
+// Nagla (CT), Phoolbag and Kalyanpur hold the campus, farms and airport: the closest
+// published approximation of the university estate. Reference only, not a legal boundary.
+const villages = [];
+const vbPath = path.join(RAW_DIR, "village_boundaries.json");
+if (fs.existsSync(vbPath)) {
+  for (const v of JSON.parse(fs.readFileSync(vbPath, "utf8")).villages) {
+    const clipped = v.rings.map((r) => clipRing(r.map(([lon, lat]) => proj(lat, lon)))).filter(Boolean);
+    if (!clipped.length) continue;
+    villages.push({ n: v.name, code: v.census2011_code, r: clipped.map(flat) });
+    const big = clipped.reduce((a, b) => (ringArea(b) > ringArea(a) ? b : a));
+    const c = centroid(big);
+    if (pointInRing(c, big)) out.labels.push({ n: v.name, k: "village", x: c[0], z: c[1] });
+  }
+  console.log("village boundaries:", villages.map((v) => v.n).join(", "));
+}
+
 // ---------- outputs ---------------------------------------------------------
 const data = {
   meta: {
@@ -787,6 +804,7 @@ const data = {
       { layer: "Points of interest", name: "OpenStreetMap + Overture Maps places", licence: "ODbL / CDLA-Permissive-2.0" },
       { layer: "Building heights", name: HT ? HT.source.replace(/ (.*)$/, "") : "estimated", licence: "CC BY 4.0 / ODbL" },
       { layer: "Terrain", name: "Copernicus DEM GLO-30 (ESA/EU)", licence: "Copernicus: free, full and open" },
+      ...(villages.length ? [{ layer: "Village boundaries", name: "Census 2011 villages via Bharat Maps (NIC), Uttarakhand State GIS Portal", licence: "Government of India, reference only" }] : []),
     ],
     units: "metres; x = east, z = south; y = up (relative to terrain.base)",
     bounds: {
@@ -802,6 +820,7 @@ const data = {
   trees: out.trees,
   places,
   areas: out.areas,
+  villages,
   roads: out.roads,
   lines: out.lines,
   points: out.points,

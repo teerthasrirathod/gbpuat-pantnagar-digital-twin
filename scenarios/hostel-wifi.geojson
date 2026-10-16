@@ -1,0 +1,3686 @@
+{
+ "type": "FeatureCollection",
+ "sandbox": {
+  "version": 1,
+  "tool": "Pantnagar Sandbox",
+  "title": "Wi-Fi in every hostel room",
+  "theme": "Robust Wi-Fi in Hostels",
+  "team": "",
+  "members": "",
+  "mentor": "",
+  "problem": "Hostel rooms need dependable Wi-Fi for coursework, online classes and exams. Signal inside concrete hostels drops quickly through walls and floor slabs, so a few access points per building leave many rooms with weak or no signal.",
+  "objectives": "Good signal (-67 dBm or better) in at least 95% of the floor area of every hostel, on every floor.\nA bill of quantities and running cost the University can budget for.",
+  "outcomes": "",
+  "sustainability": "Access points report to one campus controller run by the computer centre; the running cost covers power and yearly maintenance.",
+  "wifi_targets": [
+   "hostel"
+  ],
+  "wifi_buildings": [],
+  "costs": {},
+  "assumptions": {},
+  "summary": "Access points on every floor of the 16 mapped hostels, placed by the Sandbox for good signal (-67 dBm).",
+  "implementation": "1. Walk each hostel with a phone Wi-Fi analyser to record today's signal and check the model.\n2. Confirm access point positions room by room; adjust for corridors and stairwells.\n3. Lay PoE cabling floor by floor, mount the access points, connect them to the campus controller.\n4. Re-survey and fine-tune power and channels."
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "id": "i1",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4749923,
+     29.0235677
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i2",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4749307,
+     29.0236219
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i3",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.474869,
+     29.0234591
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i4",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4941236,
+     29.0216842
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i5",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4942325,
+     29.0221637
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i6",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4945591,
+     29.0216842
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i7",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4941236,
+     29.0213006
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i8",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4944502,
+     29.0219719
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i9",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4942325,
+     29.021876
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i10",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.494668,
+     29.0220678
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i11",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4939058,
+     29.0215883
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i12",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4941236,
+     29.0216842
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i13",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4944502,
+     29.0216842
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i14",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4942325,
+     29.0214924
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i15",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.494668,
+     29.021876
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i16",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4944502,
+     29.0213965
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i17",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4944502,
+     29.0221637
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i18",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4944502,
+     29.0216842
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i19",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4942325,
+     29.0220678
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i20",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4941236,
+     29.0213006
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i21",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4942325,
+     29.0222595
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i22",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.494668,
+     29.021876
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i23",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.494668,
+     29.0221637
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i24",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4940147,
+     29.0215883
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i25",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4929566,
+     29.0198577
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i26",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4929566,
+     29.0200811
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i27",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4932103,
+     29.020007
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i28",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4929566,
+     29.0197835
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i29",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4932103,
+     29.0197084
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i30",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4932103,
+     29.020007
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i31",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4929566,
+     29.0201553
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i32",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4937661,
+     29.0200694
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i33",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4938688,
+     29.0203408
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i34",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4936633,
+     29.019798
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i35",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.494177,
+     29.0200694
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i36",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.494177,
+     29.0203408
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i37",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4939715,
+     29.0206122
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i38",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.494177,
+     29.019798
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i39",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4935606,
+     29.0196171
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i40",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4940743,
+     29.0196171
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i41",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4940743,
+     29.0200694
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i42",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4937661,
+     29.0200694
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i43",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4939715,
+     29.0205217
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i44",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.497037,
+     29.0215051
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i45",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.497037,
+     29.0215051
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i46",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4939366,
+     29.0235532
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i47",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4942376,
+     29.0235532
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i48",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4944379,
+     29.0236418
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i49",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4941369,
+     29.0232881
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i50",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4945386,
+     29.0234645
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i51",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4943383,
+     29.0233759
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i52",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4939366,
+     29.0235532
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i53",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4939366,
+     29.0235532
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i54",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4944379,
+     29.0237296
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i55",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4942376,
+     29.0236418
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i56",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4940362,
+     29.0233759
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i57",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4945386,
+     29.0233759
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i58",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4943383,
+     29.0238183
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i59",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4942376,
+     29.0237296
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i60",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4940362,
+     29.0234645
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i61",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4942376,
+     29.0234645
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i62",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4941369,
+     29.0231995
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i63",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4937229,
+     29.0247989
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i64",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4934343,
+     29.0247139
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i65",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4939161,
+     29.024883
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i66",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4934343,
+     29.0249681
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i67",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4940116,
+     29.0246288
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i68",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4938195,
+     29.0245447
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i69",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4939161,
+     29.0250531
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i70",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4937229,
+     29.0249681
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i71",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4934343,
+     29.0247139
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i72",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4934343,
+     29.0249681
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i73",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4935308,
+     29.0246288
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i74",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4938195,
+     29.0251372
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i75",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4822316,
+     29.0245745
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i76",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.482056,
+     29.024343
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i77",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4824946,
+     29.0244976
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i78",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4821433,
+     29.0246523
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 3,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i79",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4821433,
+     29.024343
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 3,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i80",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4822316,
+     29.0245745
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i81",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4822316,
+     29.0242652
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i82",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4819676,
+     29.0244198
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i83",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.482056,
+     29.0246523
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i84",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4824073,
+     29.0244976
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i85",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4822316,
+     29.0245745
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 3,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i86",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4818803,
+     29.0244198
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i87",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4814622,
+     29.024731
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i88",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4816677,
+     29.0245501
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i89",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4818731,
+     29.024912
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i90",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4815649,
+     29.0242787
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i91",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4815649,
+     29.024912
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i92",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.481154,
+     29.0245501
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i93",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4813595,
+     29.0244597
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i94",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4817704,
+     29.024731
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i95",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4812567,
+     29.024731
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i96",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4812567,
+     29.0242787
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i97",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4816677,
+     29.0250929
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i98",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4810513,
+     29.0243692
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i99",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4814622,
+     29.0241883
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i100",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.476599,
+     29.0243149
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i101",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.476676,
+     29.0241114
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i102",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.476676,
+     29.0243837
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 3,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i103",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.476676,
+     29.0242471
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i104",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.476676,
+     29.0245194
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i105",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.476676,
+     29.0239748
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i106",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.476676,
+     29.0241114
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 3,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i107",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.476676,
+     29.0245872
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i108",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4831613,
+     29.0257497
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i109",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4835558,
+     29.0257497
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i110",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.48326,
+     29.0254023
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i111",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4833586,
+     29.025576
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i112",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4830617,
+     29.025576
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i113",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.48326,
+     29.0258374
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i114",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4834572,
+     29.025576
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i115",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4836555,
+     29.0258374
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i116",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.48326,
+     29.0257497
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i117",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4830617,
+     29.0256628
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i118",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4824854,
+     29.0261966
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i119",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4826908,
+     29.0260157
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i120",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4824854,
+     29.0257443
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i121",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.482999,
+     29.026287
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i122",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4826908,
+     29.0265584
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i123",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4827936,
+     29.0263775
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i124",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4824854,
+     29.0263775
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i125",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4823827,
+     29.0260157
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i126",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4828963,
+     29.0261966
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i127",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4825881,
+     29.0261966
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i128",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4824854,
+     29.0257443
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i129",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4828963,
+     29.026468
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i130",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4831018,
+     29.0263775
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i131",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4827936,
+     29.0266489
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i132",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4838763,
+     29.0271248
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i133",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4840304,
+     29.0269891
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i134",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4841845,
+     29.0272604
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i135",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4843376,
+     29.0269891
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i136",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4835692,
+     29.0271248
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i137",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4837233,
+     29.0268543
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i138",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4846458,
+     29.0268543
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i139",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4840304,
+     29.0273952
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i140",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4844917,
+     29.0265829
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i141",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4846458,
+     29.0263124
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i142",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4837233,
+     29.0272604
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i143",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4838763,
+     29.0268543
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i144",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4841845,
+     29.0264481
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i145",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4843376,
+     29.0269891
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i146",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4840304,
+     29.0268543
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i147",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4843376,
+     29.0261767
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i148",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4846458,
+     29.0268543
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i149",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4847988,
+     29.0267186
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i150",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4843376,
+     29.0275309
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i151",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4847988,
+     29.0264481
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i152",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4841845,
+     29.0272604
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i153",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4844917,
+     29.0263124
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i154",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4835692,
+     29.0271248
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i155",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4844917,
+     29.0265829
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i156",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4847988,
+     29.0264481
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i157",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4841845,
+     29.0271248
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i158",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4841845,
+     29.0271248
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i159",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4844917,
+     29.0271248
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i160",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4854512,
+     29.0262074
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i161",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4853782,
+     29.0265928
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i162",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4853782,
+     29.0264001
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i163",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4854512,
+     29.0261432
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i164",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4854512,
+     29.0261432
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i165",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4853053,
+     29.026657
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i166",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4854512,
+     29.0263359
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i167",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4854512,
+     29.0262717
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i168",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4905167,
+     29.0266824
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i169",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4902969,
+     29.026392
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i170",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4904068,
+     29.0265856
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i171",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4902969,
+     29.026392
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i172",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4905167,
+     29.0267792
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i173",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4905167,
+     29.026876
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i174",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4902969,
+     29.026392
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i175",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4906267,
+     29.0264888
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i176",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4902969,
+     29.0267792
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i177",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4907366,
+     29.0267792
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i178",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.490187,
+     29.0265856
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i179",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4905167,
+     29.026392
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i180",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4904068,
+     29.0269728
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i181",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4907366,
+     29.0267792
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i182",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4905167,
+     29.0261984
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i183",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4911249,
+     29.0274549
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  }
+ ]
+}

@@ -1,0 +1,6706 @@
+{
+ "type": "FeatureCollection",
+ "sandbox": {
+  "version": 1,
+  "tool": "Pantnagar Sandbox",
+  "title": "Light the campus core",
+  "theme": "Strengthening Campus Lighting",
+  "team": "",
+  "members": "",
+  "mentor": "",
+  "problem": "Many campus streets between hostels, colleges and the library are dark after sunset, which makes walking back from labs and the library unsafe.",
+  "objectives": "Bring the streets of the campus core up to IS 1944 lighting levels (8 lux on campus streets, 15 lux on main roads) with even light and no dark gaps.",
+  "outcomes": "",
+  "sustainability": "LED lights use about half the power of the sodium lamps they replace; solar units on a quarter of the poles keep part of the network lit during power cuts.",
+  "wifi_targets": [
+   "hostel"
+  ],
+  "wifi_buildings": [],
+  "costs": {},
+  "assumptions": {},
+  "summary": "LED street lights every 30 m on the streets within 600 m of the library, a quarter of them solar.",
+  "implementation": "1. Night survey with a lux meter along the chosen streets to record today's levels and the poles that already exist (map them as existing).\n2. Fix spacing and pole positions on site; avoid gates and tree crowns.\n3. Install poles and LED fittings street by street, with timers or dusk sensors.\n4. Measure again and compare with the plan."
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "id": "i1",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4945208,
+     29.0251498
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i2",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4942383,
+     29.0252794
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i3",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4939197,
+     29.0252654
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i4",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4936355,
+     29.025393
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i5",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.493317,
+     29.0253789
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i6",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4930328,
+     29.0255065
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i7",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4927148,
+     29.0254988
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i8",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4924344,
+     29.0256326
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i9",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4921155,
+     29.0256257
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i10",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4918351,
+     29.0257596
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i11",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4915162,
+     29.0257527
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i12",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4912358,
+     29.0258865
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i13",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.490917,
+     29.0258796
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i14",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4906365,
+     29.0260135
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i15",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4903177,
+     29.0260066
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i16",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4900373,
+     29.0261405
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i17",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4897184,
+     29.0261336
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i18",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4894406,
+     29.0262719
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i19",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4891216,
+     29.0262734
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i20",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4888458,
+     29.0264144
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i21",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4885268,
+     29.0264158
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i22",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4882485,
+     29.0265525
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i23",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4879297,
+     29.0265458
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i24",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4876494,
+     29.0266799
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i25",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4873305,
+     29.0266733
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i26",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4870504,
+     29.0268077
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i27",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.486731,
+     29.0268032
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i28",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4864547,
+     29.0269435
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i29",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4861357,
+     29.0269441
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i30",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4858594,
+     29.0270844
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i31",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4855405,
+     29.0270849
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i32",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4852642,
+     29.0272252
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i33",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.492857,
+     29.019415
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i34",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4926095,
+     29.0195963
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i35",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4922897,
+     29.0196268
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i36",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4920417,
+     29.0198074
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i37",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4917218,
+     29.0198379
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i38",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4914753,
+     29.0200202
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i39",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4911559,
+     29.0200544
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i40",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4909106,
+     29.0202377
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i41",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4905912,
+     29.0202719
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i42",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4903459,
+     29.0204552
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i43",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4900267,
+     29.0204942
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i44",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4897869,
+     29.0206854
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i45",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4894668,
+     29.0207142
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i46",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4892176,
+     29.0208933
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i47",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4888975,
+     29.0209221
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i48",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4886482,
+     29.0211012
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i49",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4883281,
+     29.0211299
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i50",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4880704,
+     29.0213038
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i51",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4877864,
+     29.0212133
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i52",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4875219,
+     29.0210783
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i53",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4872736,
+     29.0209433
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i54",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4870011,
+     29.0210965
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i55",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4866891,
+     29.0211968
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i56",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4867774,
+     29.0216893
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i57",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4865549,
+     29.0218764
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i58",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4862346,
+     29.0219034
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i59",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4859848,
+     29.0220824
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i60",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4856647,
+     29.0221108
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i61",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4854152,
+     29.0222897
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i62",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4850951,
+     29.0223182
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i63",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4848459,
+     29.0224972
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i64",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.484526,
+     29.0225273
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i65",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4842777,
+     29.0227075
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i66",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4839578,
+     29.0227376
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i67",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4837095,
+     29.0229178
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i68",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4833895,
+     29.0229479
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i69",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4831412,
+     29.0231281
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i70",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4828213,
+     29.0231582
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i71",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4869862,
+     29.0237533
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i72",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4869836,
+     29.0240342
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i73",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4871416,
+     29.0242783
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i74",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.487096,
+     29.0245479
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i75",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4871389,
+     29.0248263
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i76",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4870188,
+     29.0250865
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i77",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4870617,
+     29.0253648
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i78",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4869416,
+     29.025625
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i79",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4869845,
+     29.0259033
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i80",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4868643,
+     29.0261635
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i81",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4869071,
+     29.0264418
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i82",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4868309,
+     29.0269802
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i83",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4867123,
+     29.027241
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i84",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4867568,
+     29.0275191
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i85",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4866382,
+     29.0277798
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i86",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4866827,
+     29.0280579
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i87",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4865641,
+     29.0283187
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i88",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4850273,
+     29.0228291
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i89",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4852403,
+     29.0230377
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i90",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4853113,
+     29.0233114
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i91",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4855247,
+     29.0235144
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i92",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.485643,
+     29.0237775
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i93",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4859213,
+     29.023907
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i94",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4861332,
+     29.0241198
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i95",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4864421,
+     29.0241895
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i96",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4866803,
+     29.0243753
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i97",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4869967,
+     29.0243881
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i98",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4872904,
+     29.0244975
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i99",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4876045,
+     29.0244486
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i100",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4879124,
+     29.0245006
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i101",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4882064,
+     29.0243916
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i102",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4885203,
+     29.024391
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i103",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4887733,
+     29.0242267
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i104",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4890809,
+     29.0241525
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i105",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4892835,
+     29.0239342
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i106",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4895788,
+     29.0238149
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i107",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4897204,
+     29.0235632
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i108",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4899717,
+     29.0233887
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i109",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4900474,
+     29.023116
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i110",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4902316,
+     29.0228907
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i111",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4902318,
+     29.0226098
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i112",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4903414,
+     29.0223521
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i113",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4902663,
+     29.0220802
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i114",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.490322,
+     29.0218017
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i115",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4901716,
+     29.0215557
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i116",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4901587,
+     29.021275
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i117",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4899756,
+     29.021045
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i118",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4899327,
+     29.0207668
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i119",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4882257,
+     29.0218377
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i120",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4885411,
+     29.0217964
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i121",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4887914,
+     29.0216222
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i122",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4891068,
+     29.0215808
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i123",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4893569,
+     29.0214065
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i124",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4896725,
+     29.0213653
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i125",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4899229,
+     29.0211912
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i126",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4870814,
+     29.0223257
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i127",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4867663,
+     29.0223692
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i128",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4865176,
+     29.022545
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i129",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4862013,
+     29.0225848
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i130",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4859498,
+     29.0227575
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i131",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.485634,
+     29.022797
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i132",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4853825,
+     29.0229697
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i133",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4866014,
+     29.0229122
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i134",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4867781,
+     29.0231451
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i135",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4864752,
+     29.0236068
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i136",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4861642,
+     29.023669
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i137",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4856563,
+     29.0239857
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i138",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.485531,
+     29.024244
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i139",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4852763,
+     29.024413
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i140",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4851552,
+     29.0246731
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i141",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4849048,
+     29.0248471
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i142",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4847861,
+     29.0251078
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i143",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4845357,
+     29.0252818
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i144",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4844169,
+     29.0255425
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i145",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4841666,
+     29.0257165
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i146",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4840479,
+     29.0259772
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i147",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4837975,
+     29.0261513
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i148",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4902395,
+     29.0237167
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i149",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4905385,
+     29.0238145
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i150",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4907425,
+     29.0240304
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i151",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4910415,
+     29.0241282
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i152",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4912454,
+     29.0243442
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i153",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4915413,
+     29.024448
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i154",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.491736,
+     29.0246705
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i155",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4920307,
+     29.024778
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i156",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4922252,
+     29.0250006
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i157",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4925196,
+     29.0251086
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i158",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4927139,
+     29.0253314
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i159",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4932007,
+     29.0256638
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i160",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.493494,
+     29.0257741
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i161",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.493686,
+     29.0259984
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i162",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.494911,
+     29.024028
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i163",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4948874,
+     29.0243054
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i164",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4947054,
+     29.0245357
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i165",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4946715,
+     29.0248167
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i166",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4944039,
+     29.0253109
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i167",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4941678,
+     29.0254997
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i168",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4940699,
+     29.0257671
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i169",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4938338,
+     29.0259559
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i170",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4937161,
+     29.0262152
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i171",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4934599,
+     29.0263825
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i172",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4933324,
+     29.02664
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i173",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4930646,
+     29.0267935
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i174",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4928986,
+     29.0270356
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i175",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4926063,
+     29.0271481
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i176",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4924244,
+     29.0273794
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i177",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4921349,
+     29.027493
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i178",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4919279,
+     29.0277067
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i179",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4916276,
+     29.0278013
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i180",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4914077,
+     29.0280018
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i181",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.491099,
+     29.0280665
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i182",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4908519,
+     29.0282441
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i183",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4905372,
+     29.02829
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i184",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4902905,
+     29.0284681
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i185",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4899684,
+     29.0284832
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i186",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4896943,
+     29.028626
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i187",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4893763,
+     29.0286235
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i188",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4890933,
+     29.0287531
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i189",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4887769,
+     29.0287337
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i190",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4884817,
+     29.0288401
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i191",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.488169,
+     29.0287982
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i192",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4904922,
+     29.0279016
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i193",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.490295,
+     29.0276808
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i194",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4902489,
+     29.0274029
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i195",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4900517,
+     29.0271821
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i196",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4900055,
+     29.0269042
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i197",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4898084,
+     29.0266834
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i198",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4897622,
+     29.0264055
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i199",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.489565,
+     29.0261848
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i200",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4895182,
+     29.025907
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i201",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4893205,
+     29.0256866
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i202",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4892736,
+     29.0254088
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i203",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4890759,
+     29.0251884
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i204",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4890291,
+     29.0249105
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i205",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4888314,
+     29.0246901
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i206",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4887845,
+     29.0244123
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i207",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4904695,
+     29.0221661
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i208",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4907692,
+     29.0222589
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i209",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4910852,
+     29.0222205
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i210",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.491381,
+     29.0223254
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i211",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.491697,
+     29.0222867
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i212",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4919928,
+     29.0223916
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i213",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4923087,
+     29.0223529
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i214",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4926045,
+     29.022458
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i215",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4929208,
+     29.0224172
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i216",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4932165,
+     29.0225224
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i217",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4935325,
+     29.0224838
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i218",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4938283,
+     29.022589
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i219",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4941442,
+     29.0225505
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i220",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.49444,
+     29.0226556
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i221",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4947559,
+     29.0226171
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i222",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4900871,
+     29.0191182
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i223",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4901647,
+     29.0188458
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i224",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4900779,
+     29.0185755
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i225",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4901555,
+     29.0183031
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i226",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4852639,
+     29.0193376
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i227",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4855726,
+     29.0192668
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i228",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4858803,
+     29.0193407
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i229",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4861884,
+     29.0192674
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i230",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4864972,
+     29.0193379
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i231",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4868048,
+     29.0192636
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i232",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4871135,
+     29.019334
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i233",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4874211,
+     29.0192597
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i234",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4877303,
+     29.0193285
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i235",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.488037,
+     29.0192511
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i236",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4883466,
+     29.0193185
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i237",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4886532,
+     29.0192411
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i238",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4889629,
+     29.0193085
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i239",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4892695,
+     29.0192312
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i240",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4895791,
+     29.0192985
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i241",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4898858,
+     29.0192212
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i242",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4900901,
+     29.0193103
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i243",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4901754,
+     29.0195809
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i244",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4900964,
+     29.019853
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i245",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4901817,
+     29.0201237
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i246",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4871185,
+     29.0234491
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i247",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4868764,
+     29.0235989
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i248",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4866479,
+     29.0233076
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i249",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4878924,
+     29.0213697
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i250",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4879365,
+     29.0216481
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i251",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4879899,
+     29.0221273
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i252",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4877963,
+     29.0223399
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i253",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4874837,
+     29.022316
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i254",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4871274,
+     29.0219767
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i255",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4869306,
+     29.0217559
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i256",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4851438,
+     29.0233517
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i257",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4850924,
+     29.0236079
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i258",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.484863,
+     29.0237845
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i259",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4846655,
+     29.0235827
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i260",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4846529,
+     29.0233215
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i261",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4849507,
+     29.0233144
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i262",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4851499,
+     29.0243309
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i263",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4852186,
+     29.0274738
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i264",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4939649,
+     29.0260978
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i265",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4930413,
+     29.0270559
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i266",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4932081,
+     29.0272941
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i267",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.490732,
+     29.028402
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i268",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4890053,
+     29.0289086
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i269",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4896005,
+     29.0287812
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i270",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.490191,
+     29.0286339
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i271",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4875207,
+     29.0235838
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i272",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4878234,
+     29.0235166
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i273",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4881413,
+     29.0235397
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i274",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4884017,
+     29.0233739
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i275",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.488721,
+     29.0233083
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i276",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4888793,
+     29.0230645
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i277",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4891544,
+     29.0229224
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i278",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4898102,
+     29.0232818
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i279",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4896424,
+     29.0230468
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i280",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4893825,
+     29.0228839
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i281",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4892664,
+     29.022625
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i282",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4889683,
+     29.0223058
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i283",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4889171,
+     29.02203
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i284",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4888542,
+     29.0218003
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i285",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4885589,
+     29.0224001
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i286",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4883489,
+     29.0222502
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i287",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4884946,
+     29.0220482
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i288",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4884293,
+     29.0235558
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i289",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4884552,
+     29.0238358
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i290",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4886359,
+     29.0240673
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i291",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4892166,
+     29.0223471
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i292",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4895348,
+     29.0223534
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i293",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4898129,
+     29.0222159
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i294",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4901331,
+     29.02225
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i295",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4905228,
+     29.0217017
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i296",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4904326,
+     29.0214515
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i297",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4905717,
+     29.021226
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i298",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4908099,
+     29.0213771
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i299",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4908518,
+     29.0216386
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i300",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4906383,
+     29.0220797
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i301",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4907046,
+     29.021805
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i302",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4939479,
+     29.0208801
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i303",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.494248,
+     29.0209417
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i304",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4862688,
+     29.0248847
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i305",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4860761,
+     29.0246999
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i306",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4861321,
+     29.0244462
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i307",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4863915,
+     29.0245531
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i308",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4864527,
+     29.0248014
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i309",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4863534,
+     29.0243315
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i310",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4859238,
+     29.024767
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i311",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4856806,
+     29.0245841
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i312",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4853688,
+     29.0245246
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i313",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4877413,
+     29.0246239
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i314",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4876928,
+     29.0249043
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i315",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4878956,
+     29.0250597
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i316",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4882254,
+     29.0250815
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i317",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4882376,
+     29.0248173
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i318",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4882857,
+     29.0245396
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i319",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.488893,
+     29.0250783
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i320",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4885768,
+     29.0250414
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i321",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4892443,
+     29.0241794
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i322",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4893785,
+     29.0244381
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i323",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4896803,
+     29.0244403
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i324",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4899332,
+     29.0243165
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i325",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4897924,
+     29.0240738
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i326",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4894221,
+     29.0247924
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i327",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4895933,
+     29.0245546
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i328",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4908658,
+     29.0223744
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i329",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4906907,
+     29.0226092
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i330",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4906714,
+     29.0228895
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i331",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4904964,
+     29.0231243
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i332",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4902387,
+     29.0230987
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "solar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i333",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4908302,
+     29.0227815
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i334",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4909804,
+     29.0226205
+    ]
+   },
+   "properties": {
+    "kind": "street_light",
+    "status": "proposed",
+    "name": "",
+    "lumens": 9000,
+    "watts": 70,
+    "height": 8,
+    "supply": "grid"
+   }
+  }
+ ]
+}

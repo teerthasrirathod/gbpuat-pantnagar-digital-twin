@@ -68,8 +68,8 @@
     track: [0xb09a73, 1.65], path: [0xcbb994, 1.62], footway: [0xcbb994, 1.62],
     cycleway: [0xcbb994, 1.62], steps: [0xcbb994, 1.62], bridleway: [0xb09a73, 1.62],
   };
-  const LABEL_RANGE = { college: 4500, bld: 900, poi: 2000, campus: 3200, sport: 2600, grass: 2600, farm: 4500, water: 4500 };
-  const LABEL_PRIORITY = { college: 0, poi: 1, campus: 2, farm: 2, bld: 3 };
+  const LABEL_RANGE = { college: 4500, bld: 900, poi: 2000, campus: 3200, sport: 2600, grass: 2600, farm: 4500, water: 4500, village: 9000 };
+  const LABEL_PRIORITY = { college: 0, poi: 1, campus: 2, farm: 2, village: 2, bld: 3 };
   const LANDCOVER_NAMES = {
     "4d7c42": "Tree cover", "a4b46c": "Shrubland", "a9cf88": "Grassland", "d6c47c": "Cropland",
     "c8c3ba": "Built-up", "d9ceb1": "Bare ground", "3d7fb3": "Water", "7fb0a0": "Wetland",
@@ -394,6 +394,24 @@
       const g = new THREE.BufferGeometry();
       g.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
       groups.outline.add(new THREE.LineSegments(g, new THREE.LineBasicMaterial({ color: 0xffd400 })));
+    }
+    // Census village boundaries (university estate villages and neighbours), dashed.
+    const vpts = [];
+    for (const v of D.villages || []) {
+      for (const ring of v.r) {
+        const P = densify(ring, 40);
+        for (let i = 0; i < P.length; i++) {
+          const p = P[i], q = P[(i + 1) % P.length];
+          vpts.push(p[0], H(p[0], p[1]) + 3.5, p[1], q[0], H(q[0], q[1]) + 3.5, q[1]);
+        }
+      }
+    }
+    if (vpts.length) {
+      const g = new THREE.BufferGeometry();
+      g.setAttribute("position", new THREE.Float32BufferAttribute(vpts, 3));
+      const lines = new THREE.LineSegments(g, new THREE.LineDashedMaterial({ color: 0xff7a3d, dashSize: 45, gapSize: 25 }));
+      lines.computeLineDistances();
+      groups.outline.add(lines);
     }
   }
   const matRoads = new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide });

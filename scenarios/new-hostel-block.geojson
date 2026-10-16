@@ -1,0 +1,275 @@
+{
+ "type": "FeatureCollection",
+ "sandbox": {
+  "version": 1,
+  "tool": "Pantnagar Sandbox",
+  "title": "A new 4-storey hostel block",
+  "theme": "Other",
+  "team": "",
+  "members": "",
+  "mentor": "",
+  "problem": "Hostel demand grows with every new batch; new blocks must fit between existing buildings, trees and roads, connect to the network and be fully serviced from day one.",
+  "objectives": "Site a 4-storey hostel without removing buildings and with as few trees lost as possible.\nConnect it to the road network with a lit footpath.\nGive every floor good Wi-Fi and put its roof to work.",
+  "outcomes": "",
+  "sustainability": "Rooftop solar offsets part of the block's electricity; harvested rain recharges groundwater.",
+  "wifi_targets": [],
+  "wifi_buildings": [
+   [
+    79.4849735,
+    29.025566
+   ]
+  ],
+  "costs": {},
+  "assumptions": {},
+  "summary": "A 60 x 16 m hostel for about 320 students on open land by the hostel cluster, with a lit footpath, Wi-Fi on every floor, rooftop solar and rainwater harvesting."
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "id": "i1",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       79.4846653,
+       29.0256384
+      ],
+      [
+       79.4852817,
+       29.0256384
+      ],
+      [
+       79.4852817,
+       29.0254937
+      ],
+      [
+       79.4846653,
+       29.0254937
+      ],
+      [
+       79.4846653,
+       29.0256384
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "kind": "building",
+    "status": "proposed",
+    "name": "New hostel block",
+    "type": "hostel",
+    "floors": 4
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i2",
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      79.4849735,
+      29.0254937
+     ],
+     [
+      79.4846349,
+      29.0252707
+     ]
+    ]
+   },
+   "properties": {
+    "kind": "road",
+    "status": "proposed",
+    "name": "Hostel footpath",
+    "type": "footpath",
+    "lights": "25"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i3",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4850351,
+     29.0254756
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": ""
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i4",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4849118,
+     29.0254756
+    ]
+   },
+   "properties": {
+    "kind": "water_point",
+    "status": "proposed",
+    "name": ""
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i5",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4848194,
+     29.025566
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: new hostel"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i6",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4851276,
+     29.025566
+    ]
+   },
+   "properties": {
+    "kind": "solar_roof",
+    "status": "proposed",
+    "name": "Solar: new hostel",
+    "share": 60
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i7",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4848882,
+     29.0255543
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 1,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i8",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.485143,
+     29.0255543
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i9",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4848245,
+     29.0255543
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 3,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i10",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.485143,
+     29.0256104
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i11",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4846971,
+     29.0256104
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 0,
+    "pole": 6
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i12",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4852704,
+     29.0255543
+    ]
+   },
+   "properties": {
+    "kind": "wifi_ap",
+    "status": "proposed",
+    "name": "",
+    "band": "5",
+    "power": 20,
+    "floor": 2,
+    "pole": 6
+   }
+  }
+ ]
+}

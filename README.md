@@ -11,6 +11,106 @@ A lightweight, browser-based 3D digital twin of the **G.B. Pant University of Ag
 1. Download **`GBPUAT-Pantnagar-Digital-Twin.html`** from the [latest release](https://github.com/teerthasrirathod/gbpuat-pantnagar-digital-twin/releases/latest) (about 5 MB).
 2. Double-click it. It opens in your browser (Chrome, Edge, Firefox or Brave) and works offline. There is nothing to install.
 
+## Pantnagar Sandbox: try changes before spending (new in v2.0)
+
+Press **Plan** in the campus twin to change Pantnagar on its digital twin, see what works and what does not, and only then put a budget on it.
+
+- **Design**: draw buildings, roads, paths and areas; change or demolish buildings; tag or remove trees; place Wi-Fi, street lights, cameras, bicycle docks, bins, water points, vending machines, rooftop solar and more. Create your own item types and categories.
+- **Simulate** any combination of categories: Wi-Fi signal floor by floor (with automatic access-point placement), street lighting against IS 1944 (with a night view), walking access to amenities, routes, trees, solar, rainwater and runoff, and conflict checks.
+- **What works**: every result against an editable target, with ✓ or ✗, including staying within the budget.
+- **Budget**: quantities from the map, editable rates and upkeep, extra cost lines, contingency, taxes, a budget limit, running cost.
+- **Scenarios**: keep several, duplicate and compare them; print a report; share as a GeoJSON file or a link.
+
+The engine is Rust (`twin/sim`), compiled to WebAssembly for the page and also run as `twin sim <scenario.geojson>`. It works offline. Six sample scenarios live in [`scenarios/`](scenarios/README.md).
+
+Guides:
+- [docs/sandbox.md](docs/sandbox.md): how to use it, the models and their limits
+- [docs/plan-format.md](docs/plan-format.md): the scenario file format
+- [docs/add-value-proposal.md](docs/add-value-proposal.md): the ADD VALUE 2026 proposal for this project, with the roadmap to live traffic simulation
+- [CONTRIBUTING.md](CONTRIBUTING.md): how to add scenarios, corrections and code
+
+## Campus street-level twin (new, Rust + Three.js)
+
+`GBPUAT-Campus-3D.html` is a second, detailed model of the campus itself: the census villages **Nagla (CT)** and **Phoolbag** (campus core, hostels, staff colonies, west campus and the airport, about 47 km²). It opens the same way (double-click, offline).
+
+- **Every building, one by one.** OSM buildings, Google and Microsoft footprints, plus buildings that appear only in Google's 2023 building-presence raster. Each is modelled from its own footprint: walls with window bays per floor (floors from measured height), parapets, stair cabins and rooftop water tanks on flat roofs, gable roofs on sheds, and courtyards.
+- **Building types.** Academic, hostel, staff quarters, houses, offices, health, school, shops, religious, sports, farm sheds, workshops. Each type is taken from OSM tags or names, from places inside the building, from land use, or estimated from size and shape. The card always says which.
+- **Blocks.** The campus is split into blocks bounded by roads, the railway, the runway and mapped waterways. Each block lists:
+  - its buildings by type
+  - its footprint and floor area
+  - its tree count and ground cover (built, trees, water, crops, bare)
+  - road length by class
+  - waterway length
+
+  It also shows a satellite snapshot with every building outlined in its type colour.
+- **Street view.** Press **Street view** (or `V`) and click a road. `↑`/`↓` move along the road network. At junctions, pick an arrow or use `←`/`→`. Drag to look around. **Free walk** lets you roam anywhere with `WASD` (buildings block you), and **Drive** moves at road speed, keeping left. A minimap shows where you are. On phones, pinch to zoom and press and hold the arrows to walk. Links such as `#view=x,z,distance,heading,tilt` or `#street=x,z,heading` open a specific spot.
+- **Waterways.** OpenStreetMap has almost no canals or drains here (22 ponds and 1 stream). The twin adds open water detected in Sentinel-2 (MNDWI) and *modelled* drainage lines from the terrain (shown separately and labelled as modelled).
+
+**What the campus model contains** (Nagla + Phoolbag window, built 2026-10-15)
+
+| Item | Count / detail |
+| --- | --- |
+| Buildings | 10,845 in the window, 7,413 inside the two campus villages |
+| ... by footprint source | OSM 57 · Google 7,424 · Microsoft 1,615 · found only in Google's 2023 presence raster 1,749 (mostly outside the earlier Overture extract) |
+| ... with a measured height | 4,927 (Google 2.5D); the rest are tagged or estimated from size |
+| Campus buildings by type | houses 3,484 · staff quarters 2,158 · farm sheds 737 · workshops/stores 233 · institutional 203 · academic 41 · schools 49 · shops 21 · hostels 16 · offices 9 · unclassified 452 |
+| Roads inside the campus villages | 212 km: tracks 52, unclassified 58, residential 30, trunk 12.5, service 11.5, secondary 9, tertiary 8, paths 13.5, others |
+| Street-view road graph | 5,550 nodes, 5,981 links |
+| Water | 28 OSM ponds and tanks + 14 found in Sentinel-2; 5.4 km of mapped stream; 53 km of *modelled* drainage lines |
+| Trees | 44,164 crowns with heights (Meta/WRI canopy, 2 m) |
+| Blocks | 252: housing 111, fields/farm 70, mixed 27, wooded 22, open 14, academic/institutional 7, airport 1 |
+| Terrain check | within 1 m of the AAI-surveyed runway thresholds and reference point |
+
+Performance on the Intel UHD Graphics 600 at 1x (1024 x 768, best of three):
+- whole campus 10.1 ms
+- campus core 7.3 ms
+- close aerial 8.7 ms
+- street view 7.2 ms
+
+Unlit ground and baked face lighting keep the cost of each pixel down. Detailed building and tree models are built only near the camera.
+
+### The Rust pipeline (`twin/`)
+
+All campus data is fetched and processed by a single Rust tool. It reads only the campus window from public cloud-optimised GeoTIFFs over HTTP range requests and caches what it downloads.
+
+```bash
+cd twin && cargo build --release
+```
+
+```bash
+./twin/target/release/twin fetch all
+```
+
+```bash
+./twin/target/release/twin build
+```
+
+```bash
+./twin/target/release/twin sim-pack
+```
+
+```bash
+./twin/target/release/twin bundle
+```
+
+| Step | Source | Output |
+| --- | --- | --- |
+| `fetch osm` | OpenStreetMap (Overpass) | `data/campus/osm.json` |
+| `fetch dem` | Copernicus DEM GLO-30 | terrain (30 m), corrected for trees and buildings |
+| `fetch s2` | Sentinel-2 L2A (Earth Search) | 3 m image, MNDWI water and NDVI greenness (10 m) |
+| `fetch canopy` | Meta + WRI canopy height | 2 m canopy, tree crowns |
+| `fetch heights` | Google Open Buildings 2.5D Temporal 2023 | 2 m building presence and height |
+| `build` | all of the above + Overture + census villages | `campus/data/campus-data.js`, `campus/data/campus-imagery.js` |
+| `sim-pack` | `twin/sim` engine (WebAssembly) + `scenarios/*.geojson` | `campus/js/sim-wasm.js`, `campus/data/scenarios.js` |
+| `bundle` | campus viewer | `GBPUAT-Campus-3D.html` |
+| `sim <scenario.geojson> [--json]` | a scenario file | today vs scenario summary (Markdown) or every number (JSON) |
+
+Windows notes:
+- The pipeline builds with the plain `x86_64-pc-windows-gnu` Rust toolchain (no Visual Studio).
+- It downloads through the `curl.exe` that ships with Windows.
+- `twin serve` is an optional development server.
+- `sim-pack` needs the WebAssembly target once: `rustup target add wasm32-unknown-unknown`.
+
 ## Using it
 
 - **Move:** drag to orbit (let go while moving to glide), right-drag or Shift-drag to pan, wheel to zoom toward the cursor, double-click to fly to a spot. Keys: arrows pan, `Q`/`E` rotate, `+`/`-` zoom, `R` resets, `/` searches, `?` shows help.
@@ -124,7 +224,19 @@ node tools/build_standalone.mjs
 
 | Path | What it is |
 | --- | --- |
-| `GBPUAT-Pantnagar-Digital-Twin.html` | Generated single-file version of everything below; just open it |
+| `GBPUAT-Campus-3D.html` | Generated single-file campus street-level twin; just open it |
+| `campus/` | Campus viewer: `index.html`, `js/campus.js` (buildings, street view, blocks), `data/*.js` from `twin build` |
+| `twin/` | Rust pipeline: fetch (COG range reads, Overpass), analysis (buildings, types, blocks, water, trees, road graph), bundle, dev server |
+| `twin/sim/` | Sandbox engine (Rust): scenario format, catalogue and rates, custom item types, Wi-Fi, lighting, access, routes, budget, green metrics |
+| `twin/sim-wasm/` | WebAssembly exports of the engine for the page |
+| `campus/js/plan.js` | Plan mode: scenarios, design tools, items in 3D, category simulation and targets, budget, item types, report, share links |
+| `scenarios/` | Sample scenarios (GeoJSON) |
+| `docs/` | Sandbox guide, scenario format, ADD VALUE proposal, research notes |
+| `.github/workflows/sandbox.yml` | Evaluates plans submitted by pull request |
+| `data/campus/osm.json` | OSM extract for the campus window (Overpass) |
+| `data/raw/village_boundaries.json` | Census 2011 village boundaries (Uttarakhand State GIS Portal) |
+| `data/raw/aai_vipt.json` | AAI eAIP Pantnagar airport data (runway, apron, navaids, 124 surveyed obstacles) |
+| `GBPUAT-Pantnagar-Digital-Twin.html` | Generated single-file version of the whole-area twin below; just open it |
 | `index.html` | Page shell: panel, map controls, info card, styles |
 | `js/viewer.js` | Scene build, camera, picking, search, labels, render loop |
 | `data/campus-data.js` | Generated: buildings, detected footprints, trees, areas, roads, places, labels, terrain |

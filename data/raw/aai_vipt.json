@@ -1,0 +1,1103 @@
+{
+ "source": "AIP India (eAIP), AD 2 VIPT - Pantnagar Airport, Airports Authority of India",
+ "url": "https://aim-india.aai.aero/eaip/eaip-v2-09-2026/index-en-GB.html",
+ "edition": "AMDT 09/2026, effective 01 OCT 2026 (charts: AMDT 07/2023, aeronautical data March 2023)",
+ "retrieved": "2026-10-15",
+ "note": "Not for navigation. Coordinates WGS-84; elevations EGM-08, converted from feet (1 ft = 0.3048 m).",
+ "arp": {
+  "lat": 29.032147,
+  "lon": 79.472469,
+  "elev_m": 235.3,
+  "note": "AD elevation 772 ft"
+ },
+ "runway": {
+  "designator": "10/28",
+  "length_m": 1372,
+  "width_m": 30,
+  "surface": "asphalt",
+  "pcn": "16/F/C/W/T",
+  "true_bearing_10": 98.45,
+  "thr10": {
+   "lat": 29.034394,
+   "lon": 79.465469,
+   "elev_m": 234.4
+  },
+  "thr28": {
+   "lat": 29.032575,
+   "lon": 79.479403,
+   "elev_m": 235.3
+  },
+  "strip_m": [
+   1492,
+   150
+  ],
+  "resa_m": [
+   90,
+   60
+  ],
+  "declared_m": {
+   "10": {
+    "tora": 1342,
+    "toda": 1342,
+    "asda": 1342,
+    "lda": 1342
+   },
+   "28": {
+    "tora": 1372,
+    "toda": 1372,
+    "asda": 1372,
+    "lda": 1372
+   }
+  }
+ },
+ "apron": {
+  "dims_m": [
+   90,
+   94
+  ],
+  "elev_m": 233.2,
+  "stands": [
+   {
+    "id": 1,
+    "lat": 29.031591,
+    "lon": 79.473862,
+    "aircraft": "ATR72 (code C)"
+   },
+   {
+    "id": 2,
+    "lat": 29.031726,
+    "lon": 79.473098,
+    "aircraft": "Q400 (code C)"
+   }
+  ]
+ },
+ "taxiway": {
+  "A": {
+   "width_m": 15,
+   "pcn": "29/F/C/W/T"
+  },
+  "holding_position": {
+   "lat": 29.032617,
+   "lon": 79.473696
+  }
+ },
+ "navaids": [
+  {
+   "type": "NDB",
+   "ident": "HW",
+   "freq": "400 kHz",
+   "lat": 29.031,
+   "lon": 79.473861
+  },
+  {
+   "type": "DME",
+   "ident": "PTN",
+   "channel": "CH59X",
+   "lat": 29.030972,
+   "lon": 79.473667,
+   "elev_m": 232.9
+  }
+ ],
+ "windsock": {
+  "lat": 29.031944,
+  "lon": 79.473889,
+  "note": "lighted, approx 50 m SW of ARP"
+ },
+ "expansion": {
+  "summary": "Runway extension 1,372 m to 3,000 m approved by Uttarakhand cabinet Aug 2023; about 804 acres needed, 524.78 acres transferred to AAI by Apr 2025 (from GBPUAT and Tarai Development Corporation land); AAI master plan prepared but not published; EPC works (new terminal, runway extension, apron, taxiways) L1 bidder PNC Infratech, Rs 302.44 crore, May 2026, 24 months."
+ },
+ "obstacles": [
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.034861,
+   "lon": 79.462167,
+   "elev_m": 243.8,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.03375,
+   "lon": 79.461917,
+   "elev_m": 243.8,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.034111,
+   "lon": 79.456472,
+   "elev_m": 256,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033528,
+   "lon": 79.460556,
+   "elev_m": 247.2,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.035306,
+   "lon": 79.46375,
+   "elev_m": 241.4,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.037944,
+   "lon": 79.454972,
+   "elev_m": 258.5,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.037583,
+   "lon": 79.456944,
+   "elev_m": 251.5,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.037833,
+   "lon": 79.452944,
+   "elev_m": 261.5,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033778,
+   "lon": 79.458583,
+   "elev_m": 247.5,
+   "lit": false
+  },
+  {
+   "type": "FENCE",
+   "note": "Airport Boundary Wall Fencing",
+   "lat": 29.034139,
+   "lon": 79.463833,
+   "elev_m": 236.5,
+   "lit": false
+  },
+  {
+   "type": "FENCE",
+   "note": "Airport Boundary Wall Fencing",
+   "lat": 29.034583,
+   "lon": 79.463944,
+   "elev_m": 236.5,
+   "lit": false
+  },
+  {
+   "type": "FENCE",
+   "note": "Airport Boundary Wall Fencing",
+   "lat": 29.035139,
+   "lon": 79.464083,
+   "elev_m": 236.5,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.036889,
+   "lon": 79.460139,
+   "elev_m": 247.8,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Mobile Road Traffic (Road Elev 234.1 M. + 5.0 M. Traffic Ht.)",
+   "lat": 29.036083,
+   "lon": 79.463694,
+   "elev_m": 239,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033639,
+   "lon": 79.462444,
+   "elev_m": 246.9,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.036167,
+   "lon": 79.463,
+   "elev_m": 253,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.035278,
+   "lon": 79.459444,
+   "elev_m": 247.2,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Approach Light",
+   "lat": 29.034472,
+   "lon": 79.464833,
+   "elev_m": 234.7,
+   "lit": true
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.031333,
+   "lon": 79.481694,
+   "elev_m": 244.4,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.031944,
+   "lon": 79.481917,
+   "elev_m": 239.6,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.030861,
+   "lon": 79.483528,
+   "elev_m": 254.5,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033667,
+   "lon": 79.489917,
+   "elev_m": 266.7,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.031944,
+   "lon": 79.481667,
+   "elev_m": 249,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.031167,
+   "lon": 79.480333,
+   "elev_m": 249,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.030667,
+   "lon": 79.482028,
+   "elev_m": 256.9,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.031889,
+   "lon": 79.48475,
+   "elev_m": 250.2,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033194,
+   "lon": 79.485944,
+   "elev_m": 256.6,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033167,
+   "lon": 79.484833,
+   "elev_m": 256.3,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.032833,
+   "lon": 79.482667,
+   "elev_m": 248.4,
+   "lit": false
+  },
+  {
+   "type": "BUILDING",
+   "note": "Masjid",
+   "lat": 29.032417,
+   "lon": 79.483667,
+   "elev_m": 243.2,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.031583,
+   "lon": 79.481889,
+   "elev_m": 241.4,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.031389,
+   "lon": 79.48125,
+   "elev_m": 241.1,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.031306,
+   "lon": 79.480889,
+   "elev_m": 239.9,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.031861,
+   "lon": 79.482083,
+   "elev_m": 239.9,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.031861,
+   "lon": 79.482417,
+   "elev_m": 240.2,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.032194,
+   "lon": 79.4825,
+   "elev_m": 240.5,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.032444,
+   "lon": 79.482583,
+   "elev_m": 240.8,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.032083,
+   "lon": 79.4815,
+   "elev_m": 239.9,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033611,
+   "lon": 79.483889,
+   "elev_m": 259.4,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033639,
+   "lon": 79.481556,
+   "elev_m": 253.3,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033667,
+   "lon": 79.480778,
+   "elev_m": 250.5,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033194,
+   "lon": 79.483056,
+   "elev_m": 253.9,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.032944,
+   "lon": 79.482139,
+   "elev_m": 250.9,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.032556,
+   "lon": 79.480778,
+   "elev_m": 238.7,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Bushes Type Tree",
+   "lat": 29.033167,
+   "lon": 79.480222,
+   "elev_m": 239.3,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Flag on House (House Top - 239.4 M Sintex Top - 240.4 M.)",
+   "lat": 29.032306,
+   "lon": 79.482389,
+   "elev_m": 241.4,
+   "lit": false
+  },
+  {
+   "type": "FENCE",
+   "note": "AAI Boundary Wall with Fencing",
+   "lat": 29.031417,
+   "lon": 79.480917,
+   "elev_m": 237.4,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.031306,
+   "lon": 79.4805,
+   "elev_m": 240.2,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.031278,
+   "lon": 79.480139,
+   "elev_m": 240.5,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Tree (Pipal)",
+   "lat": 29.030583,
+   "lon": 79.487778,
+   "elev_m": 253.3,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.031972,
+   "lon": 79.48775,
+   "elev_m": 258.5,
+   "lit": false
+  },
+  {
+   "type": "FENCE",
+   "note": "Airport B Wall Fencing",
+   "lat": 29.033056,
+   "lon": 79.48075,
+   "elev_m": 236.8,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Mobile Road Traffic (Road Elev. 235.1M + Mobile Traffic 5M.)",
+   "lat": 29.031306,
+   "lon": 79.481611,
+   "elev_m": 240.2,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Mobile Road Traffic (Road Elev. 234.2 M + Mobile Traffic 5M.)",
+   "lat": 29.033028,
+   "lon": 79.480611,
+   "elev_m": 239.3,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033667,
+   "lon": 79.487583,
+   "elev_m": 256,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Water Tank on Top of Building",
+   "lat": 29.031833,
+   "lon": 79.482722,
+   "elev_m": 241.1,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Water Tank on Top of Building",
+   "lat": 29.032,
+   "lon": 79.482972,
+   "elev_m": 241.4,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.032472,
+   "lon": 79.481389,
+   "elev_m": 238.4,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Mobile Road Traffic (Road Elev. 235.1 + Mobile Traffic 5 M.)",
+   "lat": 29.031056,
+   "lon": 79.480472,
+   "elev_m": 240.2,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Mobile Road Traffic (Road Elev. 233.9 + Mobile Traffic 5 M.)",
+   "lat": 29.032417,
+   "lon": 79.480694,
+   "elev_m": 239,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Mobile Road Traffic (Road Elev. 234.1M + Mobile Traffic 5 M.)",
+   "lat": 29.03375,
+   "lon": 79.480583,
+   "elev_m": 239,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.032917,
+   "lon": 79.469278,
+   "elev_m": 240.8,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.034917,
+   "lon": 79.469167,
+   "elev_m": 240.8,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033222,
+   "lon": 79.466722,
+   "elev_m": 239,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Bushes Type Tree",
+   "lat": 29.035083,
+   "lon": 79.4655,
+   "elev_m": 238.7,
+   "lit": false
+  },
+  {
+   "type": "ANTENNA",
+   "note": "Met Antenna",
+   "lat": 29.032972,
+   "lon": 79.467944,
+   "elev_m": 243.5,
+   "lit": true
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033083,
+   "lon": 79.460139,
+   "elev_m": 254.2,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033194,
+   "lon": 79.461861,
+   "elev_m": 242.3,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.035722,
+   "lon": 79.469917,
+   "elev_m": 255.4,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033111,
+   "lon": 79.464278,
+   "elev_m": 241.4,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.032639,
+   "lon": 79.464083,
+   "elev_m": 251.2,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.032278,
+   "lon": 79.46525,
+   "elev_m": 249,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.036611,
+   "lon": 79.463111,
+   "elev_m": 257.3,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.036083,
+   "lon": 79.466722,
+   "elev_m": 258.5,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.036472,
+   "lon": 79.465611,
+   "elev_m": 256,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.032028,
+   "lon": 79.466417,
+   "elev_m": 252.4,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.036861,
+   "lon": 79.461778,
+   "elev_m": 250.5,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.037556,
+   "lon": 79.458861,
+   "elev_m": 256.9,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.031306,
+   "lon": 79.479778,
+   "elev_m": 248.4,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Bushes Type Tree",
+   "lat": 29.033389,
+   "lon": 79.478639,
+   "elev_m": 238.4,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.031556,
+   "lon": 79.477917,
+   "elev_m": 240.5,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.031611,
+   "lon": 79.477389,
+   "elev_m": 240.2,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.031861,
+   "lon": 79.477028,
+   "elev_m": 240.2,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Sec Hut",
+   "lat": 29.032,
+   "lon": 79.476639,
+   "elev_m": 235.9,
+   "lit": false
+  },
+  {
+   "type": "FENCE",
+   "note": "Old Boundary wall with Fencing on Top",
+   "lat": 29.0335,
+   "lon": 79.479583,
+   "elev_m": 236.8,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Hangar (Amber Aviation) L/C Top",
+   "lat": 29.031528,
+   "lon": 79.475306,
+   "elev_m": 242.6,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.034639,
+   "lon": 79.482972,
+   "elev_m": 266.4,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.030611,
+   "lon": 79.481167,
+   "elev_m": 253.9,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.030972,
+   "lon": 79.479583,
+   "elev_m": 252.1,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.031306,
+   "lon": 79.478889,
+   "elev_m": 247.5,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.035333,
+   "lon": 79.478667,
+   "elev_m": 267.9,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.034944,
+   "lon": 79.480889,
+   "elev_m": 260.9,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.031333,
+   "lon": 79.479083,
+   "elev_m": 240.8,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.031083,
+   "lon": 79.478417,
+   "elev_m": 240.8,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.035194,
+   "lon": 79.476472,
+   "elev_m": 265.5,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.0305,
+   "lon": 79.478806,
+   "elev_m": 252.4,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.033889,
+   "lon": 79.485806,
+   "elev_m": 259.4,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.034083,
+   "lon": 79.480972,
+   "elev_m": 248.7,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.030528,
+   "lon": 79.482028,
+   "elev_m": 257.6,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.03425,
+   "lon": 79.473861,
+   "elev_m": 243.8,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Electric Pole",
+   "lat": 29.032722,
+   "lon": 79.47025,
+   "elev_m": 240.2,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.032806,
+   "lon": 79.470306,
+   "elev_m": 239.6,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.034556,
+   "lon": 79.47225,
+   "elev_m": 243.5,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.03475,
+   "lon": 79.470389,
+   "elev_m": 241.4,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.031528,
+   "lon": 79.478944,
+   "elev_m": 245.4,
+   "lit": false
+  },
+  {
+   "type": "SIGN",
+   "note": "Sign Board",
+   "lat": 29.033056,
+   "lon": 79.474056,
+   "elev_m": 235.6,
+   "lit": false
+  },
+  {
+   "type": "SIGN",
+   "note": "Sign Board",
+   "lat": 29.033111,
+   "lon": 79.473583,
+   "elev_m": 235.6,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Structure",
+   "lat": 29.03275,
+   "lon": 79.470306,
+   "elev_m": 237.1,
+   "lit": false
+  },
+  {
+   "type": "FENCE",
+   "note": "Old Boundary Wall with Fencing on Top",
+   "lat": 29.034833,
+   "lon": 79.469556,
+   "elev_m": 236.5,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "WDI",
+   "lat": 29.032028,
+   "lon": 79.471972,
+   "elev_m": 241.7,
+   "lit": true
+  },
+  {
+   "type": "OTHER",
+   "note": "Mast",
+   "lat": 29.031139,
+   "lon": 79.472972,
+   "elev_m": 254.5,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Beacon Top (Lighted)",
+   "lat": 29.031139,
+   "lon": 79.473139,
+   "elev_m": 250.5,
+   "lit": true
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.035583,
+   "lon": 79.471111,
+   "elev_m": 256.6,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.035167,
+   "lon": 79.4745,
+   "elev_m": 253.3,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.036083,
+   "lon": 79.473778,
+   "elev_m": 265.2,
+   "lit": false
+  },
+  {
+   "type": "POLE",
+   "note": "Pole",
+   "lat": 29.032278,
+   "lon": 79.471111,
+   "elev_m": 240.8,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.035639,
+   "lon": 79.47175,
+   "elev_m": 259.4,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Old WDI Pipe",
+   "lat": 29.032111,
+   "lon": 79.472028,
+   "elev_m": 239.6,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.030778,
+   "lon": 79.476389,
+   "elev_m": 253.9,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.035861,
+   "lon": 79.475444,
+   "elev_m": 263.7,
+   "lit": false
+  },
+  {
+   "type": "TREE",
+   "note": "Group of Tree",
+   "lat": 29.03625,
+   "lon": 79.472889,
+   "elev_m": 263.7,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Pylon Mast",
+   "lat": 29.057583,
+   "lon": 79.507667,
+   "elev_m": 280.4,
+   "lit": false
+  },
+  {
+   "type": "OTHER",
+   "note": "Pylon Mast",
+   "lat": 29.05525,
+   "lon": 79.508167,
+   "elev_m": 298.1,
+   "lit": false
+  },
+  {
+   "type": "STACK",
+   "note": "Chimney",
+   "lat": 29.064333,
+   "lon": 79.518194,
+   "elev_m": 339.5,
+   "lit": false
+  }
+ ]
+}

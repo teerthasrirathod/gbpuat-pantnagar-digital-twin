@@ -1,0 +1,601 @@
+{
+ "type": "FeatureCollection",
+ "sandbox": {
+  "version": 1,
+  "tool": "Pantnagar Sandbox",
+  "title": "Clean and refreshed campus",
+  "theme": "Waste Recycling",
+  "team": "",
+  "members": "",
+  "mentor": "",
+  "problem": "Bins are scarce outside hostels and colleges, so litter collects along roads; students also lack drinking water and snacks near classrooms late in the day.",
+  "objectives": "A wet-and-dry bin pair within 100 m of every hostel and college entrance.\nDrinking water and a vending machine within a short walk of every college.",
+  "outcomes": "",
+  "sustainability": "Wet waste goes to the campus compost unit; vending machines are run by a vendor under a revenue-sharing contract that also pays for the water points.",
+  "wifi_targets": [
+   "hostel"
+  ],
+  "wifi_buildings": [],
+  "costs": {},
+  "assumptions": {},
+  "summary": "Twin bins outside every hostel and college, drinking-water points at the colleges and vending machines where students gather."
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "id": "i1",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4461937,
+     29.0367251
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Directorate Of University Farm"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i2",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4765597,
+     29.0281155
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: NAHEP University Center"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i3",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4863781,
+     29.0219545
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: College of Agribusiness Management"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i4",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4888785,
+     29.0215742
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Pantnagar Centre For Plant Genetic Resources"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i5",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4749062,
+     29.0236447
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Tarai bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i6",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4870028,
+     29.0216877
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Pantnagar University Library"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i7",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4846198,
+     29.0236886
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: College of Agriculture"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i8",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.485912,
+     29.0253458
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: College of Home Science"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i9",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.487912,
+     29.0251457
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: College of Veterinary and Animal Sciences"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i10",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4898818,
+     29.0244388
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: College of Basic Sciences and Humanities"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i11",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4951706,
+     29.0216886
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Patel Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i12",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4908738,
+     29.0213031
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Old College of Technology"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i13",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4928593,
+     29.0195174
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: General Bipin Rawat Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i14",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4947241,
+     29.0198395
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Tagore Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i15",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.497031,
+     29.0213776
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Krishak Bhavan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i16",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4950035,
+     29.0236748
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Silver Jubilee Hostel"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i17",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.493826,
+     29.0252692
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Visvesarayya Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i18",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4824125,
+     29.0247526
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Saraswati Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i19",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4814358,
+     29.0248407
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Gandhi Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i20",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4759907,
+     29.0243236
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Rudraksh Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i21",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4834606,
+     29.0255035
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Mandakini Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i22",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.483406,
+     29.0265898
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Subhash Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i23",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.484924,
+     29.0264533
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Sarojini Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i24",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.489953,
+     29.0267621
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Golden Jubilee Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i25",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4909856,
+     29.0226514
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: College of Technology"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i26",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4984534,
+     29.0238916
+    ]
+   },
+   "properties": {
+    "kind": "bin",
+    "status": "proposed",
+    "name": "Bins: Department of Livestock Production Management"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i27",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4870475,
+     29.0216546
+    ]
+   },
+   "properties": {
+    "kind": "water_point",
+    "status": "proposed",
+    "name": "Water: Library"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i28",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4910312,
+     29.0226283
+    ]
+   },
+   "properties": {
+    "kind": "water_point",
+    "status": "proposed",
+    "name": "Water: College of Technology"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i29",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4846383,
+     29.0236695
+    ]
+   },
+   "properties": {
+    "kind": "water_point",
+    "status": "proposed",
+    "name": "Water: College of Agriculture"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i30",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4899224,
+     29.0244221
+    ]
+   },
+   "properties": {
+    "kind": "water_point",
+    "status": "proposed",
+    "name": "Water: College of Basic Sciences and Humanities"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i31",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4879427,
+     29.0251321
+    ]
+   },
+   "properties": {
+    "kind": "water_point",
+    "status": "proposed",
+    "name": "Water: College of Veterinary and Animal Sciences"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i32",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4859469,
+     29.0253055
+    ]
+   },
+   "properties": {
+    "kind": "water_point",
+    "status": "proposed",
+    "name": "Water: College of Home Science"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i33",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4869858,
+     29.0217088
+    ]
+   },
+   "properties": {
+    "kind": "vending",
+    "status": "proposed",
+    "name": "Vending: Library"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i34",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4909695,
+     29.0226826
+    ]
+   },
+   "properties": {
+    "kind": "vending",
+    "status": "proposed",
+    "name": "Vending: College of Technology"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i35",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4848808,
+     29.0264886
+    ]
+   },
+   "properties": {
+    "kind": "vending",
+    "status": "proposed",
+    "name": "Vending: Sarojini Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i36",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4951244,
+     29.0217166
+    ]
+   },
+   "properties": {
+    "kind": "vending",
+    "status": "proposed",
+    "name": "Vending: Patel Bhawan"
+   }
+  }
+ ]
+}

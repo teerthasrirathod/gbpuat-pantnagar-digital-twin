@@ -11,3 +11,8 @@ config.local.js
 Thumbs.db
 .DS_Store
 *.log
+
+# Rust pipeline: build output and download/raster caches (regenerable)
+twin/target/
+twin/target2/
+twin/.cache/

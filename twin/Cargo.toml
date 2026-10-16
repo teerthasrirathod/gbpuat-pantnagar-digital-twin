@@ -1,0 +1,27 @@
+[package]
+name = "twin"
+version = "0.2.0"
+edition = "2021"
+description = "GBPUAT Pantnagar digital twin: fetch, analyse and pack campus data for the Three.js viewer"
+license = "MIT"
+
+[workspace]
+members = [".", "sim", "sim-wasm"]
+
+[dependencies]
+sim = { path = "sim" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+flate2 = "1"
+tiff = "0.10"
+base64 = "0.22"
+jpeg-encoder = "0.6"
+
+[profile.release]
+opt-level = 3
+debug = false
+incremental = true
+strip = true
+
+[profile.dev]
+opt-level = 1

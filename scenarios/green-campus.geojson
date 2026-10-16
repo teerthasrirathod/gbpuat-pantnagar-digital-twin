@@ -1,0 +1,605 @@
+{
+ "type": "FeatureCollection",
+ "sandbox": {
+  "version": 1,
+  "tool": "Pantnagar Sandbox",
+  "title": "Green campus: rain, sun and shade",
+  "theme": "Water Recycling in Hostels",
+  "team": "",
+  "members": "",
+  "mentor": "",
+  "problem": "Large flat roofs shed monsoon rain into drains while the campus pumps groundwater, and daytime electricity for colleges comes from the grid.",
+  "objectives": "Harvest roof rain from all hostels into recharge pits.\nGenerate daytime power on the library roof as a pilot for the colleges.\nPlant native shade trees along a busy street.",
+  "outcomes": "",
+  "sustainability": "The Estate office cleans gutters and filters before each monsoon; solar savings fund the upkeep.",
+  "wifi_targets": [
+   "hostel"
+  ],
+  "wifi_buildings": [],
+  "costs": {},
+  "assumptions": {},
+  "summary": "Rainwater harvesting on the hostels, rooftop solar on the library and an avenue of native trees."
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "id": "i1",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4749543,
+     29.0235627
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Tarai bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i2",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4938842,
+     29.0215679
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Patel Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i3",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4930136,
+     29.0197365
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: General Bipin Rawat Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i4",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4939761,
+     29.0200746
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Tagore Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i5",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4970355,
+     29.0215474
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Krishak Bhavan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i6",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4942572,
+     29.0234939
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Silver Jubilee Hostel"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i7",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4937191,
+     29.0248291
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Visvesarayya Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i8",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4820924,
+     29.0243484
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Saraswati Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i9",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4814867,
+     29.0246509
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Gandhi Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i10",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4766399,
+     29.0242307
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Rudraksh Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i11",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4832004,
+     29.0253376
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Mandakini Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i12",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4823821,
+     29.0256538
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Subhash Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i13",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4845533,
+     29.0271551
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Sarojini Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i14",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4854154,
+     29.0263276
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Yamunotri Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i15",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4904251,
+     29.0265835
+    ]
+   },
+   "properties": {
+    "kind": "rwh",
+    "status": "proposed",
+    "name": "Rainwater: Golden Jubilee Bhawan"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i16",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4872588,
+     29.0215774
+    ]
+   },
+   "properties": {
+    "kind": "solar_roof",
+    "status": "proposed",
+    "name": "Solar: library roof",
+    "share": 40
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i17",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4878714,
+     29.0212884
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Neem"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i18",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4878128,
+     29.021433
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Arjun"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i19",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4879062,
+     29.0216292
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Jamun"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i20",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4880655,
+     29.0216918
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Peepal"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i21",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4879944,
+     29.021832
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Amaltas"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i22",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4881537,
+     29.0218949
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Kachnar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i23",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4880239,
+     29.0220054
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Neem"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i24",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4880944,
+     29.0221486
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Arjun"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i25",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4879197,
+     29.022166
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Jamun"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i26",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4877325,
+     29.022264
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Peepal"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i27",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4876529,
+     29.0223994
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Amaltas"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i28",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.487515,
+     29.0222985
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Kachnar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i29",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4873786,
+     29.022391
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Neem"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i30",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4873204,
+     29.0222403
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Arjun"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i31",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4871387,
+     29.022237
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Jamun"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i32",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4872053,
+     29.0220951
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Peepal"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i33",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4870442,
+     29.0220364
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Amaltas"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i34",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4869498,
+     29.0218376
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Kachnar"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i35",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4870117,
+     29.0216941
+    ]
+   },
+   "properties": {
+    "kind": "tree",
+    "status": "proposed",
+    "name": "",
+    "species": "Neem"
+   }
+  }
+ ]
+}

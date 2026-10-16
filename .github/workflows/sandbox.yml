@@ -1,0 +1,40 @@
+# Evaluates every plan added or changed in scenarios/ with the Sandbox engine and writes the
+# results (today vs with the plan, cost, warnings) into the run summary.
+name: sandbox
+
+on:
+  pull_request:
+    paths:
+      - "scenarios/**.geojson"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: twin
+      - name: Build the engine
+        working-directory: twin
+        run: cargo build --release --bin twin
+      - name: Evaluate plans
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ -n "$BASE" ]; then
+            files=$(git diff --name-only --diff-filter=AM "$BASE" HEAD -- 'scenarios/*.geojson')
+          else
+            files=$(ls scenarios/*.geojson)
+          fi
+          for f in $files; do
+            echo "Evaluating $f"
+            ./twin/target/release/twin sim "$f" >> "$GITHUB_STEP_SUMMARY"
+            echo "" >> "$GITHUB_STEP_SUMMARY"
+          done

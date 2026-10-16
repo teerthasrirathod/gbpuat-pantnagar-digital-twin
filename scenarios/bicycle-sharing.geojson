@@ -1,0 +1,351 @@
+{
+ "type": "FeatureCollection",
+ "sandbox": {
+  "version": 1,
+  "tool": "Pantnagar Sandbox",
+  "title": "Public bicycle sharing",
+  "theme": "Public Bicycle Sharing System",
+  "team": "",
+  "members": "",
+  "mentor": "",
+  "problem": "Hostels, colleges, the library and the market are up to 2 km apart, while many bicycles lie abandoned around hostels. Students without a bicycle walk long distances or depend on lifts.",
+  "objectives": "Refurbish abandoned bicycles and put them back into use.\nA bicycle dock within a 5-minute walk (300 m) of every hostel and college.",
+  "outcomes": "",
+  "sustainability": "A small semester fee covers spares; a student society runs repairs; more abandoned bicycles join the fleet every year.",
+  "wifi_targets": [
+   "hostel"
+  ],
+  "wifi_buildings": [],
+  "costs": {
+   "bike_dock": 7000
+  },
+  "assumptions": {},
+  "summary": "Docks for refurbished abandoned bicycles beside every hostel and college, the library, the stadium and the market.",
+  "implementation": "1. Collect and list abandoned bicycles with the hostel wardens; repair the usable ones in a student workshop.\n2. Build simple racks with locks at the dock sites; number every bicycle.\n3. Start a sign-out system with the student ID card (paper register first, app later).\n4. Review use after one semester and move docks where demand is."
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "id": "i1",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4870074,
+     29.0216857
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: Library",
+    "docks": 12
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i2",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4909905,
+     29.0226527
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: College of Technology",
+    "docks": 12
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i3",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4846157,
+     29.0236913
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: College of Agriculture",
+    "docks": 12
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i4",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.489885,
+     29.0244422
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: College of Basic Sciences and Humanities",
+    "docks": 12
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i5",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4859134,
+     29.0253414
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: College of Home Science",
+    "docks": 12
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i6",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.487912,
+     29.0251502
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: College of Veterinary and Animal Sciences",
+    "docks": 12
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i7",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4749086,
+     29.0236407
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: Tarai bhawan",
+    "docks": 15
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i8",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4951655,
+     29.0216889
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: Patel Bhawan",
+    "docks": 15
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i9",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4928613,
+     29.0195215
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: General Bipin Rawat Bhawan",
+    "docks": 15
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i10",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4947193,
+     29.019841
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: Tagore Bhawan",
+    "docks": 15
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i11",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4970311,
+     29.0213821
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: Krishak Bhavan",
+    "docks": 15
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i12",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4949986,
+     29.0236736
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: Silver Jubilee Hostel",
+    "docks": 15
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i13",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4938249,
+     29.0252648
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: Visvesarayya Bhawan",
+    "docks": 15
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i14",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4824097,
+     29.0247488
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: Saraswati Bhawan",
+    "docks": 15
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i15",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4834019,
+     29.0265871
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: Subhash Bhawan",
+    "docks": 15
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i16",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4899577,
+     29.0267603
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: Golden Jubilee Bhawan",
+    "docks": 15
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i17",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4914599,
+     29.027869
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: Shastri Bhawan",
+    "docks": 15
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i18",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4775837,
+     29.0271851
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: Pantnagar Post Office",
+    "docks": 10
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "i19",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     79.4893384,
+     29.0217385
+    ]
+   },
+   "properties": {
+    "kind": "bike_dock",
+    "status": "proposed",
+    "name": "Dock: Brijwasi Canteen",
+    "docks": 10
+   }
+  }
+ ]
+}
