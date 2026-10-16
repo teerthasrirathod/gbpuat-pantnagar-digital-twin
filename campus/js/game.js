@@ -523,8 +523,8 @@
     function onRoad(x, z) { const ne = A.nearestEdge(x, z, 12); return !!(ne && ne.d < roadW(ne.k) / 2 + 1.5); }
     function bump(c, imp) {
       c.dmg = Math.min(100, c.dmg + imp * 1.6);
-      if (c.dmg >= 100 && !c.wreck) { c.wreck = true; c.v = 0; if (c === P.car) { prompt("Wrecked! Press F to get out", 3); AU.crash(1); } }
-      if (c === P.car) { shake = Math.min(1, imp / 15); AU.crash(Math.min(1, imp / 18)); }
+      if (c.dmg >= 100 && !c.wreck) { c.wreck = true; c.v = 0; if (c === P.car) { prompt(`Wrecked! Press ${btn("F")} to get out`, 3); AU.crash(1); } }
+      if (c === P.car) { shake = Math.min(1, imp / 15); AU.crash(Math.min(1, imp / 18)); rumble(Math.min(1, imp / 14), 120 + imp * 12); }
       else if (Math.hypot(c.x - P.x, c.z - P.z) < 60) AU.crash(Math.min(0.6, imp / 25));
     }
 
@@ -576,7 +576,7 @@
       best.role = "player"; best.driver = "player"; best.ai = null; best.stun = 0;
       P.car = best;
       AU.door();
-      prompt(`${best.t.label}. W/S drive, A/D steer, Space handbrake, F to get out`, 3.5);
+      prompt(pad.on ? `${best.t.label}. RT/LT drive, left stick steer, ${btn("Space")} handbrake, ${btn("F")} to get out` : `${best.t.label}. W/S drive, A/D steer, Space handbrake, F to get out`, 3.5);
       return true;
     }
     function leaveCar(force) {
@@ -594,10 +594,11 @@
     }
     function footTick(dt) {
       if (P.knock > 0) { P.knock -= dt; return; }
-      const sprint = keys.has("ShiftLeft") || keys.has("ShiftRight") || touch.sprint;
+      const sprint = keys.has("ShiftLeft") || keys.has("ShiftRight") || touch.sprint || pad.b || (pad.on && Math.hypot(pad.x, pad.y) > 0.97 && pad.g && pad.g.buttons[10] && pad.g.buttons[10].pressed);
       let mx = (keys.has("KeyD") || keys.has("ArrowRight") ? 1 : 0) - (keys.has("KeyA") || keys.has("ArrowLeft") ? 1 : 0);
       let mz = (keys.has("KeyW") || keys.has("ArrowUp") ? 1 : 0) - (keys.has("KeyS") || keys.has("ArrowDown") ? 1 : 0);
       if (touch.on) { mx = touch.x; mz = -touch.y; }
+      if (pad.on && (pad.x || pad.y)) { mx = pad.x; mz = -pad.y; }
       const mag = Math.min(1, Math.hypot(mx, mz));
       const spd = (sprint ? 6.2 : 2.4) * mag;
       if (mag > 0.05) {
@@ -630,7 +631,12 @@
       let thr = (keys.has("KeyW") || keys.has("ArrowUp") ? 1 : 0) - (keys.has("KeyS") || keys.has("ArrowDown") ? 1 : 0);
       let st = (keys.has("KeyD") || keys.has("ArrowRight") ? 1 : 0) - (keys.has("KeyA") || keys.has("ArrowLeft") ? 1 : 0);
       if (touch.on) { st = touch.x; thr = -touch.y; }
-      drive(c, thr, st, keys.has("Space") || touch.brake, dt);
+      if (pad.on) {
+        if (pad.rt || pad.lt) thr = clamp(thr + pad.rt - pad.lt, -1, 1);
+        else if (!thr && pad.y && Math.abs(pad.y) > 0.5 && Math.abs(pad.x) < 0.5) thr = -pad.y; // stick-only driving
+        if (pad.x) st = clamp(st + pad.x, -1, 1);
+      }
+      drive(c, thr, st, keys.has("Space") || touch.brake || pad.a, dt);
       P.x = c.x; P.z = c.z; P.y = c.y; P.yaw = c.yaw;
       // People in the way
       if (Math.abs(c.v) > 2.5) {
@@ -1018,6 +1024,7 @@
           <span><kbd>E</kbd></span><span>Start a job at a coloured beacon</span>
           <span><kbd>H</kbd> <kbd>C</kbd> <kbd>M</kbd></span><span>Horn, camera, big map (click it to set a waypoint)</span>
           <span>Mouse drag</span><span>Look around · wheel to zoom</span>
+          <span>🎮 Controller</span><span>Left stick move or steer, RT/LT drive and brake, right stick look, A jump or handbrake, B sprint, Y vehicle, X job, LB horn, RB camera, View map, Menu pause. PlayStation pads work the same way.</span>
           <span><kbd>Esc</kbd></span><span>Pause</span>
         </div>
         <div class="g-note">Jobs: Chai Express at Brijwasi Canteen · Campus Cab at the Library · Pantnagar Circuit at Stevenson Stadium · Lost and Found at the Post Office.<br>A game on a real map. Off the screen, drive safely and let people walk.</div>
@@ -1160,6 +1167,67 @@
     // -------------------------------------------------------------------------------------
     // Input
     const touch = { on: false, x: 0, y: 0, jump: false, brake: false, sprint: false };
+    // Game controllers (standard mapping: Xbox, PlayStation and most others).
+    //  left stick move / steer · right stick look · RT/R2 accelerate · LT/L2 brake and reverse
+    //  A/✕ jump or handbrake · B/○ sprint · Y/△ vehicle · X/□ job · LB/L1 horn · RB/R1 camera
+    //  R3 camera behind · View/Share map · Menu/Options pause
+    const pad = { on: false, ps: false, x: 0, y: 0, rx: 0, ry: 0, rt: 0, lt: 0, a: false, b: false, prev: [], g: null, id: "" };
+    const dz = (v) => (Math.abs(v) < 0.16 ? 0 : (v - Math.sign(v) * 0.16) / 0.84);
+    function readPad() {
+      const list = navigator.getGamepads ? navigator.getGamepads() : [];
+      let g = null;
+      for (const p of list) if (p && p.connected && p.buttons.length >= 12) { g = p; break; }
+      pad.g = g;
+      if (!g) { if (pad.on) { pad.on = false; padChanged(); } return []; }
+      if (!pad.on || pad.id !== g.id) { pad.on = true; pad.id = g.id; pad.ps = /054c|playstation|dualsense|dualshock/i.test(g.id) || (/wireless controller/i.test(g.id) && !/xbox|045e/i.test(g.id)); padChanged(true); }
+      const val = (i) => (g.buttons[i] ? g.buttons[i].value || (g.buttons[i].pressed ? 1 : 0) : 0);
+      pad.x = dz(g.axes[0] || 0); pad.y = dz(g.axes[1] || 0); pad.rx = dz(g.axes[2] || 0); pad.ry = dz(g.axes[3] || 0);
+      pad.rt = val(7); pad.lt = val(6); pad.a = val(0) > 0.5; pad.b = val(1) > 0.5;
+      const now = g.buttons.map((_, i) => val(i));
+      const hits = [];
+      now.forEach((v, i) => { if (v > 0.5 && !((pad.prev[i] || 0) > 0.5)) hits.push(i); });
+      pad.prev = now;
+      return hits;
+    }
+    function rumble(strength, ms) {
+      const act = pad.g && pad.g.vibrationActuator;
+      if (act && act.playEffect) act.playEffect("dual-rumble", { startDelay: 0, duration: ms, weakMagnitude: Math.min(1, strength), strongMagnitude: Math.min(1, strength * 0.8) }).catch(() => {});
+    }
+    // Button names for prompts: the keyboard's, or the connected controller's.
+    const BTN = { F: ["F", "Y", "△"], E: ["E", "X", "□"], H: ["H", "LB", "L1"], C: ["C", "RB", "R1"], M: ["M", "View", "Share"], Esc: ["Esc", "Menu", "Options"], Space: ["Space", "A", "✕"] };
+    const btn = (k) => (pad.on ? BTN[k][pad.ps ? 2 : 1] : BTN[k][0]);
+    function padChanged(on) {
+      const hint = $("g-hint");
+      if (hint) hint.textContent = pad.on ? `${btn("F")} vehicle · ${btn("E")} job · ${btn("H")} horn · ${btn("C")} camera · ${btn("M")} map · ${btn("Esc")} pause · RT/LT drive` : "F car · E job · H horn · C camera · M map · Esc menu";
+      if (on) { prompt(`Controller connected${pad.ps ? " (PlayStation layout)" : ""}`, 2); rumble(0.4, 150); }
+      else if (!inTitle) prompt("Controller disconnected", 2);
+    }
+    window.addEventListener("gamepadconnected", () => readPad());
+    window.addEventListener("gamepaddisconnected", () => readPad());
+    // Called every frame in game mode, including the title, pause and the big map.
+    function padTick(dt) {
+      const hits = readPad();
+      if (!pad.on) return;
+      const hit = (i) => hits.includes(i);
+      if (inTitle) { if (hit(0) || hit(9)) $("g-play").click(); return; }
+      if (!$("g-bigmap").hidden) { if (hit(1) || hit(8) || hit(9)) openBigMap(false); return; }
+      if (paused) { if (hit(0) || hit(9) || hit(1)) setPause(false); return; }
+      if (hit(9)) { setPause(true); return; }
+      if (hit(8)) { openBigMap(true); return; }
+      if (hit(3)) P.car ? leaveCar(false) : enterCar() || prompt("Nothing to get into here", 1);
+      if (hit(2)) tryJob();
+      if (hit(4)) honk();
+      if (hit(5)) camMode = (camMode + 1) % 3;
+      if (hit(11)) camYaw = P.car ? P.car.yaw : P.yaw;
+      if (hit(0) && !P.car) touch.jump = true;
+      if (hit(12)) camDist = clamp(camDist * 0.85, 0.5, 3);
+      if (hit(13)) camDist = clamp(camDist * 1.18, 0.5, 3);
+      if (pad.rx || pad.ry) {
+        camYaw -= pad.rx * 2.6 * dt;
+        camPitch = clamp(camPitch + pad.ry * 1.6 * dt, -0.1, 1.2);
+        lastMouse = performance.now() / 1000;
+      }
+    }
     const playing = () => A.mode() === "game" && !paused && !inTitle && $("g-bigmap").hidden;
     window.addEventListener("keydown", (e) => {
       if (A.mode() !== "game" || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
@@ -1308,6 +1376,7 @@
     A.setHooks({
       mode(m, prev) { if (m === "game") enter(); else if (prev === "game") onLeave(); },
       frame(dt) {
+        padTick(dt);
         skyTick(paused || inTitle ? 0 : dt);
         if (inTitle) {
           // slow orbit over the campus behind the title
@@ -1327,7 +1396,7 @@
           for (const c of cars) {
             if (Math.abs(c.v) < 3 || P.knock > 0) continue;
             const [fx, fz] = fwd(c.yaw), dx = P.x - c.x, dz = P.z - c.z, along = dx * fx + dz * fz, across = dx * fz - dz * fx;
-            if (Math.abs(across) < c.t.W / 2 + 0.3 && Math.abs(along) < c.t.L / 2 + 0.3) { P.health -= Math.abs(c.v) * 2.2; P.knock = 1.4; shake = 0.8; AU.thud(); const k = Math.sign(across) || 1; P.x += fz * k * 1.5; P.z -= fx * k * 1.5; if (P.health <= 0) wasted(); }
+            if (Math.abs(across) < c.t.W / 2 + 0.3 && Math.abs(along) < c.t.L / 2 + 0.3) { P.health -= Math.abs(c.v) * 2.2; P.knock = 1.4; shake = 0.8; AU.thud(); rumble(0.9, 350); const k = Math.sign(across) || 1; P.x += fz * k * 1.5; P.z -= fx * k * 1.5; if (P.health <= 0) wasted(); }
           }
         } else if (P.car.dmg >= 100 && P.health > 0 && P.car.wreck) { /* waiting for the player to get out */ }
         copsTick(dt);
@@ -1335,8 +1404,8 @@
         routeTick();
         // job beacons
         for (const b of [...giverBeacons.values(), targetBeacon]) { const d = Math.hypot(b.position.x - camera.position.x, b.position.z - camera.position.z); b.children[0].material.opacity = 0.28 * clamp((d - 5) / 25, 0.06, 1); }
-        for (const [id, g] of giverBeacons) { g.visible = !job; const st = sites()[JOBS.find((j) => j.id === id).site].p; if (!job && Math.hypot(st[0] - P.x, st[1] - P.z) < 9 && promptT <= 0) prompt(`Press E to start: <b>${esc(JOBS.find((j) => j.id === id).name)}</b>`, 0.3); }
-        if (!P.car && promptT <= 0) { for (const c of cars) if (!c.wreck && Math.hypot(c.x - P.x, c.z - P.z) < 4.2 + c.t.L * 0.3) { prompt(`Press F to ${c.driver === "ai" ? "take" : "get in"}: ${c.t.label}`, 0.25); break; } }
+        for (const [id, g] of giverBeacons) { g.visible = !job; const st = sites()[JOBS.find((j) => j.id === id).site].p; if (!job && Math.hypot(st[0] - P.x, st[1] - P.z) < 9 && promptT <= 0) prompt(`Press ${btn("E")} to start: <b>${esc(JOBS.find((j) => j.id === id).name)}</b>`, 0.3); }
+        if (!P.car && promptT <= 0) { for (const c of cars) if (!c.wreck && Math.hypot(c.x - P.x, c.z - P.z) < 4.2 + c.t.L * 0.3) { prompt(`Press ${btn("F")} to ${c.driver === "ai" ? "take" : "get in"}: ${c.t.label}`, 0.25); break; } }
         if (waypoint && Math.hypot(waypoint[0] - P.x, waypoint[1] - P.z) < 12) { waypoint = null; AU.blip(990); prompt("You have arrived", 1.5); }
         P.health = Math.min(100, P.health + dt * 0.8);
         cameraTick(dt);
@@ -1356,6 +1425,7 @@
     }
     if ($("mode-play")) $("mode-play").addEventListener("click", play);
     if (/(^|[#&])play\b/.test(location.hash)) setTimeout(play, 50);
+    window.addEventListener("hashchange", () => { if (/(^|[#&])play\b/.test(location.hash) && A.mode() !== "game") play(); });
     window.__game = { P, cars, peds, cops, keys, get job() { return job; }, startJob: (id) => startJob(JOBS.find((j) => j.id === id)), JOBS, sites, play, setPause, enterCar, leaveCar, get clock() { return clock; }, set clock(v) { clock = v; }, crime, start: () => $("g-play").click() };
   }
 })();

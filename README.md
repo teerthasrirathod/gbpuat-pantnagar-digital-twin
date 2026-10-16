@@ -37,7 +37,7 @@ The site updates by itself: the `pages` workflow republishes both files whenever
   - cash, synthesised engine, horn and siren sounds;
   - touch controls on phones.
 
-Controls: `W A S D` move or drive, `Shift` sprint, `Space` jump or handbrake, `F` vehicle, `E` job, `H` horn, `C` camera, `M` map, `Esc` pause. There are no weapons: it is a real campus, so the fun is driving, jobs and chases.
+Controls: `W A S D` move or drive (or a game controller: left stick, RT/LT, A, B, X, Y), `Shift` sprint, `Space` jump or handbrake, `F` vehicle, `E` job, `H` horn, `C` camera, `M` map, `Esc` pause. There are no weapons: it is a real campus, so the fun is driving, jobs and chases.
 
 The game reuses the twin's world and lives in [`campus/js/game.js`](campus/js/game.js). Vehicles and people are instanced, so the whole cast costs a handful of draw calls.
 
