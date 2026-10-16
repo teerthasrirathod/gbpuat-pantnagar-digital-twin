@@ -8,8 +8,17 @@ A lightweight, browser-based 3D digital twin of the **G.B. Pant University of Ag
 
 ## Just want to run it?
 
-1. Download **`GBPUAT-Pantnagar-Digital-Twin.html`** from the [latest release](https://github.com/teerthasrirathod/gbpuat-pantnagar-digital-twin/releases/latest) (about 5 MB).
-2. Double-click it. It opens in your browser (Chrome, Edge, Firefox or Brave) and works offline. There is nothing to install.
+**Open it in your browser: [teerthasrirathod.github.io/gbpuat-pantnagar-digital-twin](https://teerthasrirathod.github.io/gbpuat-pantnagar-digital-twin/)**
+
+- The link opens the campus twin. Press **Plan** to use the Sandbox. The whole-area twin is at [/area](https://teerthasrirathod.github.io/gbpuat-pantnagar-digital-twin/area/).
+- It works in Chrome, Edge, Firefox and Brave, on laptops and phones. The first load is about 3 MB compressed.
+
+To use it offline:
+
+1. Download [`GBPUAT-Campus-3D.html`](https://github.com/teerthasrirathod/gbpuat-pantnagar-digital-twin/raw/main/GBPUAT-Campus-3D.html) (about 8 MB) or [`GBPUAT-Pantnagar-Digital-Twin.html`](https://github.com/teerthasrirathod/gbpuat-pantnagar-digital-twin/raw/main/GBPUAT-Pantnagar-Digital-Twin.html) (about 5 MB).
+2. Double-click it. There is nothing to install.
+
+The site updates by itself: the `pages` workflow republishes both files whenever they change on `main`.
 
 ## Pantnagar Sandbox: try changes before spending (new in v2.0)
 

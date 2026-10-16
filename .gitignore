@@ -16,3 +16,7 @@ Thumbs.db
 twin/target/
 twin/target2/
 twin/.cache/
+
+# Static hosting build (tools/make_site.mjs) and Firebase local state
+site/
+.firebase/
