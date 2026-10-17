@@ -4,7 +4,7 @@ A lightweight, browser-based 3D digital twin of the **G.B. Pant University of Ag
 
 - Renders with **Three.js r160** (vendored, no build step, no server, works offline).
 - Combines **OpenStreetMap**, **Overture Maps** (Google and Microsoft building footprints, places), **Google Open Buildings 2.5D** heights, **Sentinel-2** imagery, **ESA WorldCover**, **Meta/WRI** canopy height and **Copernicus** terrain.
-- Low compute: chunked and instanced geometry with levels of detail, render on demand, adaptive resolution, no shadows or post-processing. About 8-10 ms per frame on an Intel UHD Graphics 600.
+- Low compute by default: chunked and instanced geometry with levels of detail and render on demand. Four graphics tiers (Light, Balanced, High, Ultra) pick themselves from your GPU; see [Graphics](#graphics-tiers).
 
 ## Just want to run it?
 
@@ -19,27 +19,6 @@ To use it offline:
 2. Double-click it. There is nothing to install.
 
 The site updates by itself: the `pages` workflow republishes both files whenever they change on `main`.
-
-## Grand Tour Pantnagar: the campus as an open-world game (new)
-
-**Play: [teerthasrirathod.github.io/gbpuat-pantnagar-digital-twin/game](https://teerthasrirathod.github.io/gbpuat-pantnagar-digital-twin/game/)**, or press **Play** in the twin.
-
-- **Get around**: walk the real campus, then take a scooter, car, auto-rickshaw, tractor or bus. Traffic drives the real road network, keeping left; pedestrians walk the paths.
-- **Jobs at real places**:
-  - Chai Express from Brijwasi Canteen;
-  - Campus Cab from the Library;
-  - the Pantnagar Circuit race from Stevenson Stadium;
-  - Lost and Found from the Post Office.
-- **Campus security**: taking a vehicle from its driver, hitting people or ramming the security jeeps earns wanted stars, and security jeeps chase you over the road network. Lose them, or get busted.
-- **World and HUD**:
-  - a day-to-night cycle with headlights and street lamps;
-  - a satellite minimap with a route to your target, and a big map for waypoints;
-  - cash, synthesised engine, horn and siren sounds;
-  - touch controls on phones.
-
-Controls: `W A S D` move or drive (or a game controller: left stick, RT/LT, A, B, X, Y), `Shift` sprint, `Space` jump or handbrake, `F` vehicle, `E` job, `H` horn, `C` camera, `M` map, `Esc` pause. There are no weapons: it is a real campus, so the fun is driving, jobs and chases.
-
-The game reuses the twin's world and lives in [`campus/js/game.js`](campus/js/game.js). Vehicles and people are instanced, so the whole cast costs a handful of draw calls.
 
 ## Pantnagar Sandbox: try changes before spending (new in v2.0)
 
@@ -91,13 +70,27 @@ Guides:
 | Blocks | 252: housing 111, fields/farm 70, mixed 27, wooded 22, open 14, academic/institutional 7, airport 1 |
 | Terrain check | within 1 m of the AAI-surveyed runway thresholds and reference point |
 
-Performance on the Intel UHD Graphics 600 at 1x (1024 x 768, best of three):
-- whole campus 10.1 ms
-- campus core 7.3 ms
-- close aerial 8.7 ms
-- street view 7.2 ms
+### Graphics tiers
 
-Unlit ground and baked face lighting keep the cost of each pixel down. Detailed building and tree models are built only near the camera.
+The viewer looks at your GPU when it opens and picks a tier. Change it in **Layers > Graphics**; the choice is remembered. If movement is choppy on an automatically chosen tier, it steps down by itself.
+
+| Tier | Picked for | What you get |
+| --- | --- | --- |
+| Light | very old GPUs, phones, software rendering | the original look: unlit surfaces with lighting baked into the colours, simple shapes |
+| Balanced | laptops with built-in graphics (Intel UHD/HD) | the same cheap pipeline plus things prepared once on the CPU: sharper painted facades, roofs and roads, shadows of buildings and trees on the ground, a painted sky, leafy trees. Edges are anti-aliased when you stop moving (the still frame is rendered 8 times at sub-pixel offsets and averaged), so moving costs nothing extra. |
+| High | Intel Iris Xe, Arc, AMD integrated | real-time sunlight with soft shadows that follow the camera, a physical sky with a time-of-day slider, image-based light, PBR materials (plaster, glass, paint, asphalt, sheet metal), leaf-card trees, grass on real lawns, bloom, ACES tone mapping, FXAA |
+| Ultra | GeForce, Radeon RX, Apple M | High with bigger shadows, sharper textures and more grass |
+
+Frame times on the Intel UHD Graphics 600 (the weakest case: a Celeron N4020 laptop) at 1024 x 768, best of three, GPU-synchronised, while moving:
+
+| View | Light | Balanced | High |
+| --- | --- | --- | --- |
+| whole campus | 22.6 ms | 27.2 ms | 73.6 ms |
+| campus core | 18.8 ms | 23.5 ms | 68.7 ms |
+| close aerial | 15.5 ms | 21.7 ms | 66.9 ms |
+| street view | 17.6 ms | 27.4 ms | 137.6 ms |
+
+High and Ultra are for graphics cards; on that laptop they run at 7 to 15 frames per second. Detailed building and tree models are built only near the camera, and trees switch between a detailed model and a simple crown by distance in the vertex shader, so a tree costs a few triangles unless you are close to it. The textures are painted in code when a tier is first used (about 1 to 3 seconds), so the page stays one offline file with no image downloads.
 
 ### The Rust pipeline (`twin/`)
 
@@ -260,7 +253,8 @@ node tools/build_standalone.mjs
 | `twin/sim/` | Sandbox engine (Rust): scenario format, catalogue and rates, custom item types, Wi-Fi, lighting, access, routes, budget, green metrics |
 | `twin/sim-wasm/` | WebAssembly exports of the engine for the page |
 | `campus/js/plan.js` | Plan mode: scenarios, design tools, items in 3D, category simulation and targets, budget, item types, report, share links |
-| `campus/js/game.js` | Grand Tour Pantnagar: open-world game (vehicles, traffic, people, jobs, campus security, HUD, sound) |
+| `campus/js/gfx.js` | Graphics tiers: picks one from the GPU, the lit pipeline (sun, shadows, sky, post), progressive anti-aliasing, the Layers > Graphics control |
+| `campus/js/gfx-tex.js`, `gfx-nature.js`, `gfx-baked.js` | Procedural textures painted in code; trees, grass and ground detail; the Balanced tier (ground shadows, painted sky, trees) |
 | `scenarios/` | Sample scenarios (GeoJSON) |
 | `docs/` | Sandbox guide, scenario format, ADD VALUE proposal, research notes |
 | `.github/workflows/sandbox.yml` | Evaluates plans submitted by pull request |

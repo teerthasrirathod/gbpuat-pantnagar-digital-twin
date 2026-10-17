@@ -24,8 +24,9 @@
   let dirty = true;
   // Plan mode (js/plan.js) registers hooks here; planDrag is true while it owns a pointer drag.
   let PLAN = null, planDrag = false, streetFrom = "aerial";
-  // Game mode (js/game.js) takes over the camera and input while mode === "game".
-  let GAME = null;
+  // High-quality rendering (js/gfx.js) registers here: real-time sunlight and shadows, a physical sky,
+  // filmic post-processing. LIT is true while buildings are built for it. Standard mode stays unlit and light.
+  let GFX = null, LIT = false;
 
   // ---------------------------------------------------------------------------------------
   // Utilities
@@ -69,7 +70,8 @@
   const scene = new THREE.Scene();
   const SKY = new THREE.Color(0xd4e3ec);
   const camera = new THREE.PerspectiveCamera(50, 1, 2, 60000);
-  scene.add(new THREE.HemisphereLight(0xe8f1ff, 0x6b6250, 1.15));
+  const hemi = new THREE.HemisphereLight(0xe8f1ff, 0x6b6250, 1.15);
+  scene.add(hemi);
   const sun = new THREE.DirectionalLight(0xfff1dc, 1.9);
   sun.position.set(-0.55, 1, 0.35).multiplyScalar(1000);
   scene.add(sun);
@@ -171,11 +173,13 @@
     constructor(uv) { this.p = []; this.c = []; this.u = uv ? [] : null; }
     v(x, y, z, col, uu, vv) { this.p.push(x, y, z); this.c.push(col[0], col[1], col[2]); if (this.u) this.u.push(uu || 0, vv || 0); }
     get tris() { return this.p.length / 9; }
-    geometry(bake) {
+    // bake: fold fixed sun and sky light into the colours (standard mode). linear: the colours are sRGB
+    // and the material is lit, so convert them to linear light.
+    geometry(bake, linear) {
       const g = new THREE.BufferGeometry();
       if (bake) bakeLight(this.p, this.c);
       g.setAttribute("position", new THREE.Float32BufferAttribute(this.p, 3));
-      g.setAttribute("color", new THREE.Float32BufferAttribute(this.c, 3));
+      g.setAttribute("color", new THREE.Float32BufferAttribute(linear ? this.c.map((v) => (v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4))) : this.c, 3));
       if (this.u) g.setAttribute("uv", new THREE.Float32BufferAttribute(this.u, 2));
       g.computeVertexNormals();
       return g;
@@ -701,20 +705,21 @@
     const group = new THREE.Group();
     const meshes = [];
     if (!detail) {
-      const m = new THREE.Mesh(one.geometry(true), MAT.facade);
+      const m = new THREE.Mesh(one.geometry(!LIT, LIT), MAT.facade);
       m.userData = { owners: owners.facade };
       group.add(m);
       group.userData.pick = [m];
+      if (LIT) { m.castShadow = true; m.receiveShadow = true; }
       return group;
     }
     for (const k of ["facade", "house", "shed"]) {
       if (!bf[k].tris) continue;
-      const m = new THREE.Mesh(bf[k].geometry(true), MAT[k]);
+      const m = new THREE.Mesh(bf[k].geometry(!LIT, LIT), MAT[k]);
       m.userData = { owners: owners[k] };
       group.add(m); meshes.push(m);
     }
-    if (roofs.tris) { const m = new THREE.Mesh(roofs.geometry(true), MAT.roof); m.userData = { owners: owners.roof }; group.add(m); meshes.push(m); }
-    if (extra.tris) group.add(new THREE.Mesh(extra.geometry(true), MAT.extra));
+    if (roofs.tris) { const m = new THREE.Mesh(roofs.geometry(!LIT, LIT), MAT.roof); m.userData = { owners: owners.roof }; group.add(m); meshes.push(m); }
+    if (extra.tris) group.add(new THREE.Mesh(extra.geometry(!LIT, LIT), MAT.extra));
     if (tanks.length) {
       const im = new THREE.InstancedMesh(TANK_GEO, MAT.tank, tanks.length / 3);
       const m4 = new THREE.Matrix4();
@@ -722,6 +727,7 @@
       group.add(im);
     }
     group.userData.pick = meshes;
+    if (LIT) group.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
     return group;
   }
   const MAT = {
@@ -783,13 +789,36 @@
     pts.name = "treePoints";
     groups.trees.add(pts);
   }
-  const TREE_CHUNK = 400;
+  // Two levels: simple crowns for every tree in 400 m chunks, and detailed trees in small 100 m chunks that
+  // are only drawn near the camera (a detailed tree costs ten times the triangles of a crown). Both use
+  // instanced meshes; a vertex-shader test on the distance to uTreeC hides a tree from whichever level
+  // does not apply, so the swap is exact and needs no per-frame updates.
+  const TREE_CHUNK = 400, NEAR_CHUNK = 100;
   const treeHidden = new Set();
-  const treeChunks = new Map();
+  const treeChunks = new Map(), nearTrees = new Map(), nearBuilt = new Set();
+  const TREE_LOD = { c: { value: new THREE.Vector2() }, r: { value: 0 } };
   for (let i = 0; i < NT; i++) {
     const k = Math.floor(TR[i * 3] / TREE_CHUNK) + "," + Math.floor(TR[i * 3 + 1] / TREE_CHUNK);
-    if (!treeChunks.has(k)) treeChunks.set(k, { cx: (Math.floor(TR[i * 3] / TREE_CHUNK) + 0.5) * TREE_CHUNK, cz: (Math.floor(TR[i * 3 + 1] / TREE_CHUNK) + 0.5) * TREE_CHUNK, idx: [], mid: null, near: null });
+    if (!treeChunks.has(k)) treeChunks.set(k, { cx: (Math.floor(TR[i * 3] / TREE_CHUNK) + 0.5) * TREE_CHUNK, cz: (Math.floor(TR[i * 3 + 1] / TREE_CHUNK) + 0.5) * TREE_CHUNK, idx: [], mid: null });
     treeChunks.get(k).idx.push(i);
+    const nk = Math.floor(TR[i * 3] / NEAR_CHUNK) + "," + Math.floor(TR[i * 3 + 1] / NEAR_CHUNK);
+    if (!nearTrees.has(nk)) nearTrees.set(nk, { cx: (Math.floor(TR[i * 3] / NEAR_CHUNK) + 0.5) * NEAR_CHUNK, cz: (Math.floor(TR[i * 3 + 1] / NEAR_CHUNK) + 0.5) * NEAR_CHUNK, idx: [], mesh: null });
+    nearTrees.get(nk).idx.push(i);
+  }
+  // Adds the distance test to a tree material: near = detailed trees (hidden beyond the radius), else crowns (hidden inside it).
+  function treeLodPatch(mat, near) {
+    const prev = mat.onBeforeCompile, prevKey = mat.customProgramCacheKey ? mat.customProgramCacheKey() : "";
+    mat.onBeforeCompile = (sh, r) => {
+      if (prev) prev(sh, r);
+      sh.uniforms.uTreeC = TREE_LOD.c; sh.uniforms.uTreeR = TREE_LOD.r;
+      sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nuniform vec2 uTreeC; uniform float uTreeR;")
+        .replace("#include <project_vertex>", `#ifdef USE_INSTANCING
+        { vec2 dd = instanceMatrix[3].xz - uTreeC; if (dot(dd, dd) ${near ? ">=" : "<"} uTreeR * uTreeR) transformed = vec3(0.0); }
+        #endif
+        #include <project_vertex>`);
+    };
+    mat.customProgramCacheKey = () => prevKey + (near ? "|treeNear" : "|treeMid");
+    mat.needsUpdate = true;
   }
   const crownMid = (() => {
     const crown = new THREE.OctahedronGeometry(1, 0).scale(1, 1.15, 1).translate(0, 0.1, 0);
@@ -851,6 +880,14 @@
   }
   const treeMidMat = new THREE.MeshBasicMaterial({ vertexColors: true });
   const treeNearMat = new THREE.MeshBasicMaterial({ vertexColors: true });
+  // The tree models in use: standard mode uses these; gfx.js swaps in leaf-card trees with their own materials.
+  // tint(c, t) sets a per-tree colour multiplier; shadow says whether the trees cast sun shadows.
+  const TREEKIT = {
+    near: { geo: treeNearGeo, mat: treeNearMat, tint: null, shadow: false },
+    mid: { geo: crownMidBaked, mat: treeMidMat, tint: (c, t) => c.setRGB(0.3 * t.tint, 0.45 * t.tint, 0.22 * t.tint), shadow: false },
+  };
+  treeLodPatch(treeNearMat, true);
+  treeLodPatch(treeMidMat, false);
   function treeMatrix(i, m4, rnd) {
     const x = TR[i * 3], z = TR[i * 3 + 1], h = Math.max(3, TR[i * 3 + 2]);
     const r = h >= 15 ? Math.min(4.5, 0.15 * h + 1) : Math.min(6, 0.32 * h + 1);
@@ -859,19 +896,22 @@
   }
   function buildTreeChunk(tc, near) {
     const n = tc.idx.length, rnd = mulberry32(tc.idx[0] + (near ? 1 : 0));
-    const im = new THREE.InstancedMesh(near ? treeNearGeo : crownMidBaked, near ? treeNearMat : treeMidMat, n);
+    const kit = near ? TREEKIT.near : TREEKIT.mid;
+    const im = new THREE.InstancedMesh(kit.geo, kit.mat, n);
     const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), s = new THREE.Vector3(), p = new THREE.Vector3(), c = new THREE.Color();
     tc.idx.forEach((i, k) => {
       const t = treeMatrix(i, m4, rnd);
-      if (treeHidden.has(i)) { im.setMatrixAt(k, m4.makeScale(0, 0, 0)); if (!near) im.setColorAt(k, c.setRGB(0, 0, 0)); return; }
+      if (treeHidden.has(i)) { im.setMatrixAt(k, m4.makeScale(0, 0, 0)); if (kit.tint) im.setColorAt(k, c.setRGB(0, 0, 0)); return; }
       q.setFromAxisAngle(new THREE.Vector3(0, 1, 0), t.yaw);
       if (near) { p.set(t.x, t.y, t.z); s.set(t.r * 2.6, t.h, t.r * 2.6); }
       else { p.set(t.x, t.y + t.h * 0.62, t.z); s.set(t.r, t.h * 0.42, t.r); }
       im.setMatrixAt(k, m4.compose(p, q, s));
-      if (!near) im.setColorAt(k, c.setRGB(0.3 * t.tint, 0.45 * t.tint, 0.22 * t.tint));
+      if (kit.tint) { kit.tint(c, t); im.setColorAt(k, c); }
     });
     im.frustumCulled = true;
     im.computeBoundingSphere();
+    im.castShadow = LIT && kit.shadow;
+    im.receiveShadow = LIT;
     return im;
   }
 
@@ -912,10 +952,11 @@
   })();
   const lampMat = new THREE.MeshLambertMaterial({ color: 0xb4b8bc });
   function buildLights(lc) {
-    const im = new THREE.InstancedMesh(lampGeo, lampMat, lc.list.length);
+    const im = new THREE.InstancedMesh(lampGeo, (GFX && GFX.lampMat) || lampMat, lc.list.length);
     const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), one = new THREE.Vector3(1, 1, 1), p = new THREE.Vector3();
     lc.list.forEach((l, i) => { q.setFromAxisAngle(new THREE.Vector3(0, 1, 0), l[3]); im.setMatrixAt(i, m4.compose(p.set(l[0], l[1], l[2]), q, one)); });
     im.computeBoundingSphere();
+    im.castShadow = LIT;
     return im;
   }
   {
@@ -1072,26 +1113,24 @@
     else if (m === "aerial" || m === "plan") streetFrom = "aerial";
     document.body.classList.toggle("street", m === "street");
     document.body.classList.toggle("planning", m === "plan");
-    document.body.classList.toggle("game", m === "game");
-    if ($("mode-play")) $("mode-play").setAttribute("aria-pressed", m === "game");
-    if (GAME && prev !== m) GAME.mode(m, prev);
     $("mode-aerial").setAttribute("aria-pressed", m === "aerial");
     $("mode-street").setAttribute("aria-pressed", m === "street" || m === "pick");
     if ($("mode-plan")) $("mode-plan").setAttribute("aria-pressed", m === "plan");
     if (PLAN && prev !== m) PLAN.mode(m, prev);
+    if (GFX && prev !== m) GFX.mode(m, prev);
     $("sv").hidden = m !== "street";
     $("minimap").hidden = m !== "street";
     $("sv-hint").hidden = m !== "pick";
     document.body.classList.toggle("picking", m === "pick");
     // Map overlays are for the aerial view; street view shows the place itself.
-    for (const [g, id] of [["blocks", "ly-blocks"], ["blockfill", "ly-blockfill"], ["villages", "ly-villages"]]) groups[g].visible = m !== "street" && m !== "game" && $(id).checked;
-    if (m === "street" || m === "game") {
-      scene.fog = new THREE.Fog(SKY, 140, 1100);
+    for (const [g, id] of [["blocks", "ly-blocks"], ["blockfill", "ly-blockfill"], ["villages", "ly-villages"]]) groups[g].visible = m !== "street" && $(id).checked;
+    if (m === "street") {
+      scene.fog = GFX ? GFX.fog(m) : new THREE.Fog(SKY, 140, 1100);
       $("info").hidden = true;
       if (panelBeforeStreet === null) panelBeforeStreet = !$("panel").classList.contains("closed");
       setPanel(false);
     } else {
-      scene.fog = null;
+      scene.fog = GFX ? GFX.fog(m) : null;
       if (panelBeforeStreet !== null && m === "aerial") { if (panelBeforeStreet && innerWidth > 700) setPanel(true); panelBeforeStreet = null; }
     }
     dirty = true;
@@ -1271,7 +1310,7 @@
   canvas.addEventListener("pointerup", endTouch);
   canvas.addEventListener("pointercancel", endTouch);
   canvas.addEventListener("pointermove", (e) => {
-    if (mode === "game" || !touches.has(e.pointerId)) return;
+    if (!touches.has(e.pointerId)) return;
     touches.set(e.pointerId, [e.clientX, e.clientY]);
     if (touches.size !== 2) return;
     const [a, b] = [...touches.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]);
@@ -1284,7 +1323,6 @@
     pinchD = d;
   });
   canvas.addEventListener("pointerdown", (e) => {
-    if (mode === "game") return;
     if (mode === "plan" && PLAN && e.button === 0 && !e.shiftKey && touches.size < 2 && PLAN.down(e)) { planDrag = true; canvas.setPointerCapture(e.pointerId); return; }
     dragging = true; dragBtn = e.button === 2 || e.shiftKey ? 2 : 0;
     lastX = downX = e.clientX; lastY = downY = e.clientY;
@@ -1292,7 +1330,6 @@
     canvas.classList.add("dragging");
   });
   canvas.addEventListener("pointermove", (e) => {
-    if (mode === "game") return;
     if (planDrag) { PLAN.move(e); return; }
     if (!dragging) { if (mode === "aerial" || mode === "plan") hoverReadout(e); if (mode === "plan" && PLAN) PLAN.hover(e); return; }
     if (touches.size >= 2) { lastX = e.clientX; lastY = e.clientY; return; } // pinching, not orbiting
@@ -1313,7 +1350,6 @@
     dirty = true;
   });
   canvas.addEventListener("pointerup", (e) => {
-    if (mode === "game") return;
     if (planDrag) { planDrag = false; PLAN.up(e); return; }
     dragging = false;
     canvas.classList.remove("dragging");
@@ -1323,7 +1359,6 @@
   });
   canvas.addEventListener("wheel", (e) => {
     e.preventDefault();
-    if (mode === "game") return;
     if (mode === "street") { SV.fov = Math.max(30, Math.min(95, SV.fov + Math.sign(e.deltaY) * 5)); dirty = true; return; }
     const f = Math.exp(Math.sign(e.deltaY) * 0.18);
     const hit = groundHit(e.clientX, e.clientY);
@@ -1333,7 +1368,6 @@
     dirty = true;
   }, { passive: false });
   canvas.addEventListener("dblclick", (e) => {
-    if (mode === "game") return;
     if (mode === "plan") { if (PLAN) PLAN.dblclick(e); return; }
     if (mode !== "aerial") return;
     const hit = groundHit(e.clientX, e.clientY);
@@ -1342,7 +1376,6 @@
   const keyMap = { ArrowUp: "fwd", KeyW: "fwd", ArrowDown: "back", KeyS: "back", KeyA: "left", KeyD: "right", ShiftLeft: "run", ShiftRight: "run", KeyQ: "turnL", KeyE: "turnR" };
   window.addEventListener("keydown", (e) => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA" || e.target.isContentEditable) return;
-    if (mode === "game") return;
     if (mode === "plan" && PLAN && $("help").hidden && PLAN.key(e)) return;
     if (e.key === "Escape") { if (!$("help").hidden) $("help").hidden = true; else if (mode === "street") exitStreet(); else if (mode === "pick") setMode(streetFrom === "plan" ? "plan" : "aerial"); else if (mode !== "aerial") setMode("aerial"); else $("info").hidden = true; return; }
     if (e.key === "?") { $("help").hidden = false; return; }
@@ -1730,7 +1763,7 @@
 
   // ---------------------------------------------------------------------------------------
   // LOD management, labels, minimap, render loop
-  const LOD0_RANGE = 650, TREE_NEAR = 220, TREE_MID = 1000, LIGHT_RANGE = 700, KERB_RANGE = 450;
+  const LOD0_RANGE = 650, TREE_NEAR = 170, TREE_MID = 1000, LIGHT_RANGE = 700, KERB_RANGE = 450;
   function updateLods() {
     const cx = camera.position.x, cz = camera.position.z, cy = camera.position.y;
     const alt = cy - H(cx, cz);
@@ -1744,14 +1777,27 @@
       if (ch.lod0 && d > LOD0_RANGE * 2.2) { groups.bld.remove(ch.lod0); ch.lod0.traverse((o) => o.geometry && o.geometry !== TANK_GEO && o.geometry.dispose()); ch.lod0 = null; }
     }
     let tb = 0;
+    // Detail radius: around the camera on the street, around the view target when zoomed in from the air.
+    let tcx = cx, tcz = cz, R = TREE_NEAR;
+    if (mode !== "street") { tcx = view.tx; tcz = view.tz; R = view.dist < 650 ? Math.max(60, Math.min(230, view.dist * 0.4)) : 0; }
+    TREE_LOD.c.value.set(tcx, tcz); TREE_LOD.r.value = R;
     for (const tc of treeChunks.values()) {
       const d = Math.hypot(tc.cx - cx, tc.cz - cz, alt * 0.8);
-      const wantNear = d < TREE_NEAR + 280, wantMid = d < TREE_MID;
-      if (wantNear && !tc.near && tb < 2) { tc.near = buildTreeChunk(tc, true); groups.trees.add(tc.near); tb++; dirty = true; }
+      const wantMid = d < TREE_MID;
       if (wantMid && !tc.mid && tb < 3) { tc.mid = buildTreeChunk(tc, false); groups.trees.add(tc.mid); tb++; dirty = true; }
-      if (tc.near) tc.near.visible = wantNear;
-      if (tc.mid) tc.mid.visible = wantMid && !(wantNear && tc.near);
+      if (tc.mid) tc.mid.visible = wantMid;
     }
+    if (R > 0) {
+      const ci = Math.floor(tcx / NEAR_CHUNK), cj = Math.floor(tcz / NEAR_CHUNK), span = Math.ceil((R + 71) / NEAR_CHUNK);
+      for (let j = cj - span; j <= cj + span; j++) for (let i = ci - span; i <= ci + span; i++) {
+        const nc = nearTrees.get(i + "," + j);
+        if (!nc) continue;
+        const want = Math.hypot(nc.cx - tcx, nc.cz - tcz) < R + 71;
+        if (want && !nc.mesh && tb < 4) { nc.mesh = buildTreeChunk(nc, true); groups.trees.add(nc.mesh); nearBuilt.add(nc); tb++; dirty = true; }
+        if (nc.mesh) nc.mesh.visible = want;
+      }
+    }
+    for (const nc of nearBuilt) if (Math.hypot(nc.cx - tcx, nc.cz - tcz) > Math.max(R, 120) * 2.6 + 100) { groups.trees.remove(nc.mesh); nc.mesh.dispose(); nc.mesh = null; nearBuilt.delete(nc); }
     groups.trees.getObjectByName("treePoints").visible = alt > 300;
     for (const k of kerbChunks.values()) k.mesh.visible = Math.hypot(k.cx - cx, k.cz - cz, alt * 2) < KERB_RANGE + 360;
     for (const lc of lightChunks.values()) {
@@ -1772,15 +1818,15 @@
     for (const l of labels) {
       if (l.bld && l.bld.hidden) { if (l.shown) { l.el.style.display = "none"; l.shown = false; } continue; }
       const d = Math.hypot(l.x - camPos.x, l.z - camPos.z, (l.y - camPos.y) * 0.5);
-      const atStreet = mode === "street" || mode === "game";
+      const atStreet = mode === "street";
       if (atStreet && l.kind === "block") { if (l.shown) { l.el.style.display = "none"; l.shown = false; } continue; }
-      const range = atStreet ? Math.min(l.range, mode === "game" ? 260 : 400) : l.range;
+      const range = atStreet ? Math.min(l.range, 400) : l.range;
       if (d > range) { if (l.shown) { l.el.style.display = "none"; l.shown = false; } continue; }
       v3.set(l.x, l.y + 3, l.z).project(camera);
       if (v3.z > 1 || v3.x < -1.1 || v3.x > 1.1 || v3.y < -1.1 || v3.y > 1.1) { if (l.shown) { l.el.style.display = "none"; l.shown = false; } continue; }
       vis.push({ l, sx: ((v3.x + 1) / 2) * w, sy: ((1 - v3.y) / 2) * h, d });
     }
-    if (mode === "street" || mode === "game") {
+    if (mode === "street") {
       const cx = camPos.x, cz = camPos.z, cy = camPos.y;
       for (let i = vis.length - 1; i >= 0; i--) {
         const l = vis[i].l, dx = l.x - cx, dz = l.z - cz, D2 = Math.hypot(dx, dz);
@@ -1796,7 +1842,6 @@
       }
     }
     vis.sort((a, b) => a.l.prio - b.l.prio || a.d - b.d);
-    if (mode === "game") vis.length = Math.min(vis.length, 8);
     for (const { l, sx, sy } of vis) {
       if (!l.w) { l.el.style.display = "block"; l.w = l.el.offsetWidth || 80; l.el.style.display = l.shown ? "block" : "none"; }
       const box = [sx - l.w / 2, sy - 30, sx + l.w / 2, sy - 8];
@@ -1855,22 +1900,20 @@
     camera.updateProjectionMatrix();
   }
   let scale = Math.min(window.devicePixelRatio || 1, 1.25);
-  const BASE_SCALE = scale;
+  let BASE_SCALE = scale;
   window.addEventListener("resize", () => { dirty = true; });
   function renderFrame(s) {
     if (s && s !== scale) { scale = s; renderer.setPixelRatio(scale); }
     resize();
-    renderer.render(scene, camera);
+    if (GFX) GFX.render(renderer, scene, camera, mode);
+    else renderer.render(scene, camera);
   }
   let last = performance.now(), msAvg = 16, frames = 0;
   function frame(now) {
     const dt = Math.min(0.1, (now - last) / 1000);
     last = now;
     let moving = false;
-    if (mode === "game") {
-      moving = true;
-      if (GAME) GAME.frame(dt);
-    } else if (mode === "street") {
+    if (mode === "street") {
       moving = SV.free ? stepFree(dt) : stepFollow(dt);
       applyStreet();
       if (moving) updateArrows();
@@ -1887,7 +1930,8 @@
       $("compass-needle").style.transform = `rotate(${view.theta}rad)`;
     }
     const lodChanged = updateLods();
-    if (moving || dirty || lodChanged) {
+    const gfxAnimating = GFX ? GFX.frame(dt, mode, moving, moving || dirty || lodChanged) : false;
+    if (moving || dirty || lodChanged || gfxAnimating) {
       const t0 = performance.now();
       renderFrame(moving ? Math.max(0.6, Math.min(BASE_SCALE, scale * (msAvg > 30 ? 0.92 : msAvg < 18 ? 1.04 : 1))) : BASE_SCALE);
       msAvg = msAvg * 0.9 + (performance.now() - t0) * 0.1;
@@ -1957,15 +2001,21 @@
     for (const i of set) treeHidden.add(i);
     const pa = groups.trees.getObjectByName("treePoints").geometry.attributes.position;
     const keys = new Set();
+    const nkeys = new Set();
     for (const i of changed) {
       const x = TR[i * 3], z = TR[i * 3 + 1];
       pa.setY(i, treeHidden.has(i) ? -1e5 : H(x, z) + TR[i * 3 + 2] * 0.7);
       keys.add(Math.floor(x / TREE_CHUNK) + "," + Math.floor(z / TREE_CHUNK));
+      nkeys.add(Math.floor(x / NEAR_CHUNK) + "," + Math.floor(z / NEAR_CHUNK));
     }
     pa.needsUpdate = true;
     for (const k of keys) {
       const tc = treeChunks.get(k);
-      if (tc) for (const p of ["mid", "near"]) if (tc[p]) { groups.trees.remove(tc[p]); tc[p].dispose(); tc[p] = null; }
+      if (tc && tc.mid) { groups.trees.remove(tc.mid); tc.mid.dispose(); tc.mid = null; }
+    }
+    for (const k of nkeys) {
+      const nc = nearTrees.get(k);
+      if (nc && nc.mesh) { groups.trees.remove(nc.mesh); nc.mesh.dispose(); nc.mesh = null; nearBuilt.delete(nc); }
     }
     dirty = true;
   }
@@ -1986,8 +2036,9 @@
       walls(ex, inn, top, top + 0.9, 3, wc, false);
     }
     const grp = new THREE.Group();
-    grp.add(new THREE.Mesh(wb.geometry(true), MAT.facade), new THREE.Mesh(rb.geometry(true), MAT.roof));
-    if (ex.tris) grp.add(new THREE.Mesh(ex.geometry(true), MAT.extra));
+    grp.add(new THREE.Mesh(wb.geometry(!LIT, LIT), MAT.facade), new THREE.Mesh(rb.geometry(!LIT, LIT), MAT.roof));
+    if (ex.tris) grp.add(new THREE.Mesh(ex.geometry(!LIT, LIT), MAT.extra));
+    if (LIT) grp.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
     grp.userData.top = top;
     return grp;
   }
@@ -1997,7 +2048,8 @@
     return b.tris ? new THREE.Mesh(b.geometry(), roadMat(g)) : null;
   }
   function makeTree(x, z, h = 6) {
-    const m = new THREE.Mesh(treeNearGeo, treeNearMat), r = Math.min(6, 0.32 * h + 1);
+    const m = new THREE.Mesh(TREEKIT.near.geo, TREEKIT.near.mat), r = Math.min(6, 0.32 * h + 1);
+    if (LIT) { m.castShadow = TREEKIT.near.shadow; m.receiveShadow = true; }
     m.position.set(x, H(x, z), z);
     m.scale.set(r * 2.6, h, r * 2.6);
     return m;
@@ -2042,9 +2094,32 @@
     });
   }
   function setNight(on) {
-    renderer.toneMappingExposure = on ? 0.2 : 1;
     document.body.classList.toggle("night", on);
+    if (GFX && GFX.setNight(on)) { dirty = true; return; }
+    renderer.toneMappingExposure = on ? 0.2 : 1;
     dirty = true;
+  }
+  // --- high-quality rendering support (js/gfx.js) ---------------------------------------
+  // gfx.js swaps the materials itself; this rebuilds what depends on LIT (building colours and
+  // shadow flags) and installs tree models.
+  function setLit(on) {
+    if (on === LIT) return;
+    LIT = on;
+    rebuildAllBuildings();
+    for (const lc of lightChunks.values()) if (lc.mesh) { lc.mesh.castShadow = on; lc.mesh.material = (on && GFX && GFX.lampMat) || lampMat; }
+    refreshTrees();
+    dirty = true;
+  }
+  function refreshTrees() {
+    for (const tc of treeChunks.values()) if (tc.mid) { groups.trees.remove(tc.mid); tc.mid.dispose(); tc.mid = null; }
+    for (const nc of nearBuilt) { groups.trees.remove(nc.mesh); nc.mesh.dispose(); nc.mesh = null; }
+    nearBuilt.clear();
+    dirty = true;
+  }
+  function setTreeKit(kit) {
+    if (kit.near) TREEKIT.near = kit.near;
+    if (kit.mid) TREEKIT.mid = kit.mid;
+    refreshTrees();
   }
   function setXray(on) {
     for (const k of ["facade", "house", "shed", "roof", "extra"]) {
@@ -2074,18 +2149,20 @@
     // Test hook: advance street-view movement by n steps of dt seconds (works while rAF is paused).
     step(n, dt = 1 / 30) { for (let i = 0; i < n; i++) { if (mode === "street") (SV.free ? stepFree(dt) : stepFollow(dt)); } if (mode === "street") { applyStreet(); updateArrows(); } },
     updateArrows,
-    game: {
-      setHooks(h) { GAME = h; }, mode: () => mode, setMode, buildingAt, nearestEdge, H, inCB, CB, toast, setPanel,
-      edgeOk: (k) => !!edgeOk[k], satImage: () => SAT_IMG, satGrid: SG, bounds: B, SKY,
-      lamps: () => { const out = []; for (const lc of lightChunks.values()) for (const l of lc.list) out.push(l); return out; },
-      setExposure(v) { renderer.toneMappingExposure = v; },
-      labels: (on) => labelLayer.classList.toggle("off", !on),
+    gfx: {
+      setHooks(h) { GFX = h; dirty = true; },
+      setLit, isLit: () => LIT, setTreeKit, refreshTrees,
+      mode: () => mode, markDirty: () => { dirty = true; }, setBaseScale(v) { BASE_SCALE = scale = v; dirty = true; }, toast,
+      H, D, B, SG, satImage: () => SAT_IMG, ground: () => window.__ground, terrain: () => groups.terrain.getObjectByName("terrain"),
+      lights: { sun, hemi }, MAT, TEX, ROAD_MAT, kerbChunks, lightChunks, treeChunks, TREEKIT, treeLodPatch, lampMat, TANK_GEO, blds, view, goal, SV, canvas, SKY, hexRGB, mulberry32, toRing, inCB, CB, buildingAt,
     },
     plan: {
       setHooks(h) { PLAN = h; }, mode: () => mode, setMode, groundHit, pickBuilding, raycast, buildingAt, blockAt, nearestEdge, H,
       makeBuilding, makeRoad, makeTree, makeLamp, setHiddenBuildings, setHiddenTrees, applyPlanGraph, setNight, setXray, setPlanLabels,
       toast, setPanel, flyTo, markDirty: () => { dirty = true; }, TYPE_LABEL, TYPE_COLOUR, unproj, inCB, CB, canvas, view, goal, enterStreet, snapshot,
     },
+    // Test hook: milliseconds per frame over n frames (waits for the GPU to finish).
+    bench(n = 20) { renderFrame(BASE_SCALE); const gl = renderer.getContext(), px = new Uint8Array(4); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px); const t = performance.now(); for (let i = 0; i < n; i++) { renderFrame(BASE_SCALE); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px); } return (performance.now() - t) / n; },
     settle() { Object.assign(view, goal); mode === "street" ? applyStreet() : applyAerial(); for (let i = 0; i < 40; i++) updateLods(); renderFrame(BASE_SCALE); updateLabels(); if (mode === "street") drawMinimap(); },
   };
   window.dispatchEvent(new Event("campus:ready"));
