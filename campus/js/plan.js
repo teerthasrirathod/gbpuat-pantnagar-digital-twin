@@ -756,7 +756,12 @@
         const onCtl = /^(BUTTON|A|SUMMARY)$/.test(e.target.tagName);
         // For people who cannot or would rather not click on the map: Enter or Space acts at the cross in the middle of the screen.
         if (!onCtl && !ctrl && !e.altKey && tool !== "select" && (k === "Enter" || k === " ")) {
-          if (k === "Enter" && canFinish()) finishDraft(); else onTool(centreEvent());
+          if (k === "Enter" && canFinish()) finishDraft();
+          else {
+            onTool(centreEvent());
+            // someone using the keyboard should land on the item they just placed
+            if (!keep && sel && !$("plan-card").hidden) { const hd = $("plan-card").querySelector("h2"); if (hd) hd.focus({ preventScroll: true }); }
+          }
           e.preventDefault(); return true;
         }
         if (k === "Enter" && canFinish()) { finishDraft(); return true; }
@@ -776,12 +781,14 @@
       emit("select", { id });
     }
     function remove(id) {
+      if (busyNow()) return;
       const it = S.items.find((i) => i.id === id);
       const name = it ? itemTitle(it) : "";
       mutate(() => { S.items = S.items.filter((i) => i.id !== id); if (sel === id) sel = null; });
       if (it) toast(`Removed: ${name}.`, { undo: true });
     }
     function duplicate() {
+      if (busyNow()) return;
       const it = S.items.find((i) => i.id === sel);
       if (!it) return;
       mutate(() => { const c = JSON.parse(JSON.stringify(it)); c.id = "i" + S.seq++; c.pts = c.pts.map((p) => [p[0] + 8, p[1] + 8]); S.items.push(c); sel = c.id; });
@@ -789,6 +796,7 @@
     }
     // One placement, then done: the tool goes back to "select" unless the person ticked "Keep adding".
     function add(it) {
+      if (busyNow()) return;
       if (!showPlan) setShowPlan(true);
       mutate(() => { S.items.push(it); sel = keep ? null : it.id; });
       const name = itemTitle(it);
@@ -798,6 +806,7 @@
     }
     function centreEvent() { return { clientX: innerWidth / 2, clientY: innerHeight / 2 }; }
     function moveSelected(h) {
+      if (busyNow()) return;
       const it = S.items.find((i) => i.id === sel);
       if (!it) { setTool("select"); return; }
       const c = it.g === "point" ? it.pts[0] : mean(it.pts), dx = h.x - c[0], dz = h.z - c[1];
@@ -806,6 +815,7 @@
     }
     let lastNudge = { id: null, t: 0 };
     function nudge(it, r, f) {
+      if (busyNow()) return;
       const th = A.view.theta, m = 2;
       const dx = (Math.cos(th) * r - Math.sin(th) * f) * m, dz = (-Math.sin(th) * r - Math.cos(th) * f) * m;
       const now = performance.now(), join = lastNudge.id === it.id && now - lastNudge.t < 2500;
@@ -912,7 +922,7 @@
       else if (poly) tip = n < 3 ? "Click the corners one by one." : "Keep clicking, or press Finish.";
       else if (tool === "route") tip = routeA ? "Now click where you are going." : "Click where you start.";
       else if (tool === "wifi_pick") tip = "Click buildings to add or remove them from the Wi-Fi check, then press Done.";
-      $("plan-draw-tip").innerHTML = `<b>${esc(kindLabel(tool))}</b> · ${esc(tip)}${/[.!?]$/.test(tip) ? "" : "."} <span class="tl">Or press Space at the cross.</span>`;
+      $("plan-draw-tip").innerHTML = `<b>${esc(kindLabel(tool))}</b> · ${esc(tip)}${/[.!?]$/.test(tip) ? "" : "."} <span class="tl">${poly ? "Or press Space at the cross to add a point, and Enter to finish." : "Or press Space at the cross."}</span>`;
       $("plan-draw-back").hidden = !(draft && n > 0);
       $("plan-draw-done").hidden = !canFinish();
       const single = ["route", "wifi_pick", "move"].includes(tool);
@@ -931,6 +941,7 @@
 
     // "Light a road": lights along a mapped road on alternate sides.
     function lightRoad(h) {
+      if (busyNow()) return;
       const ne = A.nearestEdge(h.x, h.z, 25);
       if (!ne) { toast("Click right on a road."); return; }
       const r = D.roads[GE[ne.k][2]];
@@ -1156,7 +1167,7 @@
       if (p.type === "number") return `<label><span>${esc(PARAM_LABEL[it.kind + "." + p.key] || p.label)}</span><span class="numu"><input type="number" data-p="${p.key}" value="${esc(v)}" min="${p.min}" max="${p.max}" step="${p.step || 1}">${p.unit ? `<i>${esc(p.unit)}</i>` : ""}</span></label>`;
       return `<label><span>${esc(p.label)}</span><input type="text" data-p="${p.key}" value="${esc(v)}"></label>`;
     }
-    let cardKey = "";
+    let cardKey = "", lastWarn = "";
     const warnHtml = (w) => w.map((x) => `<div class="pwarn">${esc(x)}</div>`).join("");
     // Engine warnings plus one sanity check of our own: a building drawn from far above is easily far too big.
     const PITCH = 7140;
@@ -1178,13 +1189,15 @@
       const key = it.id + "|" + it.kind + "|" + it.status;
       if (key === cardKey && !card.hidden) {
         $("pc-kv").innerHTML = kvHtml(infoRows(it, r));
-        $("pc-warn").innerHTML = warnHtml(warnsOf(it, r));
+        const wh = warnHtml(warnsOf(it, r));
+        if (wh !== lastWarn) { lastWarn = wh; $("pc-warn").innerHTML = wh; }
         card.querySelectorAll("[data-p]").forEach((el) => { if (document.activeElement !== el && it.props[el.dataset.p] != null) el.value = it.props[el.dataset.p]; });
         const nm = $("pc-name"); if (nm && document.activeElement !== nm) nm.value = it.name || "";
         return;
       }
       cardKey = key;
-      const ex = it.status === "existing";
+      const ex = it.status === "existing", hadFocus = card.contains(document.activeElement);
+      lastWarn = warnHtml(warnsOf(it, r));
       card.innerHTML = `
         <button class="icon-btn close" id="plan-card-close" aria-label="Close this card"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
         <div class="card-head">${svg(it.kind, COL[it.kind])}<h2 tabindex="-1">${esc(kindLabel(it.kind))}</h2></div>
@@ -1205,6 +1218,7 @@
           <button data-act="del" class="danger">Remove</button>
         </div>`;
       card.hidden = false;
+      if (hadFocus) { const hd = card.querySelector("h2"); if (hd) hd.focus({ preventScroll: true }); }
       $("plan-card-close").onclick = () => { select(null); A.canvas.focus({ preventScroll: true }); };
       card.querySelectorAll("[data-p]").forEach((el) => el.addEventListener("change", () => {
         const p = k.params.find((q) => q.key === el.dataset.p);
@@ -1241,17 +1255,21 @@
     // Shows progress with a Stop button; one Undo takes everything back.
     let wifiBusy = false, wifiStop = false;
     const busyNow = () => { if (!wifiBusy) return false; toast("Wi-Fi points are still being placed. Please wait a moment, or press Stop."); return true; };
+    // The busy flag covers the whole run, including the wait for an up-to-date result, so nothing can be edited under it.
     async function suggestWifi(opts = {}) {
       if (busyNow()) return null;
+      wifiBusy = true; wifiStop = false;
+      try { return await placeWifi(opts); } finally { wifiBusy = false; renderSim(); }
+    }
+    async function placeWifi(opts) {
       try { await E.load(); } catch (e) { toast(e.message || String(e)); return null; }
       if (!R || pending || stale) { clearTimeout(evalTimer); await runEngine(); }
       if (!R) return null;
-      const picks = (S.meta.wifi_buildings || []).map((ll) => fromLL(ll[0], ll[1]));
+      const picks = opts.all ? [] : (S.meta.wifi_buildings || []).map((ll) => fromLL(ll[0], ll[1]));
       const bandEl = $("wifi-band"), band = opts.band || (bandEl ? bandEl.value : "5");
       const n = picks.length || R.wifi.targets.length;
       if (!n) { toast("Wi-Fi is not being checked in any building yet. Open the numbers below and tick a kind of building, or pick buildings."); return null; }
       if (!showPlan) setShowPlan(true);
-      wifiBusy = true; wifiStop = false;
       renderSim();
       const before = snap(), added = [], rows = [];
       say("Placing Wi-Fi points. This takes a few seconds.");
@@ -1267,8 +1285,8 @@
           for (const a of res.aps || []) { const it = newItem("wifi_ap", [[a.x, a.z]], { band, power: 20, floor: a.floor, pole: 6 }); S.items.push(it); added.push(it); }
           rows.push(...(res.buildings || []));
         }
-      } finally { wifiBusy = false; renderSim(); }
-      if (!added.length) { toast(wifiStop ? "Stopped. Nothing was added." : "Those buildings already have good Wi-Fi."); return { added: 0 }; }
+      } finally { /* suggestWifi clears the busy flag */ }
+      if (!added.length) { toast(wifiStop ? "Stopped. Nothing was added." : picks.length ? "Nothing to add: the buildings you picked already have good Wi-Fi." : "Those buildings already have good Wi-Fi."); return { added: 0 }; }
       undo.push(before); redo.length = 0;
       changed();
       const b0 = rows.reduce((s, b) => s + b.before, 0) / Math.max(1, rows.length), b1 = rows.reduce((s, b) => s + b.after, 0) / Math.max(1, rows.length);
@@ -1441,7 +1459,7 @@
           if (!listAll && shownN >= MAX) break;
           shownN++;
           const w = warnOf(it), nm = itemTitle(it);
-          h += `<li data-id="${esc(it.id)}" class="${it.id === sel ? "sel" : ""}${on ? "" : " off"}">${svg(it.kind, COL[it.kind])}<button class="t" title="Show this on the map">${esc(nm)}</button><span class="meta">${it.status === "existing" ? '<span class="pill">already there</span>' : ""}${w ? `<span class="warn" title="${esc(w.join(" "))}" aria-label="Needs a look: ${esc(w.join(" "))}">!</span>` : ""}</span><button class="rowbtn danger" data-act="del" aria-label="Remove ${esc(nm)}">Remove</button></li>`;
+          h += `<li data-id="${esc(it.id)}" class="${it.id === sel ? "sel" : ""}${on ? "" : " off"}">${svg(it.kind, COL[it.kind])}<button class="t" title="Show this on the map">${esc(nm)}</button><span class="meta">${it.status === "existing" ? '<span class="pill">already there</span>' : ""}${w ? `<button class="warn" data-act="sel" title="${esc(w.join(" "))}" aria-label="Needs a look: ${esc(w.join(" "))}">!</button>` : ""}</span><button class="rowbtn danger" data-act="del" aria-label="Remove ${esc(nm)}">Remove</button></li>`;
         }
       }
       if (shownN < S.items.length) h += `<li class="more"><button class="rowbtn" data-act="more">Show all ${S.items.length}</button></li>`;
@@ -1472,25 +1490,26 @@
         const st = stateOf(x), a = R.access.find((q) => "access:" + q.kind === H);
         const was = H === "wifi" ? R.wifi.base.good * 100 : H === "light" ? (R.light.study_m ? (R.light.base.ok_m / R.light.study_m) * 100 : 0) : a ? a.base.pct * 100 : 0;
         const label = H === "wifi" ? "Good Wi-Fi inside buildings" : H === "light" ? "Roads lit properly" : `People within ${a.radius} m of ${a.label.toLowerCase()}`;
-        return { cls: st.cls === "close" ? "warn" : st.cls, label, value: fmt(x.value) + "%", sub: `${st.icon} ${st.word} · was ${fmt(was)}% · target ${fmt(x.target)}%` };
+        return { cls: st.cls === "close" ? "warn" : st.cls, label, value: fmt(x.value) + "%", sub: `${st.icon} ${st.word}`, detail: `Today ${fmt(was)}%, target ${fmt(x.target)}%` };
       }
       if (H === "green") { const q = R.green; return { cls: "none", label: "Rain, sun and trees", value: q.rwh_m3 ? fmt(q.rwh_m3) + " m³" : q.solar_kwp ? fmt(q.solar_kwp, 1) + " kWp" : q.planted + " trees", sub: `${q.rwh_m3 ? "rain a year · " : ""}${fmt(q.solar_kwp, 1)} kWp solar · ${q.planted} trees` }; }
       if (H === "build") { const q = R.build; return { cls: R.warnings ? "warn" : "none", label: "New buildings", value: String(q.new), sub: `${fmt(q.gfa)} m² floor area${R.warnings ? " · " + plural(R.warnings, "thing") + " to check" : ""}` }; }
       return null;
     }
-    const tile = (cls, label, value, sub) => `<div class="tile ${cls}"><span class="l">${esc(label)}</span><b>${esc(value)}</b><span class="s">${esc(sub)}</span></div>`;
+    const tile = (cls, label, value, sub, detail) => `<div class="tile ${cls}"${detail ? ` title="${esc(detail)}"` : ""}><span class="l">${esc(label)}</span><b>${esc(value)}</b><span class="s">${esc(sub)}</span></div>`;
     function renderKpis() { keepFocus($("plan-strip"), renderKpisNow); }
     function renderKpisNow() {
       const el = $("plan-kpis"), note = $("strip-note");
       $("plan-strip").classList.toggle("busy", pending);
       let nh = "";
-      if (!showPlan) nh = `<div class="banner-today"><span><b>You are looking at today's campus</b>, without your changes.</span><button class="pbtn small" data-act="showplan">Show my plan</button></div>`;
+      if (failed && !pending) nh = `<div class="banner-today" role="alert"><span><b>The calculator stopped.</b> Your plan is safe.</span><button class="pbtn small" data-act="retry">Try again</button></div>`;
+      else if (!showPlan) nh = `<div class="banner-today"><span><b>You are looking at today's campus</b>, without your changes.</span><button class="pbtn small" data-act="showplan">Show my plan</button></div>`;
       else if (stale && S.items.length) nh = `<div class="banner-today"><span>Your latest changes are not counted yet.</span><button class="pbtn small" data-act="update">Update the results</button></div>`;
       else if (!S.items.length) nh = `<div class="strip-empty">No changes yet. When you add something, its effect shows up here.</div>`;
       note.innerHTML = nh;
       if (!R || !S.items.length) { el.innerHTML = ""; return; }
       const t = totals(), v = verdicts(), ok = v.filter((x) => x.ok).length, h = headline(), tiles = [];
-      if (h) tiles.push(tile(h.cls, h.label, h.value, h.sub));
+      if (h) tiles.push(tile(h.cls, h.label, h.value, h.sub, h.detail));
       const over = t.cap && t.total > t.cap;
       tiles.push(tile(over ? "bad" : "", "Cost to build", inr(t.total), t.cap ? (over ? "✕ Over your limit" : "✓ Within your limit") : "Upkeep " + inr(t.opex) + " a year"));
       if (v.length) tiles.push(`<button class="tile ${ok === v.length ? "ok" : "warn"}" id="kpi-verdict"><span class="l">Targets met</span><b>${ok} of ${v.length}</b><span class="s">See the details</span></button>`);
@@ -1505,7 +1524,7 @@
       const n = usedCats();
       const cats = categories().filter((c) => n[c.key]);
       if (!cats.length) return `<div class="note">Add something to the scenario first.</div>`;
-      return `<div class="catchips" id="${id}">${cats.map((c) => `<label class="catchip${catOn(c.key) ? " on" : ""}"><input type="checkbox" data-cat="${c.key}" ${catOn(c.key) ? "checked" : ""}>${esc(c.label)} <small>${n[c.key]}</small></label>`).join("")}
+      return `<div class="catchips" id="${id}" role="group" aria-label="Which kinds of changes to include">${cats.map((c) => `<label class="catchip${catOn(c.key) ? " on" : ""}"><input type="checkbox" data-cat="${c.key}" ${catOn(c.key) ? "checked" : ""}>${esc(c.label)} <small>${n[c.key]}</small></label>`).join("")}
         <span class="catall"><button data-catall="1">All</button><button data-catall="0">None</button></span></div>`;
     }
     function wireCatChips(root) {
@@ -1525,7 +1544,11 @@
       let sig = null;
       if (inside) {
         const attrs = [...a.attributes].filter((x) => /^(data-|id$|aria-label$)/.test(x.name)).map((x) => `[${x.name}="${CSS.escape(x.value)}"]`).join("");
-        sig = { sel: a.tagName.toLowerCase() + attrs, s: a.selectionStart, e: a.selectionEnd };
+        const sel0 = a.tagName.toLowerCase() + attrs;
+        let idx = 0;
+        try { idx = [...el.querySelectorAll(sel0)].indexOf(a); } catch (e) { idx = 0; }
+        const typed = /^(INPUT|TEXTAREA)$/.test(a.tagName) && !/^(checkbox|radio|button|submit)$/.test(a.type || "") ? a.value : undefined;
+        sig = { sel: sel0, idx: Math.max(0, idx), v: typed, s: a.selectionStart, e: a.selectionEnd };
       }
       const open = [...el.querySelectorAll("details")].map((d) => d.open);
       fn();
@@ -1533,7 +1556,9 @@
       if (open.length && open.length === ds.length) ds.forEach((d, i) => { d.open = open[i]; });
       if (!sig) return;
       let n = null;
-      try { n = el.querySelector(sig.sel); } catch (e) { n = null; }
+      try { n = el.querySelectorAll(sig.sel)[sig.idx] || null; } catch (e) { n = null; }
+      if (n && n.disabled) n = null;
+      if (n && sig.v !== undefined && n.value !== sig.v) n.value = sig.v; // what was being typed is not thrown away
       if (n) { n.focus({ preventScroll: true }); try { if (sig.s != null && n.setSelectionRange) n.setSelectionRange(sig.s, sig.e); } catch (e) { /* no selection on this input */ } }
       else if (fallbackSelf) { el.tabIndex = -1; el.focus({ preventScroll: true }); }
     }
@@ -1561,9 +1586,9 @@
       if (showWifi) h += `<section class="sim"><h3>${svg("wifi_ap", COL.wifi_ap)} Wi-Fi coverage</h3>
         <div class="toggles"><label class="toggle"><input type="checkbox" id="ov-wifi" ${OV.wifi ? "checked" : ""}> Signal map</label>
         <label class="inline">Floor <select id="ov-floor">${Array.from({ length: 8 }, (_, i) => `<option value="${i}"${i === OV.floor ? " selected" : ""}>${i === 0 ? "Ground" : i}</option>`).join("")}</select></label></div>
-        <div class="note">Check Wi-Fi in: ${types.filter((t) => counts[t]).map((t) => `<label class="tchk"><input type="checkbox" data-wt="${t}" ${tgt.has(t) ? "checked" : ""}>${esc(A.TYPE_LABEL[t] || t)} <small>${counts[t]}</small></label>`).join("")}
+        <div class="note" role="group" aria-label="Kinds of building to check Wi-Fi in">Check Wi-Fi in: ${types.filter((t) => counts[t]).map((t) => `<label class="tchk"><input type="checkbox" data-wt="${t}" ${tgt.has(t) ? "checked" : ""}>${esc(A.TYPE_LABEL[t] || t)} <small>${counts[t]}</small></label>`).join("")}
         ${(S.meta.wifi_buildings || []).length ? `<span class="pill">+${S.meta.wifi_buildings.length} picked</span>` : ""}</div>
-        ${w ? `<div class="big">${delta(w.base.good, w.plan.good)} <span class="note">of ${fmt(w.gfa)} m² floor area gets good signal (-67 dBm), with ${w.plan.aps} access point${w.plan.aps === 1 ? "" : "s"}</span></div>` : ""}
+        ${w ? `<div class="big">${delta(w.base.good, w.plan.good)} <span class="note">of ${fmt(w.gfa)} m² floor area gets good signal (-67 dBm), with ${w.plan.aps} Wi-Fi point${w.plan.aps === 1 ? "" : "s"}</span></div>` : ""}
         ${w && w.targets.length ? `<details ${w.targets.length <= 6 ? "open" : ""}><summary>${w.targets.length} buildings</summary><table class="kv">${w.targets.slice().sort((a, b) => a.plan.good - b.plan.good).map((t) => `<tr><td><button class="linkbtn" data-go="${t.c[0]},${t.c[1]}">${esc(t.name)}</button> <small>${t.floors} fl</small></td><td>${delta(t.base.good, t.plan.good)}</td></tr>`).join("")}</table></details>` : ""}
         <div class="actions"><button id="wifi-pick">${tool === "wifi_pick" ? "Done picking" : "Pick buildings"}</button><button id="wifi-suggest" class="primary"${wifiBusy ? " disabled" : ""}>Place Wi-Fi for me</button>
         <select id="wifi-band" aria-label="Frequency for the Wi-Fi points I place" title="Frequency for the Wi-Fi points I place"><option value="5">5 GHz</option><option value="2.4">2.4 GHz</option></select></div></section>`;
@@ -1575,7 +1600,7 @@
       </section>`;
       if (showAccess) h += `<section class="sim"><h3>${svg("bike_dock", COL.bike_dock)} Walking access</h3>
         <div class="toggles"><label class="toggle"><input type="checkbox" id="ov-catch" ${OV.catch ? "checked" : ""}> How far people walk</label></div>
-        ${R && R.access.length ? `<table class="kv">${R.access.map((a) => `<tr><td>${esc(a.label)} <small>≤ ${a.radius} m, ${a.plan.count}</small></td><td>${delta(a.base.pct, a.plan.pct)}</td></tr>`).join("")}</table><div class="note">Share of people in campus buildings (estimated from floor area) who can walk to one within that distance on real roads and paths. Change the distance in the Types tab.</div>`
+        ${R && R.access.length ? `<table class="kv">${R.access.map((a) => `<tr><td>${esc(a.label)} <small>≤ ${a.radius} m, ${a.plan.count}</small></td><td>${delta(a.base.pct, a.plan.pct)}</td></tr>`).join("")}</table><div class="note">Share of people in campus buildings (estimated from floor area) who can walk to one within that distance on real roads and paths. Change the distance under Rates, upkeep and your own item types.</div>`
           : `<div class="note">Amenities with a walking reach (docks, water points, bins, vending machines, shuttle stops, or your own types) show who can reach them on foot.</div>`}
       </section>`;
       const rr = routeRes;
@@ -1657,7 +1682,7 @@
           <tr><td>Running and upkeep a year</td><td>${inr(t.opex)}${R && R.budget.kwh ? ` <small>incl. ${fmt(R.budget.kwh)} kWh</small>` : ""}</td></tr>
           ${R && R.budget.savings ? `<tr><td>Solar saves a year</td><td>${inr(R.budget.savings)}${R.budget.payback_solar ? ` <small>pays back in ${fmt(R.budget.payback_solar, 1)} yr</small>` : ""}</td></tr>` : ""}
         </table>
-        <p class="note">Rates are indicative 2026 figures. Change any rate here or in the Types tab; your rates are saved with the scenario.</p>
+        <p class="note">Rates are indicative 2026 figures. Change any rate here or under Rates, upkeep and your own item types; your rates are saved with the plan.</p>
         <div class="actions"><button id="budget-csv">Download budget (CSV)</button></div>`;
       wireCatChips(el);
       el.querySelectorAll("[data-rate]").forEach((i) => i.addEventListener("change", () => mutate(() => { const x = Number(i.value); if (Number.isFinite(x) && x >= 0) (S.meta.costs || (S.meta.costs = {}))[i.dataset.rate] = x; })));
@@ -1699,7 +1724,7 @@
             <label><span>Colour</span><input type="color" data-nt="color" value="#3a7bd5"></label>
           </div>
           <div class="actions"><button id="nt-add" class="primary">Add item type</button></div>
-          <p class="note">New types appear in the Design tab under their category, count in the budget, and, with a walking reach, in walking access.</p>
+          <p class="note">New kinds appear under More things you can add on the Changes step, count in the budget, and, with a walking reach, in walking access.</p>
         </details>
         ${categories().filter((c) => rowsBy.has(c.key)).map((c) => `<section class="sim types"><h3>${esc(c.label)}</h3><table class="budget types">
           <thead><tr><th>Type</th><th>Cost ₹</th><th>Upkeep %</th><th>Reach m</th><th></th></tr></thead><tbody>
@@ -2027,10 +2052,11 @@ ${(B.extra || []).length ? `<tr class="cat"><td colspan="3">Other costs</td><td 
     async function quick(id) {
       if (id === "wifi") {
         if (!(S.meta.wifi_targets || []).includes("hostel")) mutate(() => { S.meta.wifi_targets = [...(S.meta.wifi_targets || []), "hostel"]; });
-        return suggestWifi({ band: "5" });
+        return suggestWifi({ band: "5", all: true });
       }
       if (id === "light") { setTool("light_road"); return { tool: true }; }
       if (id === "rwh") {
+        if (busyNow()) return null;
         const hs = C.blds.filter((b) => b.t === "hostel" && A.inCB(b.c[0], b.c[1]));
         if (!hs.length) { toast("No hostels were found to add rainwater tanks to."); return null; }
         if (!showPlan) setShowPlan(true);
@@ -2097,6 +2123,7 @@ ${(B.extra || []).length ? `<tr class="cat"><td colspan="3">Other costs</td><td 
       if (!b) return;
       if (b.dataset.act === "showplan") setShowPlan(true);
       else if (b.dataset.act === "update") { stale = false; runEngine(); }
+      else if (b.dataset.act === "retry") { failed = false; runEngine(); }
     });
     $("ptab-file").addEventListener("click", (e) => {
       const f = e.target.closest("[data-focus]"), g = e.target.closest("[data-goto]");

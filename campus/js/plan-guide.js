@@ -17,6 +17,15 @@
   const phone = matchMedia("(max-width: 700px)");
 
   // ---------------------------------------------------------------------------------------
+  function fitPanel() {
+    const p = $("plan");
+    if (p.hidden) return;
+    p.classList.remove("scrolly");
+    if (!p.classList.contains("sheet-peek") && $("plan-body").clientHeight < 250) p.classList.add("scrolly");
+  }
+  let fitQueued = false;
+  function queueFit() { if (fitQueued) return; fitQueued = true; requestAnimationFrame(() => { fitQueued = false; fitPanel(); }); }
+  window.addEventListener("resize", queueFit);
   // Display settings: text size, contrast, motion, letter-key shortcuts. Applied at once, even before planning opens.
   const DISP_KEY = "pantnagar-sandbox:display:v1";
   let DISP = { size: 16, contrast: false, motion: false, keys: true };
@@ -28,6 +37,7 @@
     if (DISP.motion) r.dataset.motion = "reduce"; else delete r.dataset.motion;
     window.__singleKeysOff = !DISP.keys;
     store.set(DISP_KEY, JSON.stringify(DISP));
+    if (typeof queueFit === "function") queueFit();
   }
   applyDisplay();
   const SIZES = [[16, "Normal"], [18, "Large"], [20, "Larger"], [22, "Largest"]];
@@ -65,7 +75,12 @@
   // ---------------------------------------------------------------------------------------
   // Messages: a toast that pauses while you read it and can carry Undo, a banner for problems, a dialog for the few real questions
   let toastTimer = 0, toastSeq = 0, curToast = null;
-  const hideToast = () => { clearTimeout(toastTimer); toastSeq++; curToast = null; const el = $("toast"); el.classList.add("off"); el.dataset.progress = ""; el.textContent = ""; };
+  const hideToast = () => {
+    clearTimeout(toastTimer); toastSeq++; curToast = null;
+    const el = $("toast"), had = el.contains(document.activeElement);
+    el.classList.add("off"); el.dataset.progress = ""; el.textContent = "";
+    if (had) $("view").focus({ preventScroll: true }); // a keyboard user who closed it keeps their place
+  };
   const armToast = (ms) => {
     clearTimeout(toastTimer);
     if (!ms) return;
@@ -77,13 +92,12 @@
     // a progress message only changes its words, so the Stop button stays put and screen readers are not flooded
     if (o.progress && el.dataset.progress === "1" && !el.classList.contains("off")) { const m = el.querySelector(".msg"); if (m) { m.textContent = msg; return; } }
     clearTimeout(toastTimer);
-    const my = ++toastSeq;
+    toastSeq++;
     curToast = o;
     el.dataset.progress = o.progress ? "1" : "";
     el.setAttribute("aria-live", o.progress ? "off" : "polite");
-    el.classList.add("off"); el.textContent = "";
-    setTimeout(() => {
-      if (my !== toastSeq) return;
+    el.textContent = "";
+    {
       const m = document.createElement("span"); m.className = "msg"; m.textContent = msg; el.appendChild(m);
       const btn = (label, fn, aria) => { const b = document.createElement("button"); b.type = "button"; b.textContent = label; if (aria) b.setAttribute("aria-label", aria); b.addEventListener("click", fn); el.appendChild(b); };
       if (o.undo) {
@@ -97,7 +111,7 @@
       btn("✕", hideToast, "Dismiss this message");
       el.classList.remove("off");
       armToast(o.sticky ? 0 : Math.min(12000, 5000 + msg.length * 45) + (o.undo ? 2500 : 0));
-    }, 40);
+    }
   };
   function showBanner(html, acts) {
     const b = $("banner");
@@ -150,7 +164,8 @@
     $("foot-next").classList.toggle("primary", n !== 1);
     renderStep(n);
     paintSteps();
-    $("plan-body").scrollTop = 0;
+    $("plan-body").scrollTop = 0; $("plan").scrollTop = 0;
+    queueFit();
     if (o.focus !== false) { const h = $(HEAD_ID[n]); if (h) { h.tabIndex = -1; h.focus({ preventScroll: true }); } }
   }
   function renderStep(n) {
@@ -389,7 +404,7 @@
   });
   on("opened", () => showStep(3, { focus: false })); // a shared link or a file: show what it achieves first
   on("changed", () => {
-    paintSteps(); if (step === 3) renderResults();
+    paintSteps(); queueFit(); if (step === 3) renderResults();
     if (curToast && curToast.undo) { const a = api(); if (a && !a.undoMatches(curToast.token)) hideToast(); } // an Undo button must not undo something newer
   });
   let lastSaid = "";

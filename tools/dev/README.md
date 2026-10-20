@@ -32,5 +32,8 @@ Example: set 21:00 IST, look at the Library, take a picture.
 | `plan7.mjs` | warnings produced by the rainwater quick start (a diagnostic) |
 | `plan8.mjs` | keyboard-only drawing at the cross, light a whole road, the Move tool |
 | `plan9.mjs` | automated contrast audit of every visible text in the panel, in light, dark and stronger contrast |
+| `plan10.mjs` | leaving planning for street view and back, closing the panel, the `P` key, letter-key shortcuts switched off |
+| `plan11.mjs` | review fixes: Undo messages tied to their change, the item card after Undo, focus kept on refresh, Undo while drawing, a hostile share link |
+| `plan12.mjs` | review fixes: Wi-Fi progress message and Stop, the quick start with picked buildings, edits refused during a run, typed text kept, the classic Layers panel untouched, panel working area at the largest text size |
 
 `cdp.mjs` also accepts real input steps: `{ click: [x, y] }`, `{ rclick: [x, y] }`, `{ drag: [x0, y0, x1, y1] }`, `{ keys: ["w"], hold: ms, ctrl, shift }` and `{ type: "text" }`. Screenshots land next to the script and are git-ignored.

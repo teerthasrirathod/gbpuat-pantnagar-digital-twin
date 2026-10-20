@@ -216,6 +216,11 @@
     .pbtn.danger, #plan .actions button.danger, #plan-card .actions button.danger { color: var(--bad); border-color: var(--bad); }
     .pbtn[aria-pressed="true"] { background: var(--primary-soft); border-color: var(--primary); box-shadow: inset 0 0 0 1.5px var(--primary); }
     .pbtn:disabled, #plan-undo:disabled, #plan-redo:disabled { opacity: 0.45; cursor: default; }
+    #plan.scrolly { display: block; overflow-y: auto; overscroll-behavior: contain; }
+    #plan.scrolly > * { flex: none; }
+    #plan.scrolly #plan-body { overflow: visible; }
+    #plan.scrolly #plan-foot { position: sticky; bottom: 0; z-index: 2; }
+    #plan-items .warn { border: 0; cursor: pointer; font: inherit; font-weight: 700; }
     .pbtn svg.i, .ptool svg.i { width: 1.25em; height: 1.25em; }
 
     #plan { position: fixed; left: 12px; top: calc(70px + env(safe-area-inset-top, 0px)); bottom: 12px; width: var(--plan-w); display: flex; flex-direction: column; overflow: hidden; z-index: 4; background: var(--chrome-solid); backdrop-filter: none; -webkit-backdrop-filter: none; }
@@ -244,7 +249,7 @@
 
     #plan-steps { padding: 8px 12px 4px; }
     #plan-steps ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
-    #plan-steps button { width: 100%; min-height: 56px; border: 0; background: transparent; border-radius: 10px; cursor: pointer; display: grid; justify-items: center; gap: 2px; padding: 4px 2px; color: var(--ink-2); font: 600 0.92em/1.2 var(--font-ui); }
+    #plan-steps button { width: 100%; min-height: 50px; border: 0; background: transparent; border-radius: 10px; cursor: pointer; display: grid; justify-items: center; gap: 2px; padding: 4px 2px; color: var(--ink-2); font: 600 0.92em/1.2 var(--font-ui); }
     #plan-steps button:hover { background: var(--field-hover); }
     #plan-steps .n { width: 2em; height: 2em; border-radius: 50%; border: 2px solid var(--border); display: grid; place-items: center; font-weight: 700; font-size: 0.95em; background: var(--chrome-solid); color: var(--ink); }
     #plan-steps button[aria-current="step"] { color: var(--ink); }
@@ -263,7 +268,7 @@
     button.tile { cursor: pointer; }
     button.tile:hover { background: var(--field-hover); }
     .tile .l { font-size: 0.85em; color: var(--ink-2); line-height: 1.25; }
-    .tile b { font: 650 1.35em/1.15 var(--font-display); font-variant-numeric: tabular-nums; }
+    .tile b { font: 650 1.2em/1.15 var(--font-display); font-variant-numeric: tabular-nums; white-space: nowrap; }
     .tile .s { font-size: 0.85em; color: var(--ink-3); line-height: 1.25; }
     .tile.ok { border-color: var(--ok); } .tile.bad { border-color: var(--bad); } .tile.warn { border-color: var(--warn); }
     .tile.ok b { color: var(--ok); } .tile.bad b { color: var(--bad); } .tile.warn b { color: var(--warn); }
@@ -274,7 +279,7 @@
     #plan-body h2 { font: 650 1.4em/1.25 var(--font-display); margin: 0 0 6px; }
     #plan-body h3 { font: 650 1.05em/1.3 var(--font-display); margin: 18px 0 8px; color: var(--ink); text-transform: none; letter-spacing: 0; }
     #plan-body p { margin: 0 0 10px; }
-    #plan-body .note, .note { color: var(--ink-3); font-size: 0.92em; line-height: 1.45; }
+    #plan .note, #plan-card .note, #plan-sheet .note, #plan-legend .note, #tour .note, #ask .note { color: var(--ink-3); font-size: 0.92em; line-height: 1.45; }
     #plan-foot { display: flex; gap: 8px; justify-content: space-between; padding: 10px 12px; border-top: 1px solid var(--line); background: var(--chrome-solid); }
     #plan-foot .pbtn.primary { flex: 1; }
 
@@ -333,9 +338,9 @@
     .badge.ok { background: var(--ok-soft); color: var(--ok); } .badge.close { background: var(--warn-soft); color: var(--warn); } .badge.bad { background: var(--bad-soft); color: var(--bad); } .badge.none { background: var(--field); color: var(--ink-2); }
     .rcard .sentence { font-size: 1.05em; line-height: 1.45; margin: 0; }
     .rcard .sentence strong { font-weight: 700; }
-    .gauge { position: relative; height: 12px; border-radius: 6px; background: var(--field); border: 1.5px solid var(--border); margin: 8px 2px 2px; }
+    .gauge { position: relative; height: 12px; border-radius: 6px; background: var(--field); border: 1.5px solid var(--border); margin: 8px 2px 14px; }
     .gauge .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--primary); border-radius: 5px; }
-    .gauge .was { position: absolute; top: -5px; bottom: -5px; width: 3px; background: var(--ink-3); }
+    .gauge .was { position: absolute; top: auto; bottom: -12px; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 10px solid var(--ink-2); margin-left: -6px; }
     .gauge .tgt { position: absolute; top: -7px; bottom: -7px; width: 3px; background: var(--ink); }
     .gauge-l { display: flex; justify-content: space-between; font-size: 0.88em; color: var(--ink-2); gap: 6px; flex-wrap: wrap; }
     .rcard .acts { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -349,17 +354,17 @@
     #plan .sim h3 { display: flex; gap: 8px; align-items: center; margin: 0 0 8px; font: 650 1em/1.3 var(--font-display); }
     .sim summary { cursor: pointer; font-weight: 600; min-height: 36px; display: flex; align-items: center; }
     .sim .toggles { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center; }
-    .toggle, .sim .toggle { display: inline-flex; gap: 8px; padding: 4px 0; align-items: center; min-height: 36px; cursor: pointer; }
-    .toggle input, .catchip input, .tchk input, .tin input[type=checkbox] { accent-color: var(--primary); width: 20px; height: 20px; }
+    #plan .toggle { display: inline-flex; gap: 8px; padding: 4px 0; align-items: center; min-height: 36px; cursor: pointer; }
+    #plan .toggle input, #plan .catchip input, #plan .tchk input, #plan .tin input[type=checkbox] { accent-color: var(--primary); width: 20px; height: 20px; }
     .tchk { display: inline-flex; gap: 6px; align-items: center; margin-right: 10px; white-space: nowrap; min-height: 36px; }
-    .big { font: 650 1.2em/1.35 var(--font-display); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 8px 0; }
-    .big .note { font: 400 0.8em/1.4 var(--font-ui); flex-basis: 100%; }
+    #plan .big { font: 650 1.2em/1.35 var(--font-display); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 8px 0; }
+    #plan .big .note { font: 400 0.8em/1.4 var(--font-ui); flex-basis: 100%; }
     .d0 { color: var(--ink-3); font-weight: 500; }
     .d1.up { color: var(--ok); } .d1.down { color: var(--bad); }
     .arrow { width: 0.8em; height: 0.8em; color: var(--ink-3); }
-    table.kv { width: 100%; border-collapse: collapse; }
-    table.kv td { padding: 6px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
-    table.kv td:last-child { text-align: right; font-family: var(--font-ui); }
+    #plan table.kv, #plan-card table.kv { width: 100%; border-collapse: collapse; }
+    #plan table.kv td, #plan-card table.kv td { padding: 6px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+    #plan table.kv td:last-child, #plan-card table.kv td:last-child { text-align: right; font-family: var(--font-ui); font-size: inherit; }
     .sim table.kv tr[data-go] { cursor: pointer; }
     .sim table.kv tr[data-go]:hover td { background: var(--field-hover); }
     .pwarn { margin: 8px 0; padding: 8px 10px; border-radius: 10px; background: var(--warn-soft); border: 1.5px solid var(--warn); }
@@ -387,7 +392,7 @@
     table.budget.extra input:not([type=number]) { width: 100%; }
     table.budget.types input { width: 5.5em; }
     table.budget.compare tr { cursor: pointer; } table.budget.compare tr.cur td { background: var(--primary-soft); }
-    table.kv.sum tr.tot td { font-weight: 700; border-top: 2px solid var(--line); }
+    #plan table.kv.sum tr.tot td { font-weight: 700; border-top: 2px solid var(--line); }
     .meter { height: 12px; border-radius: 6px; background: var(--field); border: 1.5px solid var(--border); overflow: hidden; margin: 2px 0 10px; }
     .meter i { display: block; height: 100%; background: var(--ok); } .meter.over i { background: var(--bad); }
     .fields { display: grid; gap: 10px; margin: 10px 0; }
@@ -396,7 +401,7 @@
     .fields.bset label { grid-template-columns: 1fr 1fr; }
     .numu { display: flex; align-items: center; gap: 6px; }
     .numu i { font-style: normal; color: var(--ink-2); font-size: 0.85em; white-space: nowrap; }
-    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+    #plan .actions, #plan-card .actions, #plan-sheet .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
     ul.examples { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
     ul.examples li { border: 1.5px solid var(--border); border-radius: 12px; padding: 10px 12px; cursor: pointer; display: grid; gap: 2px; min-height: 48px; }
     ul.examples li:hover { background: var(--field-hover); }
