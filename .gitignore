@@ -20,3 +20,12 @@ twin/.cache/
 # Static hosting build (tools/make_site.mjs) and Firebase local state
 site/
 .firebase/
+
+# Node tooling (apps/web, e2e): installed packages and build output
+node_modules/
+apps/web/dist/
+playwright-report/
+test-results/
+
+# Screenshots written by tools/dev drivers
+tools/dev/*.png

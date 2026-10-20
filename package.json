@@ -1,0 +1,28 @@
+{
+  "name": "gbpuat-pantnagar-digital-twin",
+  "private": true,
+  "version": "3.0.0-dev",
+  "description": "GBPUAT Pantnagar digital twin: the current viewer (campus/), the Rust pipeline (twin/) and the next-generation web app (apps/web).",
+  "license": "MIT",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @gbpuat/web",
+    "build": "npm run build -w @gbpuat/web",
+    "typecheck": "npm run typecheck -w @gbpuat/web",
+    "test": "npm run test -w @gbpuat/web",
+    "lint": "biome check apps scripts e2e",
+    "format": "biome format --write apps scripts e2e",
+    "export:hero": "node scripts/export-hero.mjs",
+    "e2e": "playwright test",
+    "check": "npm run lint && npm run typecheck && npm run test"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.5.15",
+    "@playwright/test": "1.64.1"
+  }
+}

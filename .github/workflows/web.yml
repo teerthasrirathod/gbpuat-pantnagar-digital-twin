@@ -1,0 +1,69 @@
+# Checks the new web app (apps/web): lint, types, unit tests, production build, and a browser smoke test.
+name: web
+
+on:
+  push:
+    paths:
+      - "apps/**"
+      - "scripts/**"
+      - "e2e/**"
+      - "package.json"
+      - "package-lock.json"
+      - "biome.json"
+      - "playwright.config.ts"
+      - ".github/workflows/web.yml"
+  pull_request:
+    paths:
+      - "apps/**"
+      - "scripts/**"
+      - "e2e/**"
+      - "package.json"
+      - "package-lock.json"
+      - "biome.json"
+      - "playwright.config.ts"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: web-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Types
+        run: npm run typecheck
+      - name: Unit tests
+        run: npm run test
+      - name: Build
+        run: npm run build
+      - name: Size budget (the app script must stay under 2 MB, 600 KB gzipped)
+        run: |
+          js=$(ls apps/web/dist/assets/index-*.js)
+          raw=$(stat -c %s "$js")
+          gz=$(gzip -9 -c "$js" | wc -c)
+          echo "app script: $raw bytes, $gz gzipped"
+          test "$raw" -lt 2000000
+          test "$gz" -lt 600000
+      - name: Browser smoke test
+        run: |
+          npx playwright install --with-deps chromium
+          npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: web-dist
+          path: apps/web/dist
+          retention-days: 7

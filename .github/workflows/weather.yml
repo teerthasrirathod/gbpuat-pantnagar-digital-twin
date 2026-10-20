@@ -1,0 +1,34 @@
+# Fetches the weather for Pantnagar every 30 minutes and publishes it as one small JSON file on the `weather-data`
+# branch. The viewer reads it from raw.githubusercontent.com and falls back to Open-Meteo directly if it is missing
+# or old. Scheduled runs can start late, and GitHub pauses scheduled workflows in a public repository after about
+# 60 days without repository activity, so the viewer always copes with an old file and shows its age.
+name: weather
+
+on:
+  schedule:
+    - cron: "17,47 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weather
+  cancel-in-progress: true
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch from Open-Meteo
+        run: node tools/fetch_weather.mjs weather-out/latest.json
+      - name: Publish on the weather-data branch
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd weather-out
+          git init -q -b weather-data
+          git add -A
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -q -m "Weather ${GITHUB_RUN_ID}"
+          git push -f "https://x-access-token:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git" weather-data
