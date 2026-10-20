@@ -6,11 +6,13 @@ A lightweight, browser-based 3D digital twin of the **G.B. Pant University of Ag
 - Combines **OpenStreetMap**, **Overture Maps** (Google and Microsoft building footprints, places), **Google Open Buildings 2.5D** heights, **Sentinel-2** imagery, **ESA WorldCover**, **Meta/WRI** canopy height and **Copernicus** terrain.
 - Low compute by default: chunked and instanced geometry with levels of detail and render on demand. Four graphics tiers (Light, Balanced, High, Ultra) pick themselves from your GPU; see [Graphics](#graphics-tiers).
 
+> **Next generation (in development):** [`apps/web`](apps/web/README.md) is a new WebGPU viewer (three.js r186, TypeScript, Vite) for the Library avenue and the old colleges, with the real sun, moon and stars, live weather, recessed and lit windows, real grass, click-to-inspect buildings and a time-of-day dock. Run it with `npm install` and `npm run dev`. The viewer below stays live until the new one covers the whole campus.
+
 ## Just want to run it?
 
 **Open it in your browser: [teerthasrirathod.github.io/gbpuat-pantnagar-digital-twin](https://teerthasrirathod.github.io/gbpuat-pantnagar-digital-twin/)**
 
-- The link opens the campus twin. Press **Plan** to use the Sandbox. The whole-area twin is at [/area](https://teerthasrirathod.github.io/gbpuat-pantnagar-digital-twin/area/).
+- The link opens the campus twin. Press **Try an idea** to use the Sandbox. Fly around with `W A S D` or the arrow keys, and walk the streets in street view the same way. The whole-area twin is at [/area](https://teerthasrirathod.github.io/gbpuat-pantnagar-digital-twin/area/).
 - It works in Chrome, Edge, Firefox and Brave, on laptops and phones. The first load is about 3 MB compressed.
 
 To use it offline:
@@ -22,18 +24,19 @@ The site updates by itself: the `pages` workflow republishes both files whenever
 
 ## Pantnagar Sandbox: try changes before spending (new in v2.0)
 
-Press **Plan** in the campus twin to change Pantnagar on its digital twin, see what works and what does not, and only then put a budget on it.
+Press **Try an idea** in the campus twin to change Pantnagar on its digital twin, see what works and what does not, and only then put a budget on it. It is written for people who are not technical: four steps (**Goal, Changes, Results, Share**), one-click quick starts such as *Place Wi-Fi in all the hostels for me*, results as plain sentences with a word and a symbol as well as a colour, Undo instead of confirmation boxes, a short tour, a word list, and text size, contrast and less-movement settings. Why it looks this way, and what is not yet proven with real users: [docs/plan-ux-design.md](docs/plan-ux-design.md).
 
 - **Design**: draw buildings, roads, paths and areas; change or demolish buildings; tag or remove trees; place Wi-Fi, street lights, cameras, bicycle docks, bins, water points, vending machines, rooftop solar and more. Create your own item types and categories.
-- **Simulate** any combination of categories: Wi-Fi signal floor by floor (with automatic access-point placement), street lighting against IS 1944 (with a night view), walking access to amenities, routes, trees, solar, rainwater and runoff, and conflict checks.
-- **What works**: every result against an editable target, with ✓ or ✗, including staying within the budget.
+- **Results** for any combination of categories: Wi-Fi signal floor by floor (with automatic access-point placement), street lighting against IS 1944 (with a night view), walking access to amenities, routes, trees, solar, rainwater and runoff, and conflict checks.
+- **Targets**: every result against an editable target, in words, including staying within the budget.
 - **Budget**: quantities from the map, editable rates and upkeep, extra cost lines, contingency, taxes, a budget limit, running cost.
-- **Scenarios**: keep several, duplicate and compare them; print a report; share as a GeoJSON file or a link.
+- **Plans**: keep several, copy and compare them; print a report; share as a GeoJSON file or a link.
 
 The engine is Rust (`twin/sim`), compiled to WebAssembly for the page and also run as `twin sim <scenario.geojson>`. It works offline. Six sample scenarios live in [`scenarios/`](scenarios/README.md).
 
 Guides:
 - [docs/sandbox.md](docs/sandbox.md): how to use it, the models and their limits
+- [docs/plan-ux-design.md](docs/plan-ux-design.md): the design of the planning panel for non-technical users
 - [docs/plan-format.md](docs/plan-format.md): the scenario file format
 - [docs/add-value-proposal.md](docs/add-value-proposal.md): the ADD VALUE 2026 proposal for this project, with the roadmap to live traffic simulation
 - [CONTRIBUTING.md](CONTRIBUTING.md): how to add scenarios, corrections and code
@@ -69,6 +72,12 @@ Guides:
 | Trees | 44,164 crowns with heights (Meta/WRI canopy, 2 m) |
 | Blocks | 252: housing 111, fields/farm 70, mixed 27, wooded 22, open 14, academic/institutional 7, airport 1 |
 | Terrain check | within 1 m of the AAI-surveyed runway thresholds and reference point |
+
+### Farms and weather (new)
+
+- **Farms.** The twin now draws the farmland, farmyards and orchards mapped in OpenStreetMap (Layers > Farms) and names the agricultural places in green. Crop fields and crop types are not in the data yet, so none are drawn.
+- **Building types show only when there is evidence.** A type from an OSM tag, a name, a place inside the building or a mapped land-use area is shown. A type guessed from size and shape (9,427 of the 10,845 buildings) appears as "Type not confirmed". Layers > "Show types guessed from size and shape" brings the guesses back. Buildings keep their shape and wall colour either way.
+- **Live weather.** Press the weather chip (bottom left) or open Layers. Six model points (Pantnagar and five about 25 km around it) are blended over the map. The sky, cloud cover, fog, rain, wet roads and tree sway follow them, and the sun follows the real clock in High and Ultra. A slider replays the past 2 days and the next 3. Add `#wx=rain`, `storm`, `fog`, `clear` or `night` to the address to preview a situation. The values are model estimates (ECMWF through Open-Meteo), not station observations: for October 2025 the model gave 26 mm of rain where the IMD station recorded 98 mm. The data comes from `weather/latest.json`, which a scheduled job (`.github/workflows/weather.yml`, `tools/fetch_weather.mjs`) writes to the `weather-data` branch every 30 minutes; if that is missing the page calls Open-Meteo itself, then uses the copy saved in the browser, then a typical month from IMD normals. IMD's own API needs a key and its terms ask for written permission to republish, so it is not used yet.
 
 ### Graphics tiers
 
@@ -252,7 +261,9 @@ node tools/build_standalone.mjs
 | `twin/` | Rust pipeline: fetch (COG range reads, Overpass), analysis (buildings, types, blocks, water, trees, road graph), bundle, dev server |
 | `twin/sim/` | Sandbox engine (Rust): scenario format, catalogue and rates, custom item types, Wi-Fi, lighting, access, routes, budget, green metrics |
 | `twin/sim-wasm/` | WebAssembly exports of the engine for the page |
-| `campus/js/plan.js` | Plan mode: scenarios, design tools, items in 3D, category simulation and targets, budget, item types, report, share links |
+| `campus/js/plan.js` | Plan mode logic: plans, design tools, items in 3D, category simulation and goals, budget, item types, report, share links |
+| `campus/js/plan-guide.js` | Plan mode shell for non-technical users: four steps, goal screen, result sentences, messages with Undo, help and tour, display settings |
+| `campus/js/weather.js`, `tools/fetch_weather.mjs`, `.github/workflows/weather.yml` | Live weather: six points, time and space interpolation, rain, fog, wet surfaces, wind, sky; the scheduled fetch job |
 | `campus/js/gfx.js` | Graphics tiers: picks one from the GPU, the lit pipeline (sun, shadows, sky, post), progressive anti-aliasing, the Layers > Graphics control |
 | `campus/js/gfx-tex.js`, `gfx-nature.js`, `gfx-baked.js` | Procedural textures painted in code; trees, grass and ground detail; the Balanced tier (ground shadows, painted sky, trees) |
 | `scenarios/` | Sample scenarios (GeoJSON) |

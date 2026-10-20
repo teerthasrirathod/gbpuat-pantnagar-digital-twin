@@ -223,8 +223,8 @@
       if (!N.mats) {
         const wind = G.wind || { value: 0 };
         const sway = (sh) => {
-          sh.uniforms.uWind = wind;
-          sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nuniform float uWind;")
+          sh.uniforms.uWind = wind; sh.uniforms.uAmp = G.windAmp || (G.windAmp = { value: 1 });
+          sh.vertexShader = sh.vertexShader.replace("#include <common>", "#include <common>\nuniform float uWind; uniform float uAmp;")
             .replace("#include <begin_vertex>", `#include <begin_vertex>
             { float hh = max(0.0, position.y - 0.35);
               #ifdef USE_INSTANCING
@@ -232,8 +232,8 @@
               #else
               float ph = 0.0;
               #endif
-              transformed.x += (sin(uWind * 1.5 + ph) * 0.03 + sin(uWind * 3.1 + ph * 2.0 + position.x * 9.0) * 0.012) * hh;
-              transformed.z += (cos(uWind * 1.2 + ph) * 0.022 + cos(uWind * 2.7 + ph * 1.7 + position.z * 9.0) * 0.01) * hh; }`);
+              transformed.x += uAmp * (sin(uWind * 1.5 + ph) * 0.03 + sin(uWind * 3.1 + ph * 2.0 + position.x * 9.0) * 0.012) * hh;
+              transformed.z += uAmp * (cos(uWind * 1.2 + ph) * 0.022 + cos(uWind * 2.7 + ph * 1.7 + position.z * 9.0) * 0.01) * hh; }`);
         };
         const near = new THREE.MeshStandardMaterial({ map: N.leaf, alphaTest: 0.5, vertexColors: true, roughness: 0.82, metalness: 0, side: THREE.FrontSide, envMapIntensity: 0.9 });
         near.onBeforeCompile = sway;
@@ -311,7 +311,7 @@
     const cell = grid >= 180 ? 0.28 : 0.32;
     const sat = A.ground().satTex, SG = A.SG;
     const u = {
-      uCam: { value: new THREE.Vector3() }, uSlope: { value: new THREE.Vector2() }, uTime: { value: 0 }, uGrid: { value: grid }, uCell: { value: cell },
+      uCam: { value: new THREE.Vector3() }, uSlope: { value: new THREE.Vector2() }, uTime: { value: 0 }, uGrid: { value: grid }, uCell: { value: cell }, uAmp: G.windAmp || (G.windAmp = { value: 1 }),
       tMask: { value: N.mask.tex }, uMaskBox: { value: N.mask.box }, tSat: { value: sat }, uSatBox: { value: new THREE.Vector4(SG.x0, SG.z0, SG.nx * SG.cell, SG.nz * SG.cell) },
     };
     N.gu = u;
@@ -320,7 +320,7 @@
     mat.onBeforeCompile = (sh) => {
       Object.assign(sh.uniforms, u);
       sh.vertexShader = sh.vertexShader.replace("#include <common>", `#include <common>
-        attribute vec2 aCell; uniform vec3 uCam; uniform vec2 uSlope; uniform float uTime, uGrid, uCell; uniform sampler2D tMask; uniform vec4 uMaskBox; uniform sampler2D tSat; uniform vec4 uSatBox;
+        attribute vec2 aCell; uniform vec3 uCam; uniform vec2 uSlope; uniform float uTime, uGrid, uCell, uAmp; uniform sampler2D tMask; uniform vec4 uMaskBox; uniform sampler2D tSat; uniform vec4 uSatBox;
         varying vec3 vTint;
         vec2 hash22(vec2 p) { return fract(sin(vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)))) * 43758.5453); }`)
         .replace("#include <begin_vertex>", `
@@ -338,7 +338,7 @@
         float wd = (0.5 + 0.35 * h1.y) * keep;
         vec2 lp = vec2(position.x * cs - position.z * sn, position.x * sn + position.z * cs) * wd;
         float gy = uCam.y + uSlope.x * (wp.x - uCam.x) + uSlope.y * (wp.y - uCam.z);
-        float sway = sin(uTime * 1.7 + wp.x * 0.8 + wp.y * 0.6) * 0.07 * position.y * position.y * ht;
+        float sway = sin(uTime * 1.7 + wp.x * 0.8 + wp.y * 0.6) * 0.07 * uAmp * position.y * position.y * ht;
         vec3 transformed = vec3(wp.x + lp.x + sway, gy + position.y * ht - 0.02, wp.y + lp.y + sway * 0.6);
         vec2 suv = (wp - uSatBox.xy) / uSatBox.zw;
         vTint = clamp(texture2D(tSat, suv).rgb * 1.9, 0.18, 1.2) * (0.8 + 0.4 * h2.x);`);

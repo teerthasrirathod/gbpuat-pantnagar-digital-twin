@@ -124,7 +124,7 @@
     const sky = new THREE.Mesh(new THREE.SphereGeometry(1, 48, 24), new THREE.ShaderMaterial({
       uniforms: skyU, side: THREE.BackSide, depthWrite: false, depthTest: false, fog: false,
       vertexShader: "varying vec3 vDir; void main() { vDir = position; vec4 p = projectionMatrix * modelViewMatrix * vec4(position, 1.0); gl_Position = p.xyww; }",
-      fragmentShader: `varying vec3 vDir;\n${SKY_FN}\nvoid main() { gl_FragColor = vec4(skyColor(normalize(vDir)), 1.0); }`,
+      fragmentShader: `varying vec3 vDir;\n${SKY_FN}\nuniform float uHaze; uniform vec3 uFog;\nvoid main() { vec3 d = normalize(vDir); vec3 c = skyColor(d); c = mix(c, uFog * 1.5, uHaze * (1.0 - 0.5 * smoothstep(0.0, 0.7, d.y))); gl_FragColor = vec4(c, 1.0); }`,
     }));
     sky.renderOrder = -1000; sky.frustumCulled = false; sky.scale.setScalar(1500);
 
@@ -163,6 +163,8 @@
     sun.shadow.normalBias = 0.05;
     const hemi = new THREE.HemisphereLight(0xcfe0ff, 0x8a7a62, 0.25);
     const fog = new THREE.Fog(0xcfdde8, 120, 1400);
+    const HAZE = new THREE.Color(0.62, 0.65, 0.68);
+    skyU.uHaze = { value: 0 }; skyU.uFog = { value: fog.color };
     const T = { hour: 10.5, sunDir: new V3(), moonDir: new V3(), day: 1, night: 0, dusk: 0, exposure: 1 };
     const NIGHT_U = { value: 0 }, WIND_U = { value: 0 };
     G.night = NIGHT_U; G.wind = WIND_U;
@@ -184,14 +186,17 @@
       skyU.uMoonDir.value.copy(T.moonDir);
       const useMoon = el < -0.02;
       const warm = smooth(0.0, 0.35, el);
-      if (useMoon) { sun.color.setRGB(0.55, 0.65, 0.95); sun.intensity = 0.4 * T.night; }
+      if (useMoon) { sun.color.setRGB(0.55, 0.68, 1.0); sun.intensity = 1.2 * T.night; }
       else { sun.color.setRGB(1.0, 0.62 + 0.33 * warm, 0.38 + 0.52 * warm); sun.intensity = 3.4 * smooth(-0.02, 0.12, el); }
+      const wx = G.wx || { cloud: 0, haze: 0 };          // live weather (weather.js): cloud cover 0..1 and haze 0..1
+      sun.intensity *= 1 - 0.72 * wx.cloud;
+      skyU.uHaze.value = wx.haze;
       hemi.color.setRGB(0.42 + 0.33 * T.day, 0.5 + 0.32 * T.day, 0.68 + 0.27 * T.day);
       hemi.groundColor.setRGB(0.34, 0.3, 0.24);
-      hemi.intensity = 0.1 + 0.2 * T.day;
+      hemi.intensity = (0.1 + 0.2 * T.day) * (1 + 0.6 * wx.cloud) + 0.55 * T.night;   // moonlit blue ambient so the map stays readable at night
       const hz = horizonRGB(el);
-      if (lit()) fog.color.setRGB(hz[0] * 0.92, hz[1] * 0.95, hz[2]);
-      T.exposure = 1.0 + 0.5 * T.night;
+      if (lit()) { fog.color.setRGB(hz[0] * 0.92, hz[1] * 0.95, hz[2]); if (wx.haze) fog.color.lerp(HAZE, wx.haze * (0.35 + 0.65 * T.day)); }
+      T.exposure = 1.0 + 1.1 * T.night + 0.25 * wx.cloud;
       NIGHT_U.value = T.night;
       if (active && lit()) { updateEnv(h, false); A.markDirty(); }
       const s = $("gfx-hour"), t = $("gfx-hour-t");
@@ -516,6 +521,12 @@
         } else if (G.baked) G.baked.frame(dt, mode, camera);
         if (mode === "street" || mode === "pick") { fog.near = lit() ? 70 : 140; fog.far = lit() ? 1250 : 1100; }
         else { const d = A.view.dist; fog.near = Math.max(1800, d * 2.4); fog.far = Math.max(9000, d * 10); }
+        const wx = G.wx;
+        if (wx && wx.fogMul < 1) {
+          let m = wx.fogMul;
+          if (!(mode === "street" || mode === "pick")) m = 1 - (1 - m) * clamp(1 - A.view.dist / 1500, 0, 1);
+          fog.near *= m; fog.far *= m;
+        }
         // Slow GPUs: if the tier was chosen automatically and motion is choppy, step down once.
         if (!explicit && moving) {
           perf.t += dt; perf.avg = perf.avg * 0.96 + dt * 0.04;
@@ -675,7 +686,9 @@
     }
     buildUI();
     setHour(T.hour);
-    G.api = { setQuality, setHour, state: T, quality: () => Q.name, materials: () => M, textures: () => TXS, sky, sun, hemi, fog, GPU, scene, presets: PRESETS, prog: PROG };
+    // Weather changed the sky: redo the sun and sky light, and bake the sky light again.
+    function applySky() { setHour(T.hour); if (active && lit()) updateEnv(T.hour, true); A.markDirty(); }
+    G.api = { applySky, setQuality, setHour, state: T, quality: () => Q.name, materials: () => M, textures: () => TXS, sky, sun, hemi, fog, GPU, scene, presets: PRESETS, prog: PROG };
     setQuality(wanted, false);
     syncUI();
   }

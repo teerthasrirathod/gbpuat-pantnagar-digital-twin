@@ -8,10 +8,11 @@
   <meta name="description" content="Street-level 3D digital twin of the G.B. Pant University campus, Pantnagar: every mapped and detected building, roads, water, trees and block-by-block counts. Built with Rust and Three.js, works offline.">
   <style>
     :root {
-      --ink: #17201a; --ink-2: #4f5d53; --ink-3: #7b877e;
+      --ink: #17201a; --ink-2: #3f4b42; --ink-3: #556158;
+      --ok: #17703c; --bad: #a82e22; --warn: #a8500b; --ok-soft: rgba(23, 112, 60, 0.12); --bad-soft: rgba(168, 46, 34, 0.1); --warn-soft: rgba(168, 80, 11, 0.12);
       --chrome: rgba(249, 250, 246, 0.93); --chrome-solid: #f9faf6;
       --field: #edf0e8; --field-hover: #e2e7dc; --line: rgba(23, 32, 26, 0.12);
-      --accent: #b97c0c; --accent-soft: rgba(185, 124, 12, 0.14); --accent-ink: #ffffff;
+      --accent: #9a6508; --accent-soft: rgba(185, 124, 12, 0.16); --accent-ink: #ffffff; --accent-text: #7d5105;
       --link: #2b6896;
       --shadow: 0 8px 28px rgba(14, 22, 16, 0.18), 0 1px 3px rgba(14, 22, 16, 0.12);
       --font-ui: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Roboto, sans-serif;
@@ -22,19 +23,21 @@
     }
     @media (prefers-color-scheme: dark) {
       :root:not([data-theme="light"]) {
-        --ink: #e8eee7; --ink-2: #a3b2a7; --ink-3: #75847a;
+        --ink: #e8eee7; --ink-2: #c3cfc6; --ink-3: #9fb0a5;
+        --ok: #6fd39a; --bad: #ff8a7a; --warn: #f0a050; --ok-soft: rgba(111, 211, 154, 0.14); --bad-soft: rgba(255, 138, 122, 0.14); --warn-soft: rgba(240, 160, 80, 0.16);
         --chrome: rgba(19, 25, 21, 0.9); --chrome-solid: #131915;
         --field: #1f2822; --field-hover: #29342d; --line: rgba(232, 238, 231, 0.12);
-        --accent: #e2aa3d; --accent-soft: rgba(226, 170, 61, 0.16); --accent-ink: #1a1404; --link: #8cc0e6;
+        --accent: #e2aa3d; --accent-soft: rgba(226, 170, 61, 0.16); --accent-ink: #1a1404; --accent-text: #f0c46a; --link: #8cc0e6;
         --shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.35);
         color-scheme: dark;
       }
     }
     :root[data-theme="dark"] {
-      --ink: #e8eee7; --ink-2: #a3b2a7; --ink-3: #75847a;
+      --ink: #e8eee7; --ink-2: #c3cfc6; --ink-3: #9fb0a5;
+      --ok: #6fd39a; --bad: #ff8a7a; --warn: #f0a050; --ok-soft: rgba(111, 211, 154, 0.14); --bad-soft: rgba(255, 138, 122, 0.14); --warn-soft: rgba(240, 160, 80, 0.16);
       --chrome: rgba(19, 25, 21, 0.9); --chrome-solid: #131915;
       --field: #1f2822; --field-hover: #29342d; --line: rgba(232, 238, 231, 0.12);
-      --accent: #e2aa3d; --accent-soft: rgba(226, 170, 61, 0.16); --accent-ink: #1a1404; --link: #8cc0e6;
+      --accent: #e2aa3d; --accent-soft: rgba(226, 170, 61, 0.16); --accent-ink: #1a1404; --accent-text: #f0c46a; --link: #8cc0e6;
       --shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 1px 3px rgba(0, 0, 0, 0.35);
       color-scheme: dark;
     }
@@ -64,6 +67,7 @@
     .lbl.k-block { background: rgba(255, 255, 255, 0.86); color: #2c3a30; font-weight: 600; }
     .lbl.k-academic, .lbl.k-admin, .lbl.k-institutional { background: rgba(140, 92, 6, 0.9); }
     .lbl.k-hostel { background: rgba(110, 58, 140, 0.88); }
+    .lbl.k-agri { background: rgba(62, 98, 30, 0.92); }
     .lbl.k-poi { background: rgba(122, 42, 32, 0.85); }
     .lbl.k-road { background: rgba(40, 40, 40, 0.7); font-weight: 500; }
 
@@ -188,158 +192,302 @@
     #help td { padding: 5px 4px; border-bottom: 1px solid var(--line); }
 
 
-    /* ---- plan mode (Pantnagar Sandbox) ----------------------------------------------- */
+    /* ---- plan mode (Pantnagar Sandbox): guided, readable, large targets ---------------------------- */
+    :root { --pfs: 16px; --border: #7d8a80; --primary: #1d5c3a; --primary-hover: #164a2e; --primary-soft: #e3efe7; --on-primary: #ffffff; --focus: #0b57d0; --plan-w: clamp(340px, calc(var(--pfs) * 27), 44vw); }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --border: #7f8d84; --primary: #7fd1a0; --primary-hover: #9adfb5; --primary-soft: #1e3a2a; --on-primary: #0c1a12; --focus: #8ab4ff; } }
+    :root[data-theme="dark"] { --border: #7f8d84; --primary: #7fd1a0; --primary-hover: #9adfb5; --primary-soft: #1e3a2a; --on-primary: #0c1a12; --focus: #8ab4ff; }
+    /* stronger contrast: a full set of colours for each scheme, so nothing keeps a pastel from the other one */
+    :root[data-contrast="high"] { --ink: #000; --ink-2: #111; --ink-3: #222; --line: rgba(0, 0, 0, 0.55); --chrome: #ffffff; --chrome-solid: #ffffff; --field: #f0f0f0; --field-hover: #dcdcdc; --accent: #6b4300; --accent-ink: #ffffff; --accent-text: #5c3a00; --link: #0a3f78; --ok: #0a5a28; --bad: #8a1a10; --warn: #7a3600; --ok-soft: rgba(10, 90, 40, 0.14); --bad-soft: rgba(138, 26, 16, 0.12); --warn-soft: rgba(122, 54, 0, 0.14); --border: #000; --primary: #0d3b22; --primary-hover: #06240f; --primary-soft: #d9eddf; --on-primary: #ffffff; --focus: #0000d0; }
+    :root[data-theme="dark"][data-contrast="high"] { --ink: #fff; --ink-2: #f4f4f4; --ink-3: #e2e2e2; --line: rgba(255, 255, 255, 0.6); --chrome: #000000; --chrome-solid: #000000; --field: #161616; --field-hover: #2b2b2b; --accent: #ffd166; --accent-ink: #000000; --accent-text: #ffd166; --link: #9fd0ff; --ok: #8dffb8; --bad: #ffb4a8; --warn: #ffcb80; --ok-soft: rgba(141, 255, 184, 0.18); --bad-soft: rgba(255, 180, 168, 0.18); --warn-soft: rgba(255, 203, 128, 0.2); --border: #fff; --primary: #9be8b8; --primary-hover: #c4f5d6; --primary-soft: #12301f; --on-primary: #000000; --focus: #ffee66; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"])[data-contrast="high"] { --ink: #fff; --ink-2: #f4f4f4; --ink-3: #e2e2e2; --line: rgba(255, 255, 255, 0.6); --chrome: #000000; --chrome-solid: #000000; --field: #161616; --field-hover: #2b2b2b; --accent: #ffd166; --accent-ink: #000000; --accent-text: #ffd166; --link: #9fd0ff; --ok: #8dffb8; --bad: #ffb4a8; --warn: #ffcb80; --ok-soft: rgba(141, 255, 184, 0.18); --bad-soft: rgba(255, 180, 168, 0.18); --warn-soft: rgba(255, 203, 128, 0.2); --border: #fff; --primary: #9be8b8; --primary-hover: #c4f5d6; --primary-soft: #12301f; --on-primary: #000000; --focus: #ffee66; } }
     body.night #view { background: linear-gradient(180deg, #050812 0%, #0b1426 45%, #16213a 70%, #1d2433 100%); }
-    .lbl.k-plan { background: rgba(185, 124, 12, 0.95); }
-    #plan { position: fixed; left: 12px; top: calc(70px + env(safe-area-inset-top, 0px)); width: min(380px, calc(100vw - 24px)); max-height: calc(100% - 128px - env(safe-area-inset-top, 0px)); display: flex; flex-direction: column; overflow: hidden; z-index: 4; }
-    .plan-head { display: grid; grid-template-columns: 1fr auto; gap: 6px 8px; align-items: center; padding: 10px 10px 4px; }
-    #plan-title { font: 650 15px/1.2 var(--font-display); border: 1px solid transparent; background: transparent; padding: 5px 6px; border-radius: var(--r-sm); min-width: 0; color: var(--ink); }
-    #plan-title:hover, #plan-title:focus { border-color: var(--line); background: var(--field); outline: none; }
-    .plan-acts { display: flex; gap: 2px; }
-    .plan-acts .icon-btn:disabled { opacity: 0.35; cursor: default; }
-    .seg { display: inline-flex; background: var(--field); border: 1px solid var(--line); border-radius: 9px; padding: 2px; gap: 2px; }
-    .seg button { border: 0; background: transparent; padding: 5px 10px; border-radius: 7px; cursor: pointer; font-weight: 600; color: var(--ink-2); font-size: 12.5px; }
-    .seg button[aria-pressed="true"] { background: var(--chrome-solid); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
-    .seg.small button { padding: 4px 9px; font-size: 12px; }
-    #plan-ab { grid-column: 1 / -1; justify-self: start; }
-    #plan-kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; padding: 4px 10px 8px; }
-    #plan-kpis:empty { display: none; }
-    .kpi { border: 1px solid var(--line); background: var(--field); border-radius: var(--r-md); padding: 6px 9px; display: grid; gap: 1px; text-align: left; font: inherit; color: inherit; }
-    .kpi span { font-size: 11px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .kpi b { font: 650 14px/1.25 var(--font-display); display: flex; align-items: center; gap: 3px; flex-wrap: wrap; }
-    .kpi b small { font-weight: 500; color: var(--ink-3); font-size: 11px; }
-    .kpi.warn { cursor: pointer; border-color: rgba(230, 126, 34, 0.5); background: rgba(230, 126, 34, 0.1); }
-    .kpi .arrow, .big .arrow, table .arrow { width: 12px; height: 12px; color: var(--ink-3); }
-    .d0 { color: var(--ink-3); font-weight: 500; }
-    .d1.up { color: #1e8a4c; } .d1.down { color: #c0392b; }
-    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .d1.up { color: #6fd39a; } :root:not([data-theme="light"]) .d1.down { color: #ff8a7a; } }
-    #plan .pane h4 { font: 650 11px/1.2 var(--font-ui); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); margin: 10px 0 5px; }
-    .ptools { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
-    .ptool { display: grid; justify-items: center; gap: 3px; padding: 7px 4px 6px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--field); cursor: pointer; font-size: 11.5px; line-height: 1.15; text-align: center; color: var(--ink); min-height: 54px; }
+    .lbl.k-plan { background: rgba(138, 90, 0, 0.96); }
+    #plan .sheetbtn { display: none; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    #plan, #plan-card, #plan-draw, #plan-legend, #toast, #banner, #ask, #plan-sheet, #tour { font-size: var(--pfs); line-height: 1.5; }
+    #plan :focus-visible, #plan-card :focus-visible, #plan-draw :focus-visible, #toast :focus-visible, #banner :focus-visible, #ask :focus-visible, #plan-sheet :focus-visible, #tour :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+    .pbtn, #plan .actions button, #plan-card .actions button, #plan-draw button, #scn-list .actions button { min-height: 44px; padding: 0 1em; border-radius: 10px; border: 1.5px solid var(--border); background: var(--chrome-solid); color: var(--ink); font: 600 1em/1.2 var(--font-ui); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 0.5em; text-align: center; }
+    .pbtn:hover, #plan .actions button:hover, #plan-card .actions button:hover, #plan-draw button:hover { background: var(--field-hover); }
+    .pbtn.primary, #plan .actions button.primary, #plan-draw button.primary, #scn-list .actions button.primary, .runbar button { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+    .pbtn.primary:hover, #plan .actions button.primary:hover, #plan-draw button.primary:hover { background: var(--primary-hover); }
+    .pbtn.quiet { border-color: transparent; background: transparent; min-height: 44px; padding: 0 0.7em; }
+    .pbtn.quiet:hover { background: var(--field-hover); }
+    .pbtn.small { min-height: 36px; padding: 0 0.75em; font-size: 0.9em; }
+    .pbtn.danger, #plan .actions button.danger, #plan-card .actions button.danger { color: var(--bad); border-color: var(--bad); }
+    .pbtn[aria-pressed="true"] { background: var(--primary-soft); border-color: var(--primary); box-shadow: inset 0 0 0 1.5px var(--primary); }
+    .pbtn:disabled, #plan-undo:disabled, #plan-redo:disabled { opacity: 0.45; cursor: default; }
+    .pbtn svg.i, .ptool svg.i { width: 1.25em; height: 1.25em; }
+
+    #plan { position: fixed; left: 12px; top: calc(70px + env(safe-area-inset-top, 0px)); bottom: 12px; width: var(--plan-w); display: flex; flex-direction: column; overflow: hidden; z-index: 4; background: var(--chrome-solid); backdrop-filter: none; -webkit-backdrop-filter: none; }
+    .p-head { padding: 10px 12px 6px; display: grid; gap: 4px; border-bottom: 1px solid var(--line); position: relative; }
+    .p-name { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    #plan-title { flex: 1; min-width: 0; font: 650 1.25em/1.25 var(--font-display); border: 1.5px dashed transparent; background: transparent; padding: 4px 8px; border-radius: 8px; color: var(--ink); }
+    #plan-title:hover { border-color: var(--border); }
+    #plan-title:focus { border: 1.5px solid var(--border); background: var(--field); outline: none; }
+    #plan-title:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+    .saved { color: var(--ink-3); font-size: 0.85em; white-space: nowrap; }
+    .p-tools { display: flex; flex-wrap: wrap; gap: 2px; margin: 0 -6px; }
+    .p-tools .pbtn { padding: 0 0.4em; gap: 0.3em; font-size: 0.95em; }
+    .lead { margin: 0 0 12px; }
+    .popover { position: absolute; right: 8px; top: 100%; z-index: 20; width: min(20em, calc(100% - 16px)); background: var(--chrome-solid); border: 1.5px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); padding: 12px; display: grid; gap: 10px; }
+    .popover h4 { margin: 0; font-size: 0.95em; }
+    .popover .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .popover label.chk { display: flex; gap: 10px; align-items: flex-start; min-height: 32px; }
+    .popover label.chk input { width: 22px; height: 22px; margin-top: 2px; accent-color: var(--primary); flex: none; }
+    #scn-list { margin: 0 12px 6px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--chrome-solid); padding: 8px; max-height: 40vh; overflow: auto; }
+    #scn-list ul { list-style: none; margin: 0 0 8px; padding: 0; }
+    #scn-list li { display: grid; padding: 8px 10px; border-radius: 8px; cursor: pointer; min-height: 44px; }
+    #scn-list li:hover { background: var(--field-hover); }
+    #scn-list li.cur { background: var(--primary-soft); }
+    #scn-list li span { font-size: 0.85em; color: var(--ink-3); }
+    #scn-list .actions { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    #plan-steps { padding: 8px 12px 4px; }
+    #plan-steps ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+    #plan-steps button { width: 100%; min-height: 56px; border: 0; background: transparent; border-radius: 10px; cursor: pointer; display: grid; justify-items: center; gap: 2px; padding: 4px 2px; color: var(--ink-2); font: 600 0.92em/1.2 var(--font-ui); }
+    #plan-steps button:hover { background: var(--field-hover); }
+    #plan-steps .n { width: 2em; height: 2em; border-radius: 50%; border: 2px solid var(--border); display: grid; place-items: center; font-weight: 700; font-size: 0.95em; background: var(--chrome-solid); color: var(--ink); }
+    #plan-steps button[aria-current="step"] { color: var(--ink); }
+    #plan-steps button[aria-current="step"] .n { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+    #plan-steps button.done .n { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); }
+
+    #plan-strip { padding: 6px 12px 10px; border-bottom: 1px solid var(--line); display: grid; gap: 6px; }
+    .strip-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 0.9em; color: var(--ink-2); }
+    .seg { display: inline-flex; background: var(--field); border: 1.5px solid var(--border); border-radius: 10px; padding: 2px; gap: 2px; }
+    .seg button { border: 0; background: transparent; padding: 0 0.8em; min-height: 36px; border-radius: 8px; cursor: pointer; font: 600 0.9em/1.2 var(--font-ui); color: var(--ink-2); }
+    .seg button[aria-pressed="true"] { background: var(--primary); color: var(--on-primary); }
+    .seg.small button { min-height: 40px; }
+    .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .tiles:empty { display: none; }
+    .tile { border: 1.5px solid var(--line); background: var(--field); border-radius: 10px; padding: 6px 8px; display: grid; gap: 1px; text-align: left; font: inherit; color: inherit; min-width: 0; }
+    button.tile { cursor: pointer; }
+    button.tile:hover { background: var(--field-hover); }
+    .tile .l { font-size: 0.85em; color: var(--ink-2); line-height: 1.25; }
+    .tile b { font: 650 1.35em/1.15 var(--font-display); font-variant-numeric: tabular-nums; }
+    .tile .s { font-size: 0.85em; color: var(--ink-3); line-height: 1.25; }
+    .tile.ok { border-color: var(--ok); } .tile.bad { border-color: var(--bad); } .tile.warn { border-color: var(--warn); }
+    .tile.ok b { color: var(--ok); } .tile.bad b { color: var(--bad); } .tile.warn b { color: var(--warn); }
+    .strip-empty { font-size: 0.95em; color: var(--ink-2); padding: 4px 0; }
+    .banner-today { background: var(--warn-soft); border: 1.5px solid var(--warn); border-radius: 10px; padding: 8px 10px; font-size: 0.92em; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; justify-content: space-between; }
+
+    #plan-body { flex: 1; overflow: auto; padding: 14px 14px 18px; scroll-padding: 12px; }
+    #plan-body h2 { font: 650 1.4em/1.25 var(--font-display); margin: 0 0 6px; }
+    #plan-body h3 { font: 650 1.05em/1.3 var(--font-display); margin: 18px 0 8px; color: var(--ink); text-transform: none; letter-spacing: 0; }
+    #plan-body p { margin: 0 0 10px; }
+    #plan-body .note, .note { color: var(--ink-3); font-size: 0.92em; line-height: 1.45; }
+    #plan-foot { display: flex; gap: 8px; justify-content: space-between; padding: 10px 12px; border-top: 1px solid var(--line); background: var(--chrome-solid); }
+    #plan-foot .pbtn.primary { flex: 1; }
+
+    .goals { display: grid; gap: 10px; margin: 12px 0; }
+    .goal { display: grid; grid-template-columns: 2.4em 1fr; gap: 2px 12px; align-items: center; text-align: left; min-height: 76px; padding: 12px 14px; border: 1.5px solid var(--border); border-radius: 14px; background: var(--chrome-solid); color: var(--ink); cursor: pointer; font: inherit; }
+    .goal:hover { background: var(--field-hover); border-color: var(--primary); }
+    .goal:disabled { opacity: 0.6; cursor: progress; }
+    .goal .gi { grid-row: 1 / 3; width: 2.4em; height: 2.4em; border-radius: 12px; display: grid; place-items: center; background: var(--primary-soft); color: var(--primary); }
+    .goal .gi svg.i { width: 1.5em; height: 1.5em; }
+    .goal b { font: 650 1.05em/1.25 var(--font-display); }
+    .goal span { color: var(--ink-2); font-size: 0.92em; line-height: 1.3; }
+    .callout { border: 1.5px solid var(--primary); background: var(--primary-soft); border-radius: 14px; padding: 12px 14px; margin: 12px 0; display: grid; gap: 8px; }
+    .callout.quiet { border-color: var(--line); background: var(--field); }
+    .callout h3 { margin: 0 !important; }
+    .callout .acts { display: flex; flex-wrap: wrap; gap: 8px; }
+    .links { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 10px 0; }
+    .linkbtn { background: none; border: 0; color: var(--link); text-decoration: underline; cursor: pointer; font: inherit; padding: 6px 0; min-height: 36px; }
+    .engine-note { font-size: 0.9em; color: var(--ink-2); display: flex; gap: 8px; align-items: center; }
+    .engine-note::before { content: ""; width: 0.9em; height: 0.9em; border-radius: 50%; border: 2px solid var(--border); border-top-color: var(--primary); animation: spin 0.9s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .ptools { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .ptool { display: grid; grid-template-columns: 1.6em 1fr auto; gap: 8px; align-items: center; padding: 6px 10px; border: 1.5px solid var(--border); border-radius: 12px; background: var(--chrome-solid); cursor: pointer; font: 600 0.95em/1.2 var(--font-ui); text-align: left; color: var(--ink); min-height: 56px; }
     .ptool:hover { background: var(--field-hover); }
-    .ptool[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
-    .ptool svg.i { width: 20px; height: 20px; }
-    #plan-help { margin: 8px 0 2px; padding: 8px 10px; border-radius: var(--r-md); background: var(--accent-soft); font-size: 12.5px; display: grid; gap: 6px; }
-    label.inline { display: inline-flex; gap: 6px; align-items: center; font-size: 12.5px; }
-    label.inline select, .sim select, #wifi-band { border: 1px solid var(--line); background: var(--field); border-radius: var(--r-sm); padding: 3px 6px; font: inherit; color: inherit; }
-    #plan-count { font-weight: 600; color: var(--ink-2); margin-left: 4px; }
+    .ptool[aria-pressed="true"] { background: var(--primary-soft); border-color: var(--primary); box-shadow: inset 0 0 0 1.5px var(--primary); }
+    .ptool .cnt { font-style: normal; font-size: 0.8em; background: var(--field); border-radius: 999px; padding: 0 7px; color: var(--ink-2); }
+    .ptool.custom { border-style: dashed; }
+    details.more-tools { margin-top: 10px; }
+    details.more-tools > summary, details.disc > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; font-weight: 650; padding: 0 4px; }
+    details.more-tools h4 { margin: 12px 0 6px; font-size: 0.9em; color: var(--ink-2); }
+    #plan-help { margin: 10px 0 0; padding: 10px 12px; border-radius: 12px; background: var(--primary-soft); border: 1.5px solid var(--primary); display: grid; gap: 8px; }
+    label.inline { display: inline-flex; gap: 8px; align-items: center; }
+    label.inline select, .sim select, #wifi-band, .fields select { min-height: 40px; border: 1.5px solid var(--border); background: var(--chrome-solid); border-radius: 8px; padding: 0 8px; font: inherit; color: inherit; }
+    #plan-count, .cnt { font-weight: 600; color: var(--ink-2); background: var(--field); border-radius: 999px; padding: 0 8px; margin-left: 4px; font-size: 0.85em; text-transform: none; letter-spacing: 0; }
     #plan-items { list-style: none; margin: 0; padding: 0; }
-    #plan-items li { display: grid; grid-template-columns: 18px 1fr auto auto; gap: 8px; align-items: center; padding: 6px 6px; border-radius: var(--r-sm); cursor: pointer; }
-    #plan-items li:hover { background: var(--field-hover); }
-    #plan-items li.sel { background: var(--accent-soft); }
-    #plan-items li.empty { display: block; cursor: default; color: var(--ink-3); font-size: 12.5px; }
-    #plan-items .t { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    #plan-items .warn, .pwarn-i { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: #e67e22; color: #fff; font-weight: 700; font-size: 12px; }
-    .pwarn-i { width: auto; height: auto; padding: 0 6px; border-radius: 999px; }
-    .pwarn { margin: 6px 0; padding: 7px 9px; border-radius: var(--r-sm); background: rgba(230, 126, 34, 0.12); border: 1px solid rgba(230, 126, 34, 0.35); font-size: 12.5px; }
-    .sim { border: 1px solid var(--line); border-radius: var(--r-md); padding: 8px 10px 10px; margin: 0 0 8px; }
-    #plan .sim h3 { display: flex; gap: 7px; align-items: center; margin: 0 0 6px; font: 650 13px/1.2 var(--font-display); text-transform: none; letter-spacing: 0; color: var(--ink); }
-    .sim summary { cursor: pointer; font-weight: 600; font-size: 12.5px; }
-    .sim .toggles { display: flex; flex-wrap: wrap; gap: 2px 12px; align-items: center; }
-    .sim .toggle { display: inline-flex; gap: 6px; padding: 3px 0; }
-    .tchk { display: inline-flex; gap: 4px; align-items: center; margin-right: 8px; white-space: nowrap; }
-    .tchk input { accent-color: var(--accent); }
-    .big { font: 650 18px/1.3 var(--font-display); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; margin: 6px 0; }
-    .big .note { font: 400 12px/1.35 var(--font-ui); flex-basis: 100%; }
+    #plan-items li { display: grid; grid-template-columns: 1.6em 1fr auto auto; gap: 8px; align-items: center; padding: 6px 4px; border-radius: 8px; border-bottom: 1px solid var(--line); min-height: 48px; }
+    #plan-items li.sel { background: var(--primary-soft); }
+    #plan-items li.empty { display: block; color: var(--ink-2); border: 0; }
+    #plan-items li.grp { display: flex; justify-content: space-between; align-items: center; gap: 8px; font: 650 0.9em/1.3 var(--font-ui); color: var(--ink-2); padding: 10px 2px 4px; border-bottom: 2px solid var(--line); }
+    #plan-items li.off { opacity: 0.55; }
+    #plan-items .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; background: none; border: 0; padding: 6px 2px; font: inherit; color: inherit; text-align: left; min-height: 40px; border-radius: 6px; }
+    #plan-items .t:hover { text-decoration: underline; }
+    #plan-items .meta { display: inline-flex; gap: 6px; align-items: center; min-width: 0; }
+    #plan-items .pill { font-size: 0.8em; background: var(--field); border: 1px solid var(--line); border-radius: 999px; padding: 0 8px; color: var(--ink-2); white-space: nowrap; }
+    #plan-strip.busy .tiles { opacity: 0.55; transition: opacity 0.15s; }
+    #view:focus-visible { outline: 3px solid var(--focus, #0b57d0); outline-offset: -3px; }
+    #plan-items .warn, .pwarn-i { display: inline-grid; place-items: center; min-width: 1.5em; height: 1.5em; border-radius: 999px; background: var(--warn); color: var(--accent-ink); font-weight: 700; padding: 0 6px; }
+    #plan-items li.more { display: block; border: 0; }
+    .rowbtn { min-height: 36px; padding: 0 0.7em; border-radius: 8px; border: 1.5px solid var(--border); background: var(--chrome-solid); font: 600 0.85em/1.2 var(--font-ui); cursor: pointer; color: var(--ink); }
+    .rowbtn:hover { background: var(--field-hover); }
+    .rowbtn.danger { color: var(--bad); border-color: var(--bad); }
+
+    .rcard { border: 1.5px solid var(--border); border-radius: 14px; padding: 12px 14px; margin: 0 0 12px; display: grid; gap: 8px; background: var(--chrome-solid); }
+    .rcard.ok { border-left: 6px solid var(--ok); } .rcard.close { border-left: 6px solid var(--warn); } .rcard.bad { border-left: 6px solid var(--bad); } .rcard.none { border-left: 6px solid var(--border); }
+    .badge { display: inline-flex; align-items: center; gap: 0.4em; font-weight: 700; font-size: 0.9em; padding: 2px 10px; border-radius: 999px; justify-self: start; }
+    .badge.ok { background: var(--ok-soft); color: var(--ok); } .badge.close { background: var(--warn-soft); color: var(--warn); } .badge.bad { background: var(--bad-soft); color: var(--bad); } .badge.none { background: var(--field); color: var(--ink-2); }
+    .rcard .sentence { font-size: 1.05em; line-height: 1.45; margin: 0; }
+    .rcard .sentence strong { font-weight: 700; }
+    .gauge { position: relative; height: 12px; border-radius: 6px; background: var(--field); border: 1.5px solid var(--border); margin: 8px 2px 2px; }
+    .gauge .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--primary); border-radius: 5px; }
+    .gauge .was { position: absolute; top: -5px; bottom: -5px; width: 3px; background: var(--ink-3); }
+    .gauge .tgt { position: absolute; top: -7px; bottom: -7px; width: 3px; background: var(--ink); }
+    .gauge-l { display: flex; justify-content: space-between; font-size: 0.88em; color: var(--ink-2); gap: 6px; flex-wrap: wrap; }
+    .rcard .acts { display: flex; flex-wrap: wrap; gap: 8px; }
+    .rcard ul { margin: 0; padding-left: 1.2em; }
+    .limits { border: 1.5px dashed var(--border); border-radius: 12px; padding: 10px 12px; margin: 12px 0; font-size: 0.92em; color: var(--ink-2); }
+    details.disc { border: 1.5px solid var(--line); border-radius: 12px; margin: 10px 0; padding: 0 10px; }
+    details.disc[open] { padding-bottom: 10px; }
+    details.disc > summary { font-weight: 650; }
+
+    .sim { border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 12px 12px; margin: 0 0 10px; }
+    #plan .sim h3 { display: flex; gap: 8px; align-items: center; margin: 0 0 8px; font: 650 1em/1.3 var(--font-display); }
+    .sim summary { cursor: pointer; font-weight: 600; min-height: 36px; display: flex; align-items: center; }
+    .sim .toggles { display: flex; flex-wrap: wrap; gap: 4px 16px; align-items: center; }
+    .toggle, .sim .toggle { display: inline-flex; gap: 8px; padding: 4px 0; align-items: center; min-height: 36px; cursor: pointer; }
+    .toggle input, .catchip input, .tchk input, .tin input[type=checkbox] { accent-color: var(--primary); width: 20px; height: 20px; }
+    .tchk { display: inline-flex; gap: 6px; align-items: center; margin-right: 10px; white-space: nowrap; min-height: 36px; }
+    .big { font: 650 1.2em/1.35 var(--font-display); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin: 8px 0; }
+    .big .note { font: 400 0.8em/1.4 var(--font-ui); flex-basis: 100%; }
+    .d0 { color: var(--ink-3); font-weight: 500; }
+    .d1.up { color: var(--ok); } .d1.down { color: var(--bad); }
+    .arrow { width: 0.8em; height: 0.8em; color: var(--ink-3); }
+    table.kv { width: 100%; border-collapse: collapse; }
+    table.kv td { padding: 6px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+    table.kv td:last-child { text-align: right; font-family: var(--font-ui); }
     .sim table.kv tr[data-go] { cursor: pointer; }
     .sim table.kv tr[data-go]:hover td { background: var(--field-hover); }
-    .sim table.kv td:last-child, #plan-card table.kv td:last-child { font-family: var(--font-ui); }
-    .actions button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-    .actions button.danger { color: #c0392b; }
-    .fields { display: grid; gap: 6px; margin: 8px 0; }
-    .fields label { display: grid; grid-template-columns: 1fr 1.1fr; gap: 8px; align-items: center; font-size: 12.5px; }
-    .fields.wide label { grid-template-columns: 1fr; gap: 3px; }
-    .fields input, .fields select, .fields textarea, #plan-card input.name { width: 100%; border: 1px solid var(--line); background: var(--field); border-radius: var(--r-sm); padding: 5px 7px; font: inherit; color: inherit; box-sizing: border-box; }
-    .fields textarea { resize: vertical; }
-    .numu { display: flex; align-items: center; gap: 5px; }
-    .numu i { font-style: normal; color: var(--ink-3); font-size: 11.5px; white-space: nowrap; }
-    table.budget { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 8px 0; }
-    table.budget th { text-align: left; color: var(--ink-3); font-weight: 600; font-size: 11px; padding: 4px 3px; border-bottom: 1px solid var(--line); }
-    table.budget td { padding: 4px 3px; border-bottom: 1px solid var(--line); vertical-align: middle; }
-    table.budget td:nth-child(n+2) { white-space: nowrap; }
-    table.budget input { width: 78px; border: 1px solid var(--line); background: var(--field); border-radius: 5px; padding: 3px 4px; font: inherit; color: inherit; }
-    table.budget tfoot td { font-weight: 700; }
-    ul.examples { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
-    ul.examples li { border: 1px solid var(--line); border-radius: var(--r-md); padding: 8px 10px; cursor: pointer; display: grid; gap: 2px; }
-    ul.examples li:hover { background: var(--field-hover); }
-    ul.examples span { color: var(--ink-3); font-size: 12px; }
-    #plan-card { position: fixed; right: 64px; top: calc(70px + env(safe-area-inset-top, 0px)); width: min(330px, calc(100vw - 24px)); max-height: calc(100% - 150px); overflow: auto; padding: 12px 14px; z-index: 5; }
-    #plan-card .card-head { display: flex; gap: 8px; align-items: center; margin: 0 30px 8px 0; }
-    #plan-card h2 { font: 650 16px/1.2 var(--font-display); margin: 0; }
-    #plan-card .close { position: absolute; right: 8px; top: 8px; }
-    #plan-card .status { margin: 8px 0 2px; }
-    #plan-draw { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 6; display: flex; gap: 8px; align-items: center; padding: 6px 8px 6px 14px; font-size: 13px; }
-    #plan-draw button { border: 1px solid var(--line); background: var(--field); border-radius: var(--r-sm); padding: 6px 10px; cursor: pointer; font: inherit; color: inherit; }
-    #plan-draw button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
-    #plan-draw-info { font-family: var(--font-data); color: var(--ink-2); font-size: 12px; }
-    #plan-legend { position: fixed; right: 12px; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); width: 250px; padding: 9px 11px; z-index: 3; font-size: 12px; display: grid; gap: 4px; }
-    #plan-legend hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
-    #plan-legend .ramp { height: 9px; border-radius: 5px; border: 1px solid var(--line); }
-    #plan-legend .ramp-l { display: flex; justify-content: space-between; color: var(--ink-3); font-size: 10.5px; font-family: var(--font-data); }
-    body.planning #panel { display: none; }
-    .scn-name { display: flex; align-items: center; gap: 2px; min-width: 0; }
-    .scn-name #plan-title { flex: 1; min-width: 0; }
-    #scn-list { margin: 0 10px 8px; border: 1px solid var(--line); border-radius: var(--r-md); background: var(--chrome-solid); padding: 6px; max-height: 40vh; overflow: auto; }
-    #scn-list ul { list-style: none; margin: 0; padding: 0; }
-    #scn-list li { display: grid; padding: 6px 8px; border-radius: var(--r-sm); cursor: pointer; }
-    #scn-list li:hover { background: var(--field-hover); }
-    #scn-list li.cur { background: var(--accent-soft); }
-    #scn-list li span { font-size: 12px; color: var(--ink-3); }
-    #scn-list .actions { margin-top: 6px; }
-    .cnt { font-weight: 600; color: var(--ink-2); background: var(--field); border-radius: 999px; padding: 0 6px; margin-left: 4px; text-transform: none; letter-spacing: 0; }
-    .ptool.custom { border-style: dashed; }
-    #plan-items li.grp { display: flex; justify-content: space-between; cursor: default; font: 650 11px/1.2 var(--font-ui); text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-3); padding: 10px 6px 4px; }
-    #plan-items li.grp:hover { background: none; }
-    #plan-items li.grp span { text-transform: none; letter-spacing: 0; font-weight: 500; }
-    #plan-items li.off { opacity: 0.5; }
-    .catchips { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; margin: 4px 0 6px; }
-    .catchip { display: inline-flex; gap: 5px; align-items: center; border: 1px solid var(--line); background: var(--field); border-radius: 999px; padding: 4px 10px 4px 7px; cursor: pointer; font-size: 12.5px; user-select: none; }
-    .catchip.on { background: var(--accent-soft); border-color: var(--accent); }
-    .catchip input { accent-color: var(--accent); margin: 0; }
-    .catchip small { color: var(--ink-3); }
+    .pwarn { margin: 8px 0; padding: 8px 10px; border-radius: 10px; background: var(--warn-soft); border: 1.5px solid var(--warn); }
+    .catchips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 4px 0 8px; }
+    .catchip { display: inline-flex; gap: 8px; align-items: center; border: 1.5px solid var(--border); background: var(--chrome-solid); border-radius: 999px; padding: 4px 12px 4px 10px; cursor: pointer; user-select: none; min-height: 40px; }
+    .catchip.on { background: var(--primary-soft); border-color: var(--primary); }
+    .catchip small { color: var(--ink-2); }
     .catall { margin-left: auto; display: inline-flex; gap: 4px; }
-    .catall button { border: 0; background: none; color: var(--link); cursor: pointer; font: inherit; font-size: 12px; padding: 2px 4px; }
-    .runbar { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 4px; }
-    .runbar button { display: inline-flex; gap: 6px; align-items: center; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); border-radius: var(--r-sm); padding: 6px 12px; cursor: pointer; font: inherit; font-weight: 600; }
-    .runbar button svg.i { width: 14px; height: 14px; }
-    .vsum { margin-left: auto; font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; }
-    .vsum.ok { background: rgba(30, 138, 76, 0.14); color: #1e8a4c; }
-    .vsum.bad { background: rgba(192, 57, 43, 0.12); color: #c0392b; }
-    table.vt { width: 100%; border-collapse: collapse; font-size: 12.5px; }
-    table.vt th { text-align: left; color: var(--ink-3); font-weight: 600; font-size: 11px; padding: 3px; border-bottom: 1px solid var(--line); }
-    table.vt td { padding: 5px 3px; border-bottom: 1px solid var(--line); vertical-align: middle; }
-    table.vt td:first-child { font-weight: 700; width: 16px; }
-    table.vt tr.ok td:first-child { color: #1e8a4c; }
-    table.vt tr.bad td:first-child { color: #c0392b; }
-    table.vt td:nth-child(3) { white-space: nowrap; font-weight: 600; }
-    .tin { display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
-    .tin input { width: 62px; border: 1px solid var(--line); background: var(--field); border-radius: 5px; padding: 2px 4px; font: inherit; color: inherit; }
-    .kpi b.bad, .big .bad, b.bad { color: #c0392b; }
-    .kpi b.ok { color: #1e8a4c; }
-    .kpi.good { border-color: rgba(30, 138, 76, 0.45); background: rgba(30, 138, 76, 0.08); cursor: pointer; }
-    .meter { height: 8px; border-radius: 4px; background: var(--field); border: 1px solid var(--line); overflow: hidden; margin: 2px 0 8px; }
-    .meter i { display: block; height: 100%; background: #1e8a4c; }
-    .meter.over i { background: #c0392b; }
-    .fields.bset label { grid-template-columns: 1fr 1fr; }
+    .catall button { border: 0; background: none; color: var(--link); text-decoration: underline; cursor: pointer; font: inherit; padding: 4px 8px; min-height: 36px; }
+    .runbar { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; margin-top: 4px; }
+    .runbar button { display: inline-flex; gap: 6px; align-items: center; border: 1.5px solid var(--primary); border-radius: 10px; padding: 0 1em; min-height: 44px; cursor: pointer; font: 600 1em/1.2 var(--font-ui); }
+    .vsum { margin-left: auto; font-size: 0.85em; font-weight: 700; padding: 2px 10px; border-radius: 999px; }
+    .vsum.ok { background: var(--ok-soft); color: var(--ok); } .vsum.bad { background: var(--bad-soft); color: var(--bad); }
+    table.vt, table.budget { width: 100%; border-collapse: collapse; font-size: 0.92em; margin: 8px 0; }
+    table.vt th, table.budget th { text-align: left; color: var(--ink-2); font-weight: 600; font-size: 0.85em; padding: 6px 4px; border-bottom: 2px solid var(--line); }
+    table.vt td, table.budget td { padding: 6px 4px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+    table.vt td:first-child { font-weight: 700; width: 1.4em; }
+    table.vt tr.ok td:first-child { color: var(--ok); } table.vt tr.bad td:first-child { color: var(--bad); }
+    .tin { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+    .tin input, table.budget input, .fields input, .fields textarea, #plan-card input.name { border: 1.5px solid var(--border); background: var(--chrome-solid); border-radius: 8px; padding: 0 8px; font: inherit; color: inherit; min-height: 40px; box-sizing: border-box; }
+    .tin input { width: 5.5em; } table.budget input { width: 6.5em; }
+    .fields textarea { padding: 8px; min-height: 5em; resize: vertical; width: 100%; }
     table.budget tr.cat td { font-weight: 650; background: var(--field); }
-    table.budget.extra input:not([type=number]) { width: 100%; box-sizing: border-box; }
-    table.budget.types input { width: 64px; }
-    table.budget.types td:first-child small { color: var(--ink-3); margin-left: 3px; }
-    table.budget.types tr.custom td:first-child svg.i { width: 14px; height: 14px; vertical-align: -2px; margin-right: 3px; }
-    table.budget.compare tr { cursor: pointer; }
-    table.budget.compare tr.cur td { background: var(--accent-soft); }
+    table.budget tfoot td { font-weight: 700; }
+    table.budget.extra input:not([type=number]) { width: 100%; }
+    table.budget.types input { width: 5.5em; }
+    table.budget.compare tr { cursor: pointer; } table.budget.compare tr.cur td { background: var(--primary-soft); }
     table.kv.sum tr.tot td { font-weight: 700; border-top: 2px solid var(--line); }
-    .sim.types h3 { margin-bottom: 2px; }
-    #type-new summary { display: flex; gap: 6px; align-items: center; }
+    .meter { height: 12px; border-radius: 6px; background: var(--field); border: 1.5px solid var(--border); overflow: hidden; margin: 2px 0 10px; }
+    .meter i { display: block; height: 100%; background: var(--ok); } .meter.over i { background: var(--bad); }
+    .fields { display: grid; gap: 10px; margin: 10px 0; }
+    .fields label { display: grid; grid-template-columns: 1fr 1.1fr; gap: 10px; align-items: center; }
+    .fields.wide label { grid-template-columns: 1fr; gap: 4px; }
+    .fields.bset label { grid-template-columns: 1fr 1fr; }
+    .numu { display: flex; align-items: center; gap: 6px; }
+    .numu i { font-style: normal; color: var(--ink-2); font-size: 0.85em; white-space: nowrap; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+    ul.examples { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+    ul.examples li { border: 1.5px solid var(--border); border-radius: 12px; padding: 10px 12px; cursor: pointer; display: grid; gap: 2px; min-height: 48px; }
+    ul.examples li:hover { background: var(--field-hover); }
+    ul.examples span { color: var(--ink-2); font-size: 0.9em; }
+    .checklist { list-style: none; margin: 8px 0 12px; padding: 0; display: grid; gap: 4px; }
+    .checklist li { display: flex; gap: 8px; align-items: baseline; }
+    .checklist .ck { font-weight: 700; width: 1.4em; } .checklist .yes { color: var(--ok); } .checklist .no { color: var(--ink-3); }
+    .sharebtns { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+    .sharebtns .pbtn { flex: 1 1 11em; }
+
+    #plan-card { position: fixed; right: 72px; top: calc(70px + env(safe-area-inset-top, 0px)); width: min(22em, calc(100vw - 24px)); max-height: calc(100% - 100px); overflow: auto; padding: 14px 16px; z-index: 5; background: var(--chrome-solid); backdrop-filter: none; }
+    #plan-card .card-head { display: flex; gap: 10px; align-items: center; margin: 0 40px 8px 0; }
+    #plan-card h2 { font: 650 1.2em/1.25 var(--font-display); margin: 0; outline: none; }
+    #plan-card .close { position: absolute; right: 8px; top: 8px; width: 44px; height: 44px; }
+    #plan-card .status { margin: 10px 0 2px; }
+    #plan-card input.name { width: 100%; }
+    #plan-card .nudge { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+    #plan-card .nudge .rowbtn { min-width: 40px; }
+    #plan-card .actions { margin-bottom: 0; }
+    #plan-draw { position: fixed; left: calc(var(--plan-w) + 36px); right: 84px; margin-inline: auto; width: fit-content; max-width: min(46em, calc(100vw - var(--plan-w) - 130px)); bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 6; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; padding: 10px 14px; background: var(--chrome-solid); border: 2px solid var(--primary); border-radius: 14px; box-shadow: var(--shadow); backdrop-filter: none; }
+    #plan-draw-tip { flex: 1 1 14em; }
+    #plan-draw-info { font-variant-numeric: tabular-nums; color: var(--ink-2); }
+    #plan-draw label.keep { display: inline-flex; gap: 8px; align-items: center; min-height: 40px; cursor: pointer; }
+    #plan-draw label.keep input { width: 20px; height: 20px; accent-color: var(--primary); }
+    #plan-cross { position: fixed; left: 50%; top: 50%; width: 36px; height: 36px; margin: -18px 0 0 -18px; pointer-events: none; z-index: 3; }
+    #plan-cross::before, #plan-cross::after { content: ""; position: absolute; background: var(--primary); box-shadow: 0 0 0 1.5px #fff; }
+    #plan-cross::before { left: 17px; top: 4px; bottom: 4px; width: 2px; } #plan-cross::after { top: 17px; left: 4px; right: 4px; height: 2px; }
+    #plan-legend { position: fixed; right: 12px; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); width: 17em; padding: 10px 12px; z-index: 3; display: grid; gap: 6px; font-size: 0.85em; background: var(--chrome-solid); backdrop-filter: none; }
+    #plan-legend hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+    #plan-legend .ramp { height: 12px; border-radius: 6px; border: 1.5px solid var(--border); }
+    #plan-legend .ramp-l { display: flex; justify-content: space-between; color: var(--ink-2); font-size: 0.95em; }
+    body.planning #panel { display: none; }
     body.planning #view { cursor: default; }
+    #toast { position: fixed; left: calc(var(--plan-w) + 36px); right: 84px; margin-inline: auto; width: fit-content; max-width: min(36em, calc(100vw - 24px)); bottom: calc(90px + env(safe-area-inset-bottom, 0px)); z-index: 30; display: flex; gap: 12px; align-items: center; background: #1f2a23; color: #fff; padding: 10px 14px; border-radius: 12px; box-shadow: var(--shadow); }
+    #toast button { background: transparent; border: 1.5px solid #9adfb5; color: #9adfb5; border-radius: 8px; min-height: 40px; padding: 0 12px; font: 700 0.95em/1 var(--font-ui); cursor: pointer; }
+    #toast button:hover { background: rgba(154, 223, 181, 0.16); }
+    #toast.wide { left: 12px; right: 12px; }
+    #toast.off { width: 1px; height: 1px; min-height: 0; max-width: 1px; padding: 0; margin: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; box-shadow: none; opacity: 0; pointer-events: none; }
+    #banner { position: fixed; left: 12px; right: 12px; top: calc(12px + env(safe-area-inset-top, 0px)); margin-inline: auto; width: fit-content; max-width: min(44em, calc(100vw - 24px)); z-index: 40; background: var(--bad-soft); border: 2px solid var(--bad); color: var(--ink); border-radius: 12px; padding: 12px 14px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; box-shadow: var(--shadow); backdrop-filter: none; }
+    #banner { background: var(--chrome-solid); }
+    dialog { border: 2px solid var(--border); border-radius: 16px; padding: 0; background: var(--chrome-solid); color: var(--ink); box-shadow: var(--shadow); max-width: min(32.5em, calc(100vw - 24px)); }
+    dialog::backdrop { background: rgba(10, 16, 12, 0.55); }
+    dialog .dlg { padding: 18px 20px; display: grid; gap: 12px; }
+    dialog h2 { font: 650 1.3em/1.25 var(--font-display); margin: 0; }
+    dialog .dlg-acts { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    #plan-sheet { max-width: min(44em, calc(100vw - 24px)); max-height: calc(100vh - 32px); }
+    #plan-sheet .dlg { max-height: calc(100vh - 80px); overflow: auto; }
+    #plan-sheet details { border-bottom: 1px solid var(--line); padding: 4px 0; }
+    #plan-sheet summary { cursor: pointer; font-weight: 650; min-height: 44px; display: flex; align-items: center; }
+    #plan-sheet dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; }
+    #plan-sheet dt { font-weight: 650; } #plan-sheet dd { margin: 0; }
+    kbd { font: inherit; font-size: 0.85em; padding: 1px 6px; border-radius: 5px; border: 1.5px solid var(--border); background: var(--field); }
+    #tour { position: fixed; z-index: 50; width: min(21em, calc(100vw - 24px)); background: var(--chrome-solid); border: 2px solid var(--primary); border-radius: 14px; box-shadow: var(--shadow); padding: 14px 16px; display: grid; gap: 10px; }
+    #tour .t-acts { display: flex; gap: 8px; justify-content: space-between; align-items: center; }
+    .tour-hl { outline: 4px solid var(--primary) !important; outline-offset: 3px; border-radius: 10px; position: relative; z-index: 45; }
+    .tl { font-size: 0.85em; color: var(--ink-2); }
+    @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; } }
+    html[data-motion="reduce"] * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    @media (forced-colors: active) {
+      .gauge .fill, .meter i { background: Highlight; }
+      .gauge .was, .gauge .tgt { background: CanvasText; }
+      .ptool[aria-pressed="true"], .goal:hover, .seg button[aria-pressed="true"], .pbtn[aria-pressed="true"], #plan-steps button[aria-current="step"] .n, .catchip.on { outline: 3px solid Highlight; outline-offset: -3px; }
+      #plan-steps button.done .n { border-color: Highlight; }
+      .badge { border: 1px solid CanvasText; }
+    }
 
     @media (max-width: 700px) {
-      #plan { top: auto; bottom: 0; left: 0; right: 0; width: 100%; max-height: 50vh; border-radius: var(--r-lg) var(--r-lg) 0 0; }
-      #plan-card { right: 0; left: 0; width: 100%; top: auto; bottom: 0; max-height: 48vh; border-radius: var(--r-lg) var(--r-lg) 0 0; }
+      :root { --plan-w: 0px; }
+      #plan { top: auto; bottom: 0; left: 0; right: 0; width: 100%; height: 62vh; border-radius: 18px 18px 0 0; }
+      #plan.sheet-peek { height: 188px; } #plan.sheet-peek #plan-body, #plan.sheet-peek #plan-foot, #plan.sheet-peek #plan-steps { display: none; }
+      #plan.sheet-full { height: 92vh; }
+      #plan.sheet-peek ~ #plan-draw { bottom: calc(188px + 8px); }
+      #plan.sheet-peek ~ #toast { bottom: calc(188px + 80px); }
+      .p-tools { justify-content: space-between; margin: 0; }
+      .p-tools .pbtn { min-width: 44px; justify-content: center; font-size: 1em; }
+      .p-tools .bl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+      #plan-strip { padding: 4px 12px 8px; gap: 4px; }
+      #plan-strip .strip-top > span { display: none; }
+      #strip-note .strip-empty { display: none; }
+      #plan-steps { padding: 4px 12px 2px; }
+      #plan-steps button { min-height: 50px; }
+      #plan .sheetbtn { display: inline-flex; }
+      #plan-close span { display: none; }
+      .p-tools .pbtn { padding: 0 0.5em; }
+      #plan-card { right: 0; left: 0; width: 100%; top: auto; bottom: 0; max-height: 62vh; border-radius: 18px 18px 0 0; }
       body.plan-card-open #plan { display: none; }
-      #plan-draw { bottom: calc(50vh + 10px); }
+      #plan-draw { left: 8px; right: 8px; bottom: calc(62vh + 8px); width: auto; max-width: none; margin-inline: 0; }
+      #toast { left: 8px; right: 8px; bottom: calc(62vh + 80px); width: auto; max-width: none; margin-inline: 0; }
       #plan-legend { display: none; }
-      .ptools { grid-template-columns: repeat(4, 1fr); }
+      .tiles { grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+      .tile b { font-size: 1.15em; }
       #panel { top: auto; bottom: 0; left: 0; right: 0; width: 100%; max-height: 46vh; border-radius: var(--r-lg) var(--r-lg) 0 0; }
       #modes { top: calc(64px + env(safe-area-inset-top, 0px)); }
       #info { right: 12px; left: 12px; width: auto; top: auto; bottom: 12px; max-height: 50vh; }
@@ -363,7 +511,7 @@
   <nav id="modes" class="chrome" aria-label="View mode">
     <button id="mode-aerial" aria-pressed="true"><svg class="i" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4M3 17l9 4 9-4"/></svg>Aerial</button>
     <button id="mode-street" aria-pressed="false"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2.2"/><path d="M12 8v6m0 0l-3 7m3-7l3 7M8 11h8"/></svg>Street view</button>
-    <button id="mode-plan" aria-pressed="false" title="Try changes to Pantnagar and simulate them (P)"><svg class="i" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 7l3 3M4 20h16"/></svg>Plan</button>
+    <button id="mode-plan" aria-pressed="false" title="Try an idea: change the campus map and see what it achieves and costs (P)"><svg class="i" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 7l3 3M4 20h16"/></svg>Try an idea</button>
   </nav>
 
   <aside id="panel" class="chrome" aria-label="Campus panel">
@@ -383,7 +531,7 @@
       <div class="chips" id="views"></div>
       <h3>Buildings by type <span class="note">(click to highlight)</span></h3>
       <div class="legend" id="type-legend"></div>
-      <p class="note">Types come from OSM tags and names, places inside the building, land use, or (marked "estimated") size and shape.</p>
+      <p class="note">A type is shown only when there is evidence for it: an OSM tag, a name, a place inside the building, or a mapped land-use area. Types guessed from size and shape are shown as "Type not confirmed" (Layers can show the guesses). Farm outlines come from OpenStreetMap; individual crop fields are not mapped yet.</p>
     </div>
     <div class="pane" id="pane-blocks" hidden>
       <p class="note" id="blocks-summary"></p>
@@ -402,12 +550,14 @@
       <h3>Layers</h3>
       <label class="toggle"><input type="checkbox" id="ly-bld" checked><span>Buildings</span><span class="num" id="n-bld"></span></label>
       <label class="toggle"><input type="checkbox" id="ly-type"><span>Colour buildings by type</span><span></span></label>
+      <label class="toggle"><input type="checkbox" id="ly-guess"><span>Show types guessed from size and shape</span><span class="num" id="n-guess"></span></label>
       <label class="toggle"><input type="checkbox" id="ly-trees" checked><span>Trees</span><span class="num" id="n-trees"></span></label>
       <label class="toggle"><input type="checkbox" id="ly-roads" checked><span>Roads</span><span class="num" id="n-roads"></span></label>
       <label class="toggle"><input type="checkbox" id="ly-water" checked><span>Water (mapped + Sentinel-2)</span><span></span></label>
       <label class="toggle"><input type="checkbox" id="ly-drain"><span>Modelled drainage lines (terrain)</span><span></span></label>
       <label class="toggle"><input type="checkbox" id="ly-blocks" checked><span>Block outlines</span><span class="num" id="n-blocks"></span></label>
       <label class="toggle"><input type="checkbox" id="ly-blockfill"><span>Colour blocks by use</span><span></span></label>
+      <label class="toggle"><input type="checkbox" id="ly-farms" checked><span>Farms: mapped farmland, farmyards, orchards</span><span></span></label>
       <label class="toggle"><input type="checkbox" id="ly-lights" checked><span>Street lights and walls</span><span></span></label>
       <label class="toggle"><input type="checkbox" id="ly-villages" checked><span>Village boundaries (Census 2011)</span><span></span></label>
       <label class="toggle"><input type="checkbox" id="ly-labels" checked><span>Labels</span><span></span></label>
@@ -443,41 +593,75 @@
   </div>
 
 
-  <aside id="plan" class="chrome" hidden aria-label="Plan">
-    <div class="plan-head">
-      <div class="scn-name">
-        <button class="icon-btn" id="scn-btn" aria-label="Scenarios" aria-expanded="false" title="Your scenarios: open, add, duplicate, compare"><svg class="i" viewBox="0 0 24 24"><path d="M4 6h10M4 12h16M4 18h12"/><path d="M18 3l3 3-3 3"/></svg></button>
-        <input id="plan-title" value="Untitled scenario" aria-label="Scenario name" maxlength="120">
+  <aside id="plan" class="chrome" hidden aria-label="Try an idea">
+    <div class="p-head">
+      <div class="p-name">
+        <label class="sr" for="plan-title">Name of this plan</label>
+        <input id="plan-title" value="Untitled plan" maxlength="120" title="Click to rename this plan">
+        <span id="plan-saved" class="saved"></span>
+        <button class="pbtn quiet sheetbtn" id="plan-sheet-btn" aria-expanded="true" aria-controls="plan-body">Less</button>
+        <button class="pbtn quiet" id="plan-close" aria-label="Close planning and go back to the map"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Close</span></button>
       </div>
-      <div class="plan-acts">
-        <button class="icon-btn" id="plan-undo" aria-label="Undo" title="Undo (Ctrl+Z)" disabled><svg class="i" viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg></button>
-        <button class="icon-btn" id="plan-redo" aria-label="Redo" title="Redo (Ctrl+Y)" disabled><svg class="i" viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 000 12h3"/></svg></button>
+      <div class="p-tools" role="toolbar" aria-label="Plan tools">
+        <button class="pbtn quiet" id="plan-undo" disabled title="Undo the last change (Ctrl+Z)"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg><span class="bl">Undo</span></button>
+        <button class="pbtn quiet" id="plan-redo" disabled title="Put the change back (Ctrl+Y)"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14l5-5-5-5"/><path d="M20 9H10a6 6 0 000 12h3"/></svg><span class="bl">Redo</span></button>
+        <button class="pbtn quiet" id="scn-btn" aria-expanded="false" aria-controls="scn-list" title="Open, add, copy or compare your plans"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10M4 12h16M4 18h12"/></svg><span class="bl">Plans</span></button>
+        <button class="pbtn quiet" id="plan-help-btn" title="Help, a short tour and a word list"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 0c0 1.5-2.5 2-2.5 3.5M12 17h.01"/></svg><span class="bl">Help</span></button>
+        <button class="pbtn quiet" id="plan-display-btn" aria-expanded="false" aria-controls="plan-display" title="Text size, contrast and keyboard options"><b aria-hidden="true">Aa</b><span class="bl">Display</span></button>
       </div>
-      <div class="seg" id="plan-ab" role="group" aria-label="Compare"><button data-ab="base" aria-pressed="false">Today</button><button data-ab="plan" aria-pressed="true">With the changes</button></div>
+      <div id="plan-display" class="popover" hidden></div>
     </div>
     <div id="scn-list" hidden></div>
-    <div id="plan-kpis"></div>
-    <div class="tabs" role="tablist" id="plan-tabs">
-      <button role="tab" aria-selected="true" data-ptab="build">Design</button>
-      <button role="tab" aria-selected="false" data-ptab="sim">Simulate</button>
-      <button role="tab" aria-selected="false" data-ptab="budget">Budget</button>
-      <button role="tab" aria-selected="false" data-ptab="types">Types</button>
-      <button role="tab" aria-selected="false" data-ptab="file">Report</button>
+    <nav id="plan-steps" aria-label="Steps">
+      <ol>
+        <li><button data-step="1"><span class="n">1</span>Goal</button></li>
+        <li><button data-step="2"><span class="n">2</span>Changes</button></li>
+        <li><button data-step="3"><span class="n">3</span>Results</button></li>
+        <li><button data-step="4"><span class="n">4</span>Share</button></li>
+      </ol>
+    </nav>
+    <section id="plan-strip" aria-label="Results at a glance">
+      <div class="strip-top"><span id="plan-ab-label">Showing</span>
+        <div class="seg" id="plan-ab" role="group" aria-labelledby="plan-ab-label"><button data-ab="base" aria-pressed="false">Today</button><button data-ab="plan" aria-pressed="true">With this plan</button></div>
+      </div>
+      <div id="plan-kpis" class="tiles"></div>
+      <div id="strip-note"></div>
+    </section>
+    <div id="plan-body" tabindex="-1">
+      <section id="step-goal" aria-labelledby="h-goal"></section>
+      <section id="step-changes" hidden aria-labelledby="h-changes">
+        <h2 id="h-changes">Make your changes</h2>
+        <div id="quick"></div>
+        <h3>Add things to the map</h3>
+        <div id="plan-tools"></div>
+        <div id="plan-help" hidden></div>
+        <h3>Your changes <span id="plan-count"></span></h3>
+        <ul id="plan-items"></ul>
+      </section>
+      <section id="step-results" hidden aria-labelledby="h-results">
+        <h2 id="h-results">What would this achieve?</h2>
+        <div id="result-cards"></div>
+        <details class="disc" id="d-sim"><summary>Show the numbers and the maps</summary><div id="ptab-sim"></div></details>
+        <details class="disc" id="d-budget"><summary>Cost, line by line</summary><div id="ptab-budget"></div></details>
+        <details class="disc" id="d-types"><summary>Rates, upkeep and your own item types</summary><div id="ptab-types"></div></details>
+      </section>
+      <section id="step-share" hidden aria-labelledby="h-share">
+        <h2 id="h-share">Share it with colleagues</h2>
+        <div id="ptab-file"></div>
+      </section>
     </div>
-    <div class="pane" id="ptab-build">
-      <div id="plan-tools"></div>
-      <div id="plan-help" hidden></div>
-      <h3>In this scenario <span id="plan-count"></span></h3>
-      <ul id="plan-items"></ul>
-    </div>
-    <div class="pane" id="ptab-sim" hidden></div>
-    <div class="pane" id="ptab-budget" hidden></div>
-    <div class="pane" id="ptab-types" hidden></div>
-    <div class="pane" id="ptab-file" hidden></div>
+    <footer id="plan-foot"><button class="pbtn" id="foot-back">‹ Back</button><button class="pbtn primary" id="foot-next">Next ›</button></footer>
   </aside>
-  <section id="plan-card" class="chrome" hidden aria-live="polite"></section>
-  <div id="plan-draw" class="chrome" hidden><span id="plan-draw-tip"></span><span id="plan-draw-info"></span><button id="plan-draw-back" title="Remove the last point (Backspace)">Undo point</button><button id="plan-draw-done" class="primary" title="Finish (Enter or double-click)">Finish</button><button id="plan-draw-cancel" title="Cancel (Esc)">Cancel</button></div>
+  <section id="plan-card" class="chrome" hidden aria-label="Selected item"></section>
+  <div id="plan-draw" class="chrome" hidden role="region" aria-label="What to do next on the map"><span id="plan-draw-tip"></span><span id="plan-draw-info"></span><label class="keep" id="plan-keep-wrap"><input type="checkbox" id="plan-keep"> Keep adding</label><button id="plan-draw-back" title="Remove the last point (Backspace)">Remove last point</button><button id="plan-draw-done" class="primary" title="Finish (Enter or double-click)">Finish this shape</button><button id="plan-draw-cancel" title="Stop adding (Esc)">Stop adding</button></div>
+  <div id="plan-cross" hidden aria-hidden="true"></div>
   <div id="plan-legend" class="chrome" hidden></div>
+  <div id="toast" class="off" role="status" aria-live="polite"></div>
+  <div id="banner" hidden role="alert"></div>
+  <div id="sr-live" class="sr" role="status" aria-live="polite"></div>
+  <dialog id="ask" aria-labelledby="ask-title"><div class="dlg"><h2 id="ask-title"></h2><div id="ask-body"></div><div class="dlg-acts"><button class="pbtn" id="ask-no"></button><button class="pbtn primary" id="ask-yes"></button></div></div></dialog>
+  <dialog id="plan-sheet" aria-labelledby="sheet-title"><div class="dlg"><h2 id="sheet-title">Help for planning</h2><div id="sheet-body"></div><div class="dlg-acts"><button class="pbtn primary" id="sheet-close">Close</button></div></div></dialog>
+  <div id="tour" hidden role="dialog" aria-label="Short tour"></div>
   <input type="file" id="plan-file" accept=".geojson,.json,application/geo+json,application/json" hidden>
   <section id="info" class="chrome" hidden aria-live="polite">
     <button class="icon-btn close" id="info-close" aria-label="Close"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
@@ -487,15 +671,15 @@
   <div id="readout" class="chrome"><span id="scale-text">-</span><span id="scale-bar"></span><span id="cursor">Move over the map</span></div>
   <div id="attrib" class="chrome">© OpenStreetMap contributors · Overture Maps · Google Open Buildings · Copernicus Sentinel-2 · Meta/WRI · Census 2011 (Bharat Maps)</div>
 
-  <div id="sv-hint" class="chrome" hidden>Click any road to drop in at street level</div>
+  <div id="sv-hint" class="chrome" role="status" aria-live="polite" hidden>Click anywhere on the ground to stand there, then walk around with W A S D</div>
   <div id="minimap" class="chrome" hidden><canvas width="392" height="392"></canvas></div>
   <div id="sv" hidden>
     <div id="sv-arrows"></div>
     <div id="sv-bar" class="chrome">
       <span id="sv-where">-</span>
       <span class="sep"></span>
-      <button id="sv-follow" aria-pressed="true" title="Move along the road network">Follow road</button>
-      <button id="sv-free" aria-pressed="false" title="Walk anywhere (WASD + mouse)">Free walk</button>
+      <button id="sv-follow" aria-pressed="false" title="Stay on the road network and choose at junctions">Follow road</button>
+      <button id="sv-free" aria-pressed="true" title="Walk anywhere: W A S D or the arrow keys, drag to look, Shift to run">Roam freely</button>
       <span class="sep"></span>
       <button id="sv-walk" aria-pressed="true">Walk</button>
       <button id="sv-drive" aria-pressed="false">Drive</button>
@@ -508,11 +692,10 @@
     <div class="box chrome">
       <h2>How to move</h2>
       <table>
-        <tr><td><b>Aerial</b></td><td>Drag to orbit, right-drag or Shift-drag to pan, wheel to zoom, double-click to fly there. Click a building or a block for details.</td></tr>
-        <tr><td><b>Street view</b></td><td>Press <kbd>Street view</kbd>, then click a road. <kbd>↑</kbd>/<kbd>W</kbd> forward, <kbd>↓</kbd>/<kbd>S</kbd> back, drag to look around. At junctions click an arrow or use <kbd>←</kbd>/<kbd>→</kbd> then <kbd>↑</kbd>.</td></tr>
-        <tr><td><b>Free walk</b></td><td><kbd>W A S D</kbd> or arrows to walk anywhere, drag to look, <kbd>Shift</kbd> to run. Buildings block you.</td></tr>
-        <tr><td><b>Plan</b></td><td>Press <kbd>Plan</kbd> (or <kbd>P</kbd>), pick a tool and click on the map. Buildings and areas: three clicks for a rectangle. Roads: click along the route, double-click or <kbd>Enter</kbd> to finish. <kbd>Esc</kbd> stops a tool, <kbd>Delete</kbd> removes the selected item, <kbd>Ctrl</kbd>+<kbd>Z</kbd> undoes. The Simulate tab shows Wi-Fi, lighting and walking access; Proposal makes a report.</td></tr>
-        <tr><td><b>Keys</b></td><td><kbd>V</kbd> street view, <kbd>P</kbd> plan, <kbd>Esc</kbd> back to aerial, <kbd>/</kbd> search, <kbd>R</kbd> reset view, <kbd>?</kbd> this help.</td></tr>
+        <tr><td><b>Aerial</b></td><td>Fly with <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> or the arrow keys (hold <kbd>Shift</kbd> for speed), turn with <kbd>Q</kbd> / <kbd>E</kbd>, zoom with <kbd>+</kbd> / <kbd>-</kbd> or the wheel. With the mouse: drag to orbit, right-drag or Shift-drag to pan, double-click to fly there. Click a building or a block for details.</td></tr>
+        <tr><td><b>Street view</b></td><td>Press <kbd>Street view</kbd> (or <kbd>V</kbd>), then click anywhere on the ground. You roam freely: <kbd>W</kbd>/<kbd>↑</kbd> forward, <kbd>S</kbd>/<kbd>↓</kbd> back, <kbd>A</kbd> <kbd>D</kbd> sidestep, <kbd>←</kbd> <kbd>→</kbd> or <kbd>Q</kbd> <kbd>E</kbd> turn, drag to look around, <kbd>Shift</kbd> to run. Buildings block you. <kbd>Follow road</kbd> keeps you on the road network instead, with arrows at junctions.</td></tr>
+                <tr><td><b>Try an idea</b></td><td>Press <kbd>Try an idea</kbd> (or <kbd>P</kbd>) and follow the four steps: Goal, Changes, Results, Share. To place something, choose it and click on the map, or press <kbd>Enter</kbd> or <kbd>Space</kbd> to put it at the cross in the middle of the screen. Drag to move the map, right-drag to turn it. <kbd>Esc</kbd> stops, <kbd>Delete</kbd> removes the selected item, <kbd>Ctrl</kbd>+<kbd>Z</kbd> undoes.</td></tr>
+        <tr><td><b>Keys</b></td><td><kbd>V</kbd> street view, <kbd>P</kbd> plan, <kbd>Esc</kbd> back to aerial (while planning it stops what you are doing), <kbd>/</kbd> search, <kbd>R</kbd> reset view, <kbd>?</kbd> this help. If letter keys get in your way, switch them off under <b>Display</b> while planning.</td></tr>
       </table>
       <p class="note">Buildings: OpenStreetMap, Google and Microsoft footprints, and extra buildings found in Google's 2023 building-presence raster. Heights are measured where Google's 2.5D data covers them. Facades, windows and roof details are generated from height, floors and type, not photographed.</p>
       <div class="actions"><button id="help-close">Close</button></div>
@@ -529,8 +712,10 @@
   <script src="js/gfx-nature.js"></script>
   <script src="js/gfx-baked.js"></script>
   <script src="js/gfx.js"></script>
+  <script src="js/weather.js"></script>
   <script src="js/sim-wasm.js"></script>
   <script src="data/scenarios.js"></script>
   <script src="js/plan.js"></script>
+  <script src="js/plan-guide.js"></script>
 </body>
 </html>

@@ -2,39 +2,42 @@
 
 **Try a change to Pantnagar on its digital twin, see what works and what does not, and only then put a budget on it.**
 
-Plan mode in the campus twin (`GBPUAT-Campus-3D.html` or `campus/index.html`) is a simulation sandbox. You work the way an owner of the place would:
+Plan mode (the **Try an idea** button, or the `P` key) in the campus twin (`GBPUAT-Campus-3D.html` or `campus/index.html`) is a simulation sandbox. It is written for people who are not technical: a four-step path, plain-language results, and Undo instead of "are you sure" boxes. You work the way an owner of the place would:
 
-1. **Design** changes on the 3D map: new buildings, roads and areas, equipment and amenities, changes to what exists.
-2. **Simulate** the categories you care about, one or several at a time, and read clear verdicts against your targets.
-3. **Budget** it: quantities come from the map, and every rate, extra cost, contingency, tax and the spending limit is yours to set.
-4. Keep several **scenarios**, compare them, and print a **report** of the one you choose.
+1. **Goal**: say what you want to improve (Wi-Fi in hostels, street lighting, cycle sharing, water, solar and trees, bins and drinking water, or a new building), or start from a ready-made example.
+2. **Changes**: add things to the map. Each goal has a one-click quick start ("Place Wi-Fi in all the hostels for me", "Add rainwater harvesting to all the hostels") and puts its own tools first.
+3. **Results**: see what the changes achieve against your targets, as sentences with a word and a symbol as well as a colour, and what it costs. The detailed numbers, maps and cost lines are one click further down.
+4. **Share**: make a printable report, copy a link, save a file, compare plans.
 
-Everything runs in the browser and works offline. The simulation engine is written in Rust (`twin/sim`) and runs as WebAssembly in the page and as a command-line tool (`twin sim`).
+Everything runs in the browser and works offline. The simulation engine is written in Rust (`twin/sim`) and runs as WebAssembly in the page and as a command-line tool (`twin sim`). The design reasoning is in [plan-ux-design.md](plan-ux-design.md).
 
 ## The panel
 
-| Tab | What it is for |
+| Step | What it is for |
 | --- | --- |
-| **Design** | Tools by category. Click on the map to place, draw or change things. Your own item types appear under their category. The list below shows everything in the scenario, grouped by category. |
-| **Simulate** | Tick the categories to simulate, then **Run simulation** (or leave **Run automatically** on). **What works** lists every check against its target, with ✓ or ✗; targets can be edited in place. Below are the details: Wi-Fi coverage, street lighting, walking access, routes, green/water/energy, buildings and roads, and the model assumptions. |
-| **Budget** | Budget available, contingency and taxes; costs by category with editable rates; other cost lines (survey, design, labour…); totals, running cost and solar savings; CSV download. |
-| **Types** | Every item type with its cost, yearly upkeep and walking reach, all editable. **New item type** creates your own (name, category or a new category, point / line / area, cost, upkeep, electricity, walking reach, colour). |
-| **Report** | Notes on what the scenario tries, the scenario report, scenario files and share links, **Compare all scenarios**, and sample scenarios. |
+| **1 Goal** | Pick what to improve, or open an example. First-time visitors can take a one-minute tour. |
+| **2 Changes** | The quick start for the goal, then **Add things to the map** (the eight most useful first, everything else under *More things you can add*, including your own kinds of item), then **Your changes**: every item you added, with Remove. Click an item on the map or in the list for its card: name, settings, *New* or *Already there*, arrows to move it 2 m, **Pick a new spot**, copy, remove. |
+| **3 Results** | One card per result, in words: *"With your Wi-Fi points, 96% of the floor area … gets a signal good enough for a video call, up from 0% today."* Each has a gauge (today, your target, your plan), a status word (Target met, Almost there, Not there yet) and buttons to show it on the map. Below the cards, folded away: **Show the numbers and the maps** (the full simulation: categories to include, targets you can edit, Wi-Fi coverage, street lighting, walking access, routes, green/water/energy, buildings and roads, model assumptions), **Cost, line by line** (budget available, contingency, taxes, editable rates, other cost lines, CSV) and **Rates, upkeep and your own item types**. |
+| **4 Share** | A checklist of what is ready, notes on what the plan is for, **Make a printable report**, **Copy a link to share**, **Save as a file**, **Open a saved file**, **Compare my plans side by side**, and **Start from a ready-made example**. |
 
-The scenario name sits at the top of the panel; the button beside it opens **your scenarios** (open, new, duplicate, delete). **Today / With the changes** switches the whole view, and the figures under it (total cost, running cost, targets met) update as you work.
+The plan name sits at the top; **Plans** opens your saved plans (open, new, copy, delete). **Today / With this plan** switches the whole map, and the strip under the steps (the headline result for your goal, the cost, targets met) is always visible and updates as you work. **Undo** and **Redo** are always at the top; **Help** has the four steps, a word list and an honest note on accuracy; **Display** sets text size, stronger contrast, less movement and whether letter-key shortcuts are on.
 
 ## Designing
 
-- **Points** (Wi-Fi, lights, docks, bins…): click to place; keep clicking to place more; `Esc` when done.
-- **Buildings and areas**: three clicks make a rectangle (corner, corner, depth); **Any shape** clicks every corner; double-click or `Enter` finishes.
+- **One placement, then done.** Choose something, click on the map where it goes, and the tool switches off with an **Undo** message. Tick **Keep adding** (in the bar at the bottom of the map) to place several.
+- **Without a mouse click**: a cross marks the middle of the screen while you place something. `Enter` or `Space` puts it there; move the map with `W A S D` or the arrow keys first. For buildings, areas and roads each press adds a point and `Enter` finishes.
+- **Buildings and areas**: three clicks make a rectangle (corner, corner, depth); **Any shape** clicks every corner; **Finish**, `Enter` or a double-click finishes. A building drawn from far above can be far too large, so the card warns when it is.
 - **Roads and paths**: click along the route. Ends within 12 m of a road join it, and crossings become junctions, so new roads are part of the network: street view walks and drives on them, and routes use them.
-- **On a building** (rooftop solar, rainwater harvesting, change floors or use, demolish) and **on a tree** (tag, remove): click it.
-- **Light a road**: click a mapped road to line it with street lights.
-- Click anything you added to edit it: name, settings, **Proposed** or **Existing**. Drag it, or its corner handles, to move it. `Delete` removes, `Ctrl+Z` undoes, `Ctrl+D` duplicates.
+- **On a building** (rooftop solar, rainwater harvesting, change floors or use, remove a building) and **on a tree** (record, remove): click it.
+- **Light a whole road**: click a mapped road to line it with street lights, one every 25–40 m.
+- Click anything you added to edit it. Drag the selected item, or its corner handles, to move it, or use the arrows on its card. `Delete` removes, `Ctrl+Z` undoes, `Ctrl+D` copies. Removing never asks "are you sure": it says what it removed and offers Undo.
+- Dragging the map moves it; right-drag (or Shift-drag) turns it.
 
 **Existing** items are things already on the ground but missing from the map (real access points, street lights, tagged trees). They count as *today*, so results show what your changes add. The street lights drawn in the normal view are illustrative and do not count.
 
 ## Simulating
+
+These are the models behind the Results step (the detail is under *Show the numbers and the maps*).
 
 | Model | Result |
 | --- | --- |
@@ -50,21 +53,21 @@ Unticked categories stay on the map as grey markers and are left out of the simu
 
 ### Targets ("What works")
 
-Defaults: Wi-Fi 95% good signal, lighting 90% of road to standard, each amenity 60% of people within reach, at most 10 trees lost, no conflicts, and the total within the budget available (when set). Change any of them in the Simulate tab; they are saved with the scenario.
+Defaults: Wi-Fi 95% good signal, lighting 90% of road to standard, each amenity 60% of people within reach, at most 10 trees lost, no conflicts, and the total within the budget available (when set). Change any of them under *Show the numbers and the maps* on the Results step; they are saved with the plan.
 
 ## Budget
 
 - Quantities come from the map: counts, metres of road, square metres of area, kWp of solar, m² of roof.
-- Rates are indicative 2026 figures: change them in the Budget or Types tab. Your rates, upkeep percentages and walking reaches are saved in the scenario.
+- Rates are indicative 2026 figures: change them under *Cost, line by line* or *Rates, upkeep and your own item types* on the Results step. Your rates, upkeep percentages and walking reaches are saved in the plan.
 - **Other costs** are free lines for anything not on the map (survey, design, labour, software, training).
 - Total = items + other costs + contingency, plus taxes. The running cost is upkeep plus electricity.
 
-## Scenarios, files and links
+## Plans, files and links
 
-- Scenarios are kept in your browser. **Duplicate** one to try a variation, then **Compare all scenarios** in the Report tab to see cost and targets met side by side.
-- **Save scenario file** downloads GeoJSON (it opens in QGIS and back in the Sandbox). The format is in [plan-format.md](plan-format.md). Opening a file, a share link or a sample always makes a new scenario.
-- **Copy share link** puts the whole scenario in a link (`#plan=...`).
-- **Scenario report** opens a printable page: what works, changes, results today and with the changes, budget, and how it was simulated.
+- Plans are kept in your browser (a "saved on this computer" note appears at the top). **Make a copy** of one to try a variation, then **Compare my plans side by side** on the Share step to see cost and targets met together. Deleting a plan is the one place that asks first, because it cannot be undone.
+- **Save as a file** downloads GeoJSON (it opens in QGIS and back in the Sandbox). The format is in [plan-format.md](plan-format.md). Opening a file, a link or an example always makes a new plan, so nothing is overwritten.
+- **Copy a link to share** puts the whole plan in a link (`#plan=...`).
+- **Make a printable report** opens a page: what works, changes, results today and with the changes, budget, and how it was simulated.
 
 From the command line:
 
@@ -85,5 +88,5 @@ cd twin && cargo build --release
 
 - Built-in types, rates, walking reaches and assumptions: `twin/sim/src/catalog.rs` (the page builds its tools and forms from it).
 - Models: `twin/sim/src/engine.rs`; road network logic: `graph.rs`.
-- Page side (drawing, 3D, panels, report): `campus/js/plan.js`.
+- Page side: `campus/js/plan.js` (drawing, 3D, engine calls, plans, files, report; it exposes `window.__sandbox.api` and `sandbox:*` events) and `campus/js/plan-guide.js` (the guided shell: steps, goal screen, result sentences, messages, help, tour, display settings).
 - Rebuild the engine for the page with `twin sim-pack` (needs `rustup target add wasm32-unknown-unknown` once), then `twin bundle` for the single-file HTML.

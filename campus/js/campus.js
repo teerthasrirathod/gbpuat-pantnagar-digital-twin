@@ -52,6 +52,15 @@
     school: [0xe8cf9c], commercial: [0xddd0c0, 0xe8d5b8], religious: [0xf6ead0, 0xf3d7a2], sports: [0xd9d3c6],
     farm: [0xc2baab], industrial: [0xbabdc0], utility: [0xcac3b7], institutional: [0xe2d6bd], unknown: [0xe4dac8],
   };
+  // How sure we are of a building's type. A tag, a name or a place inside the building confirms it; a mapped
+  // land-use area (context) is good evidence; size and shape (shape) is only a guess. Guessed types are not shown as
+  // types unless asked for (Layers). The building keeps its shape and wall colour either way.
+  TYPE_LABEL.unconfirmed = "Type not confirmed";
+  TYPE_COLOUR.unconfirmed = 0xc9c4b8;
+  let showGuesses = false;
+  const shownType = (b) => (b.ts === "shape" && !showGuesses ? "unconfirmed" : b.t);
+  // Names that point at agriculture, for map labels.
+  const AGRI_RE = /agri(?!culture and)|crop|farm|dairy|livestock|horticultur|seed|nursery|fish|hatchery|poultry|apiar|bee research|mushroom|orchard|medicinal|aromatic|floricultur|vegetable|krishi|krishak|kisan/i;
   const USE_COLOUR = {
     "Academic / institutional": 0xd9a33f, Hostels: 0x9a64c4, Housing: 0x4f9fd8, "Mixed built-up": 0xc79a6a,
     "Fields / farm": 0x9fbf5a, Wooded: 0x3f7f45, Water: 0x4a86b8, Airport: 0x888888, "Open land": 0xc9c08f,
@@ -77,7 +86,7 @@
   scene.add(sun);
 
   const groups = {};
-  for (const k of ["terrain", "roads", "water", "drain", "blocks", "blockfill", "villages", "bld", "trees", "lights", "misc", "plan"]) {
+  for (const k of ["terrain", "roads", "water", "drain", "blocks", "blockfill", "villages", "farms", "bld", "trees", "lights", "misc", "plan"]) {
     groups[k] = new THREE.Group();
     scene.add(groups[k]);
   }
@@ -285,7 +294,7 @@
   }
 
   // Flat polygon draped on the terrain (triangulated, large triangles split).
-  function drapedPolygon(batch, rings, lift, col, flatY) {
+  function drapedPolygon(batch, rings, lift, col, flatY, maxEdge = 45) {
     const outer = rings[0].map((p) => new THREE.Vector2(p[0], p[1]));
     const holes = rings.slice(1).map((r) => r.map((p) => new THREE.Vector2(p[0], p[1])));
     if (outer.length < 3) return;
@@ -295,7 +304,7 @@
     const push = (a, b, c, depth) => {
       const ab = Math.hypot(a.x - b.x, a.y - b.y), bc = Math.hypot(b.x - c.x, b.y - c.y), ca = Math.hypot(c.x - a.x, c.y - a.y);
       const m = Math.max(ab, bc, ca);
-      if (flatY == null && m > 45 && depth < 7) {
+      if (flatY == null && m > maxEdge && depth < 7) {
         if (m === ab) { const d = a.clone().add(b).multiplyScalar(0.5); push(a, d, c, depth + 1); push(d, b, c, depth + 1); }
         else if (m === bc) { const d = b.clone().add(c).multiplyScalar(0.5); push(a, b, d, depth + 1); push(a, d, c, depth + 1); }
         else { const d = c.clone().add(a).multiplyScalar(0.5); push(a, b, d, depth + 1); push(d, b, c, depth + 1); }
@@ -489,6 +498,36 @@
     }
     groups.villages.add(lineSegments(vp, 0xff7a3d, 1, true));
   }
+  // ---------------------------------------------------------------------------------------
+  // Farms: the farmland, farmyard and orchard areas mapped in OpenStreetMap, as soft fills with an outline, named on
+  // the map. Individual crop fields and crop types are not in the data yet, so none are drawn.
+  const FARM_KINDS = {
+    "landuse:farmland": { label: "Farmland", fill: 0xb7c24a, alpha: 0.2, line: 0x8c9a2c, lift: 2.5, edge: 250 },
+    "landuse:farmyard": { label: "Farmyard", fill: 0xd6a53a, alpha: 0.4, line: 0xa8761a, lift: 0.8, edge: 45 },
+    "landuse:orchard": { label: "Orchard", fill: 0x4fa04a, alpha: 0.4, line: 0x2f7d34, lift: 0.8, edge: 45 },
+    "amenity:research_institute": { label: "Research institute", fill: 0x8fb4a0, alpha: 0.3, line: 0x4f8a72, lift: 0.8, edge: 45 },
+  };
+  const farmAreas = [];
+  {
+    const fills = {}, edges = {};
+    for (const a of D.areas) {
+      const fk = FARM_KINDS[a.k];
+      if (!fk) continue;
+      const rings = a.r.map((r) => clipRing(toRing(r))).filter((r) => r.length >= 3);
+      if (!rings.length) continue;
+      fills[a.k] = fills[a.k] || new Batch(false);
+      edges[a.k] = edges[a.k] || [];
+      drapedPolygon(fills[a.k], rings, fk.lift, hexRGB(fk.fill), null, fk.edge);
+      for (const ring of rings) drapedOutline(edges[a.k], ring, fk.lift + 0.8);
+      const c = centroid(rings[0]);
+      farmAreas.push({ n: a.n, k: a.k, label: fk.label, x: c[0], z: c[1], ha: Math.abs(ringArea(rings[0])) / 10000 });
+    }
+    for (const k in fills) {
+      const fk = FARM_KINDS[k];
+      const mesh = new THREE.Mesh(fills[k].geometry(), new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, opacity: fk.alpha, depthWrite: false, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }));
+      groups.farms.add(mesh, lineSegments(edges[k], fk.line, 0.9));
+    }
+  }
   // Spatial index of blocks for ground picks.
   const blockGrid = new Map(), BG = 250;
   for (const b of D.blocks) {
@@ -606,9 +645,9 @@
   }
 
   let typeColours = false;
-  function wallColour(b) { return hexRGB(typeColours ? TYPE_COLOUR[b.t] || 0xbbbbbb : b.wall); }
+  function wallColour(b) { return hexRGB(typeColours ? TYPE_COLOUR[shownType(b)] || 0xbbbbbb : b.wall); }
   function roofColour(b) {
-    if (typeColours) { const c = hexRGB(TYPE_COLOUR[b.t] || 0xbbbbbb); return [c[0] * 0.85, c[1] * 0.85, c[2] * 0.85]; }
+    if (typeColours) { const c = hexRGB(TYPE_COLOUR[shownType(b)] || 0xbbbbbb); return [c[0] * 0.85, c[1] * 0.85, c[2] * 0.85]; }
     const base = isShed(b) ? [0.58, 0.6, 0.62] : [0.72, 0.7, 0.66];
     if (!b.roof) return base;
     const s = hexRGB(b.roof);
@@ -1030,16 +1069,17 @@
     labels.push({ el, kind, x, z, y: y == null ? H(x, z) : y, range, prio, bld, w: 0, shown: false });
   }
   for (const b of D.blocks) if (b.n || b.s.buildings >= 25 || b.a > 300000) addLabel(b.n ? b.n : b.use + " · B" + b.id, "block", b.c[0], b.c[1], null, b.n ? 2600 : 1800, 3);
-  for (const b of blds) if (b.n) addLabel(b.n, b.t, b.c[0], b.c[1], b.top + 2, 1300, b.t === "academic" || b.t === "hostel" ? 1 : 2, b);
+  for (const b of blds) if (b.n) addLabel(b.n, AGRI_RE.test(b.n) ? "agri" : b.t, b.c[0], b.c[1], b.top + 2, 1300, b.t === "academic" || b.t === "hostel" || AGRI_RE.test(b.n) ? 1 : 2, b);
   for (const p of D.pois) {
     const dup = blds.some((b) => b.n && sameName(b.n, p.n) && Math.hypot(b.c[0] - p.x, b.c[1] - p.z) < 300) ||
       D.blocks.some((b) => b.n && sameName(b.n, p.n) && Math.hypot(b.c[0] - p.x, b.c[1] - p.z) < 600);
-    if (!dup) addLabel(p.n, "poi", p.x, p.z, null, 1000, 2);
+    if (!dup) addLabel(p.n, AGRI_RE.test(p.n) ? "agri" : "poi", p.x, p.z, null, AGRI_RE.test(p.n) ? 2500 : 1000, AGRI_RE.test(p.n) ? 1 : 2);
   }
   for (const v of D.villages.filter((v) => v.campus)) {
     const r = toRing(v.r[0]), c = centroid(r);
     addLabel(v.n, "poi", c[0], c[1], null, 12000, 0);
   }
+  for (const f of farmAreas) addLabel((f.n || f.label) + (f.ha >= 100 ? " · " + fmt(f.ha) + " ha" : ""), "agri", f.x, f.z, null, f.ha > 500 ? 12000 : 1500, f.ha > 500 ? 1 : 2);
 
   // ---------------------------------------------------------------------------------------
   // Aerial camera: goal/view easing with glide.
@@ -1074,7 +1114,7 @@
     on: false, free: false, drive: false,
     x: 0, z: 0, yaw: 0, pitch: 0, fov: 72,
     e: -1, s: 0, dir: 1, // edge, distance along edge from its first node, travel direction (+1 a->b)
-    atNode: -1, choices: [], sel: 0, keys: new Set(), vel: 0,
+    atNode: -1, choices: [], sel: 0, keys: new Set(), vel: 0, fv: 0, sv: 0,
   };
   const EYE = { walk: 1.6, drive: 1.35 };
   function edgeHeading(k, fromNode) {
@@ -1090,19 +1130,35 @@
     const off = SV.drive ? (r.w >= 5 ? r.w / 4 : 0) : Math.max(0, r.w / 2 - 1.2);
     return [x + dz * off, z - dx * off];
   }
-  function enterStreet(x, z) {
+  const svBtn = (a, b, on) => { $(a).setAttribute("aria-pressed", on); $(b).setAttribute("aria-pressed", !on); };
+  const hinted = { street: false, air: false };
+  // The nearest open spot to (x, z): where you stand if you click inside a building.
+  function openSpot(x, z) {
+    const ok = (px, pz) => inCB(px, pz) && !buildingAt(px, pz);
+    if (ok(x, z)) return [x, z];
+    for (let r = 2; r <= 60; r += 2) for (let a = 0; a < 12; a++) {
+      const px = x + Math.cos((a * Math.PI) / 6) * r, pz = z + Math.sin((a * Math.PI) / 6) * r;
+      if (ok(px, pz)) return [px, pz];
+    }
+    return [x, z];
+  }
+  // Street view starts as free roaming (W A S D, arrows, mouse): you stand where you clicked and can go anywhere. "Follow road"
+  // (stay on the road network, choose at junctions) is one click away.
+  function enterStreet(x, z, yaw) {
     const ne = nearestEdge(x, z, 150);
-    if (!ne) { toast("No mapped road near here - try closer to a road"); return false; }
-    SV.on = true; SV.free = false; SV.e = ne.k; SV.s = ne.t * edgeLen[ne.k];
-    const e = GE[ne.k];
-    const hdg = edgeHeading(ne.k, e[0]);
-    const camYaw = mode !== "street" ? -view.theta : SV.yaw;
-    SV.dir = Math.cos(hdg - camYaw) >= 0 ? 1 : -1;
-    SV.yaw = SV.dir > 0 ? hdg : hdg + Math.PI;
-    SV.pitch = -0.02; SV.atNode = -1; SV.vel = 0;
-    [SV.x, SV.z] = svPosOnEdge();
+    SV.on = true; SV.free = true; SV.atNode = -1; SV.vel = 0; SV.fv = 0; SV.sv = 0; SV.pitch = -0.02;
+    const camYaw = yaw !== undefined ? yaw : mode !== "street" ? -view.theta : SV.yaw;
+    [SV.x, SV.z] = openSpot(x, z);
+    SV.yaw = camYaw;
+    if (ne) {
+      SV.e = ne.k; SV.s = ne.t * edgeLen[ne.k];
+      const hdg = edgeHeading(ne.k, GE[ne.k][0]);
+      SV.dir = Math.cos(hdg - camYaw) >= 0 ? 1 : -1;
+    } else SV.e = -1;
+    svBtn("sv-follow", "sv-free", false);
     setMode("street");
     updateArrows();
+    if (!hinted.street) { hinted.street = true; toast("Walk with W A S D or the arrow keys · drag to look around · hold Shift to run"); }
     return true;
   }
   let panelBeforeStreet = null;
@@ -1123,7 +1179,7 @@
     $("sv-hint").hidden = m !== "pick";
     document.body.classList.toggle("picking", m === "pick");
     // Map overlays are for the aerial view; street view shows the place itself.
-    for (const [g, id] of [["blocks", "ly-blocks"], ["blockfill", "ly-blockfill"], ["villages", "ly-villages"]]) groups[g].visible = m !== "street" && $(id).checked;
+    for (const [g, id] of [["blocks", "ly-blocks"], ["blockfill", "ly-blockfill"], ["villages", "ly-villages"], ["farms", "ly-farms"]]) groups[g].visible = m !== "street" && $(id).checked;
     if (m === "street") {
       scene.fog = GFX ? GFX.fog(m) : new THREE.Fog(SKY, 140, 1100);
       $("info").hidden = true;
@@ -1268,17 +1324,24 @@
     return true;
   }
   function stepFree(dt) {
-    let f = 0, s = 0;
+    let f = 0, sd = 0;
     if (SV.keys.has("fwd")) f += 1;
     if (SV.keys.has("back")) f -= 1;
-    if (SV.keys.has("left")) s -= 1;
-    if (SV.keys.has("right")) s += 1;
-    if (SV.keys.has("turnL")) SV.yaw -= dt * 1.4;
-    if (SV.keys.has("turnR")) SV.yaw += dt * 1.4;
-    if (!f && !s) return SV.keys.has("turnL") || SV.keys.has("turnR");
-    const speed = (SV.drive ? 9 : 1.6) * (SV.keys.has("run") ? 3.5 : 1);
-    const [dx, dz] = yawDir(SV.yaw);
-    const mx = (dx * f - dz * s) * speed * dt, mz = (dz * f + dx * s) * speed * dt;
+    if (SV.keys.has("left")) sd -= 1;
+    if (SV.keys.has("right")) sd += 1;
+    const turning = SV.keys.has("turnL") || SV.keys.has("turnR");
+    if (SV.keys.has("turnL")) SV.yaw -= dt * 1.5;
+    if (SV.keys.has("turnR")) SV.yaw += dt * 1.5;
+    // ease toward the wanted speed so that starting and stopping feel smooth
+    const a = Math.min(1, dt * 9);
+    SV.fv += (f - SV.fv) * a;
+    SV.sv += (sd - SV.sv) * a;
+    if (Math.abs(SV.fv) < 0.01) SV.fv = 0;
+    if (Math.abs(SV.sv) < 0.01) SV.sv = 0;
+    if (!SV.fv && !SV.sv) return turning;
+    const speed = (SV.drive ? 9 : 3.6) * (SV.keys.has("run") ? (SV.drive ? 3.5 : 3) : 1); // a brisk walk; Shift runs
+    const [dx, dz] = yawDir(SV.yaw), n = Math.max(1, Math.hypot(SV.fv, SV.sv));
+    const mx = (dx * SV.fv - dz * SV.sv) * speed * dt / n, mz = (dz * SV.fv + dx * SV.sv) * speed * dt / n;
     const inside = buildingAt(SV.x, SV.z);
     const free = (x, z) => { const b = buildingAt(x, z); return (!b || b === inside) && inCB(x, z); };
     if (free(SV.x + mx, SV.z + mz)) { SV.x += mx; SV.z += mz; }
@@ -1324,7 +1387,9 @@
   });
   canvas.addEventListener("pointerdown", (e) => {
     if (mode === "plan" && PLAN && e.button === 0 && !e.shiftKey && touches.size < 2 && PLAN.down(e)) { planDrag = true; canvas.setPointerCapture(e.pointerId); return; }
-    dragging = true; dragBtn = e.button === 2 || e.shiftKey ? 2 : 0;
+    // Planning works like a map: dragging moves it, right-drag (or Shift-drag) turns it. Elsewhere it is the other way round.
+    const alt = e.button === 2 || e.shiftKey;
+    dragging = true; dragBtn = (mode === "plan" ? !alt : alt) ? 2 : 0;
     lastX = downX = e.clientX; lastY = downY = e.clientY;
     canvas.setPointerCapture(e.pointerId);
     canvas.classList.add("dragging");
@@ -1354,7 +1419,7 @@
     dragging = false;
     canvas.classList.remove("dragging");
     if (Math.hypot(e.clientX - downX, e.clientY - downY) < 5 && !didPinch) onClick(e);
-    else if (mode === "aerial" || mode === "plan") { goal.theta += vel.th * 8; goal.tx += vel.px * 6; goal.tz += vel.pz * 6; }
+    else if ((mode === "aerial" || mode === "plan") && !reducedMotion()) { goal.theta += vel.th * 8; goal.tx += vel.px * 6; goal.tz += vel.pz * 6; }
     vel = { th: 0, ph: 0, px: 0, pz: 0 };
   });
   canvas.addEventListener("wheel", (e) => {
@@ -1373,9 +1438,38 @@
     const hit = groundHit(e.clientX, e.clientY);
     if (hit) flyTo({ tx: hit.x, tz: hit.z, dist: Math.max(120, goal.dist * 0.45) });
   });
+  // People who ask for less motion (system setting, or the Display menu in planning) get the camera arriving at once instead of gliding.
+  const RM = matchMedia("(prefers-reduced-motion: reduce)");
+  const reducedMotion = () => RM.matches || document.documentElement.dataset.motion === "reduce";
+  // Letter-key shortcuts can be switched off (Display menu in planning) for people who dictate or use switch devices.
+  const LETTER_SHORTCUTS = new Set(["KeyP", "KeyV", "KeyR", "KeyW", "KeyA", "KeyS", "KeyD", "KeyQ", "KeyE"]);
+  // Keys held down: the aerial camera flies while they are held, so W A S D and the arrows move it smoothly in any direction.
+  const HELD = new Set();
+  const FLY_KEYS = new Set(["KeyW", "KeyA", "KeyS", "KeyD", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "KeyQ", "KeyE"]);
+  function flyAerial(dt) {
+    if (!HELD.size) return;
+    const fast = HELD.has("ShiftLeft") || HELD.has("ShiftRight");
+    let f = 0, r = 0, rot = 0;
+    if (HELD.has("KeyW") || HELD.has("ArrowUp")) f += 1;
+    if (HELD.has("KeyS") || HELD.has("ArrowDown")) f -= 1;
+    if (HELD.has("KeyD") || HELD.has("ArrowRight")) r += 1;
+    if (HELD.has("KeyA") || HELD.has("ArrowLeft")) r -= 1;
+    if (HELD.has("KeyQ")) rot += 1;
+    if (HELD.has("KeyE")) rot -= 1;
+    if (rot) { goal.theta += rot * dt * (fast ? 2.2 : 1.2); dirty = true; }
+    if (!f && !r) return;
+    const n = Math.hypot(f, r), sp = goal.dist * (fast ? 1.3 : 0.42) * dt / n, c = Math.cos(view.theta), s = Math.sin(view.theta);
+    // forward is toward the point the camera looks at: (-sin, -cos) on the ground; right is (cos, -sin)
+    goal.tx = Math.max(CB[0], Math.min(CB[2], goal.tx + (-s * f + c * r) * sp));
+    goal.tz = Math.max(CB[1], Math.min(CB[3], goal.tz + (-c * f - s * r) * sp));
+    dirty = true;
+  }
   const keyMap = { ArrowUp: "fwd", KeyW: "fwd", ArrowDown: "back", KeyS: "back", KeyA: "left", KeyD: "right", ShiftLeft: "run", ShiftRight: "run", KeyQ: "turnL", KeyE: "turnR" };
   window.addEventListener("keydown", (e) => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA" || e.target.isContentEditable) return;
+    if (document.querySelector("dialog[open]")) return; // a dialog has its own keys
+    if ((e.code || "").startsWith("Arrow") && e.target.closest && e.target.closest("#plan, #plan-card, #panel, #tour")) return; // arrows scroll the panel there
+    if (window.__singleKeysOff && !e.ctrlKey && !e.metaKey && (LETTER_SHORTCUTS.has(e.code) || e.key === "+" || e.key === "=" || e.key === "-")) return;
     if (mode === "plan" && PLAN && $("help").hidden && PLAN.key(e)) return;
     if (e.key === "Escape") { if (!$("help").hidden) $("help").hidden = true; else if (mode === "street") exitStreet(); else if (mode === "pick") setMode(streetFrom === "plan" ? "plan" : "aerial"); else if (mode !== "aerial") setMode("aerial"); else $("info").hidden = true; return; }
     if (e.key === "?") { $("help").hidden = false; return; }
@@ -1394,19 +1488,19 @@
       return;
     }
     if (e.code === "KeyR") flyTo(PRESETS.core);
-    const pan = goal.dist * 0.08, c = Math.cos(view.theta), s = Math.sin(view.theta);
-    if (e.code === "ArrowUp") { goal.tx -= s * pan; goal.tz -= c * pan; }
-    if (e.code === "ArrowDown") { goal.tx += s * pan; goal.tz += c * pan; }
-    if (e.code === "ArrowLeft") { goal.tx -= c * pan; goal.tz += s * pan; }
-    if (e.code === "ArrowRight") { goal.tx += c * pan; goal.tz -= s * pan; }
-    if (e.code === "KeyQ") goal.theta += 0.15;
-    if (e.code === "KeyE") goal.theta -= 0.15;
+    if (!e.ctrlKey && !e.metaKey && !e.altKey && (FLY_KEYS.has(e.code) || e.code === "ShiftLeft" || e.code === "ShiftRight")) {
+      HELD.add(e.code);
+      if (FLY_KEYS.has(e.code)) e.preventDefault(); // the arrows must not scroll the page or move a focused control
+      dirty = true;
+      return;
+    }
     if (e.key === "+" || e.key === "=") goal.dist = Math.max(25, goal.dist / 1.3);
     if (e.key === "-") goal.dist = Math.min(16000, goal.dist * 1.3);
     dirty = true;
   });
-  window.addEventListener("blur", () => { SV.keys.clear(); });
+  window.addEventListener("blur", () => { SV.keys.clear(); HELD.clear(); });
   window.addEventListener("keyup", (e) => {
+    HELD.delete(e.code);
     const k = keyMap[e.code];
     if (k) SV.keys.delete(k);
     if (["ArrowLeft", "KeyA"].includes(e.code)) SV.keys.delete("turnL");
@@ -1462,7 +1556,7 @@
   const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
   const SRC = ["OpenStreetMap", "Google Open Buildings", "Microsoft ML Buildings", "Detected in Google 2.5D presence raster"];
   const HS = { tagged: "height tagged in OSM", measured: "height measured (Google 2.5D)", estimated: "height estimated from size", detected: "height measured (Google 2.5D)" };
-  const TS = { tag: "type from OSM tag", name: "type from name", place: "type from a place inside", context: "type from land use", shape: "type estimated from size and shape" };
+  const TS = { tag: "type from OSM tag", name: "type from name", place: "type from a place inside", context: "type from land use", shape: "type guessed from size and shape, so not shown" };
   let selLine = null;
   function selection(b) {
     if (selLine) { scene.remove(selLine); selLine.geometry.dispose(); selLine = null; }
@@ -1488,8 +1582,9 @@
   function showBuilding(b) {
     const [lon, lat] = unproj(b.c[0], b.c[1]);
     const blk = blockById.get(b.b);
-    infoBody.innerHTML = `<h2>${esc(b.n || TYPE_LABEL[b.t] || "Building")}</h2>
-      <div class="sub">${esc(TYPE_LABEL[b.t] || b.t)}${b.tag ? " · OSM building=" + esc(b.tag) : ""}</div>
+    const st = shownType(b), small = b.t === "farm" && b.a < 60 && b.ts !== "shape";
+    infoBody.innerHTML = `<h2>${esc(b.n || TYPE_LABEL[st] || "Building")}</h2>
+      <div class="sub">${esc(TYPE_LABEL[st] || st)}${small ? " · small: hut, pump room or store" : ""}${b.tag ? " · OSM building=" + esc(b.tag) : ""}</div>
       <div class="pills"><span class="pill ${b.hs === "estimated" ? "" : "ok"}">${HS[b.hs] || b.hs}</span><span class="pill">${TS[b.ts] || b.ts}</span></div>
       <table class="kv">
         <tr><td>Height</td><td>${b.h.toFixed(1)} m</td></tr>
@@ -1536,7 +1631,7 @@
     ctx.closePath(); ctx.fill("evenodd");
     for (const bl of blds) {
       if (bl.b !== b.id) continue;
-      ctx.fillStyle = "#" + (TYPE_COLOUR[bl.t] || 0xbbbbbb).toString(16).padStart(6, "0");
+      ctx.fillStyle = "#" + (TYPE_COLOUR[shownType(bl)] || 0xbbbbbb).toString(16).padStart(6, "0");
       ctx.strokeStyle = "rgba(0,0,0,0.6)"; ctx.lineWidth = 1;
       ctx.beginPath(); bl.rings[0].forEach((p, k) => (k ? ctx.lineTo(tx(p[0]), tz(p[1])) : ctx.moveTo(tx(p[0]), tz(p[1])))); ctx.closePath(); ctx.fill(); ctx.stroke();
     }
@@ -1544,6 +1639,12 @@
     ctx.beginPath(); ring.forEach((p, k) => (k ? ctx.lineTo(tx(p[0]), tz(p[1])) : ctx.moveTo(tx(p[0]), tz(p[1])))); ctx.closePath(); ctx.stroke();
     c.style.cssText = "width:100%;border-radius:8px;margin:4px 0 6px;display:block";
     return c;
+  }
+  // Counts of the types we can show for the buildings of a block (guessed types count as "not confirmed").
+  function blockTypes(bl) {
+    const out = {};
+    for (const x of blds) if (x.b === bl.id) { const k = shownType(x); out[k] = (out[k] || 0) + 1; }
+    return out;
   }
   function showBlock(b) {
     const s = b.s;
@@ -1558,7 +1659,7 @@
         <tr><td>Roads bordering or inside</td><td>${roadsTot.toFixed(1)} km</td></tr>
         <tr><td>Waterways</td><td>${waterTot.toFixed(1)} km</td></tr>
       </table>
-      ${s.buildings ? "<h3 style='margin:10px 0 2px;font-size:12px'>Buildings by type</h3>" + bars(s.by_type, s.buildings, (k) => TYPE_LABEL[k] || k) : ""}
+      ${s.buildings ? "<h3 style='margin:10px 0 2px;font-size:12px'>Buildings by type</h3>" + bars(blockTypes(b), s.buildings, (k) => TYPE_LABEL[k] || k) : ""}
       <h3 style="margin:10px 0 2px;font-size:12px">Ground cover (%)</h3>${bars(s.cover, 100)}
       ${roadsTot ? "<h3 style='margin:10px 0 2px;font-size:12px'>Roads (km)</h3>" + bars(s.roads_km, roadsTot) : ""}
       ${waterTot ? "<h3 style='margin:10px 0 2px;font-size:12px'>Waterways (km)</h3>" + bars(s.water_km, waterTot) : ""}
@@ -1582,7 +1683,7 @@
     const h = $("sv-hint");
     h.textContent = msg; h.hidden = false;
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => { h.hidden = mode !== "pick"; h.textContent = "Click any road to drop in at street level"; }, 2600);
+    toastTimer = setTimeout(() => { h.hidden = mode !== "pick"; h.textContent = "Click anywhere on the ground to stand there, then walk around with W A S D"; }, 4200);
   }
 
   // ---------------------------------------------------------------------------------------
@@ -1590,8 +1691,8 @@
   await step(90, "Filling the panel");
   function setPanel(on) { $("panel").classList.toggle("closed", !on); $("panel-btn").setAttribute("aria-pressed", on); }
   $("panel-btn").addEventListener("click", () => setPanel($("panel").classList.contains("closed")));
-  document.querySelectorAll(".tabs button").forEach((t) => t.addEventListener("click", () => {
-    document.querySelectorAll(".tabs button").forEach((u) => u.setAttribute("aria-selected", u === t));
+  document.querySelectorAll("#panel .tabs button").forEach((t) => t.addEventListener("click", () => {
+    document.querySelectorAll("#panel .tabs button").forEach((u) => u.setAttribute("aria-selected", u === t));
     for (const p of ["explore", "blocks", "layers", "data"]) $("pane-" + p).hidden = p !== t.dataset.tab;
   }));
   const VIEWS = [["overview", "Whole campus"], ["core", "Campus core"], ["housing", "Housing colony"], ["airport", "Airport"], ["fields", "University farms"]];
@@ -1603,26 +1704,32 @@
   }
   const campusCounts = D.meta.counts.buildings_in_campus_by_type;
   let highlightType = null;
-  for (const [k, l] of D.meta.types) {
-    const n = blds.filter((b) => b.t === k).length;
-    if (!n) continue;
-    const b = document.createElement("button");
-    b.innerHTML = `<span class="sw" style="background:#${TYPE_COLOUR[k].toString(16).padStart(6, "0")}"></span><span>${esc(l)}</span><span class="num">${fmt(n)}</span>`;
-    b.setAttribute("aria-pressed", "false");
-    b.dataset.type = k;
-    b.addEventListener("click", () => {
-      highlightType = highlightType === k ? null : k;
-      document.querySelectorAll("#type-legend button").forEach((x) => x.setAttribute("aria-pressed", x === b && highlightType === k));
-      highlight(highlightType);
-    });
-    $("type-legend").appendChild(b);
+  function buildTypeLegend() {
+    $("type-legend").innerHTML = "";
+    const counts = {};
+    for (const x of blds) { const k = shownType(x); counts[k] = (counts[k] || 0) + 1; }
+    for (const [k, l] of D.meta.types.concat([["unconfirmed", TYPE_LABEL.unconfirmed]])) {
+      const n = counts[k];
+      if (!n) continue;
+      const b = document.createElement("button");
+      b.innerHTML = `<span class="sw" style="background:#${TYPE_COLOUR[k].toString(16).padStart(6, "0")}"></span><span>${esc(l)}</span><span class="num">${fmt(n)}</span>`;
+      b.setAttribute("aria-pressed", "false");
+      b.dataset.type = k;
+      b.addEventListener("click", () => {
+        highlightType = highlightType === k ? null : k;
+        document.querySelectorAll("#type-legend button").forEach((x) => x.setAttribute("aria-pressed", x === b && highlightType === k));
+        highlight(highlightType);
+      });
+      $("type-legend").appendChild(b);
+    }
   }
+  buildTypeLegend();
   let hlLines = null;
   function highlight(k) {
     if (hlLines) { scene.remove(hlLines); hlLines.geometry.dispose(); hlLines = null; }
     if (!k) { dirty = true; return; }
     const pts = [];
-    for (const b of blds) if (b.t === k) {
+    for (const b of blds) if (shownType(b) === k) {
       const r = b.rings[0];
       for (let i = 0; i < r.length; i++) { const a = r[i], c = r[(i + 1) % r.length]; pts.push(a[0], b.top + 1.5, a[1], c[0], b.top + 1.5, c[1]); }
       pts.push(b.c[0], b.top + 1.5, b.c[1], b.c[0], b.top + 30, b.c[1]);
@@ -1630,7 +1737,7 @@
     hlLines = lineSegments(pts, TYPE_COLOUR[k], 1);
     hlLines.material.depthTest = false; hlLines.renderOrder = 9;
     scene.add(hlLines);
-    toast(`${TYPE_LABEL[k]}: ${blds.filter((b) => b.t === k).length} buildings highlighted`);
+    toast(`${TYPE_LABEL[k]}: ${blds.filter((b) => shownType(b) === k).length} buildings highlighted`);
     dirty = true;
   }
   // Blocks list
@@ -1667,6 +1774,8 @@
     "ly-blockfill": (on) => (groups.blockfill.visible = on), "ly-lights": (on) => (groups.lights.visible = on), "ly-villages": (on) => (groups.villages.visible = on),
     "ly-labels": (on) => labelLayer.classList.toggle("off", !on),
     "ly-type": (on) => { typeColours = on; rebuildAllBuildings(); },
+    "ly-farms": (on) => (groups.farms.visible = on),
+    "ly-guess": (on) => { showGuesses = on; highlightType = null; highlight(null); buildTypeLegend(); if (typeColours) rebuildAllBuildings(); },
   };
   for (const id in toggles) $(id).addEventListener("change", (e) => { toggles[id](e.target.checked); dirty = true; });
   document.querySelectorAll("input[name=ground]").forEach((r) => r.addEventListener("change", () => {
@@ -1675,6 +1784,7 @@
     g.mat.needsUpdate = true; dirty = true;
   }));
   $("n-bld").textContent = fmt(blds.length);
+  $("n-guess").textContent = fmt(blds.filter((b) => b.ts === "shape").length);
   $("n-trees").textContent = fmt(NT);
   $("n-roads").textContent = fmt(D.roads.length);
   $("n-blocks").textContent = fmt(D.blocks.length);
@@ -1698,12 +1808,13 @@
   }
   // Search
   const index = [];
-  for (const b of blds) if (b.n) index.push({ t: b.n, sub: TYPE_LABEL[b.t], go: () => { setMode("aerial"); showBuilding(b); flyTo({ tx: b.c[0], tz: b.c[1], dist: 260 }); } });
+  for (const b of blds) if (b.n) index.push({ t: b.n, sub: TYPE_LABEL[shownType(b)], go: () => { setMode("aerial"); showBuilding(b); flyTo({ tx: b.c[0], tz: b.c[1], dist: 260 }); } });
   for (const b of D.blocks) index.push({ t: (b.n || b.use) + " B" + b.id, sub: `Block · ${b.use} · ${b.s.buildings} buildings`, go: () => { setMode("aerial"); showBlock(b); flyTo({ tx: b.c[0], tz: b.c[1], dist: Math.max(260, Math.sqrt(b.a) * 2.4) }); } });
   const seenRoad = new Set();
   D.roads.forEach((r) => { if (r.n && !seenRoad.has(r.n)) { seenRoad.add(r.n); const p = toRing(r.p)[Math.floor(r.p.length / 4)]; index.push({ t: r.n, sub: "Road · " + pretty(r.c), go: () => enterStreet(p[0], p[1]) }); } });
   for (const p of D.pois) index.push({ t: p.n, sub: pretty(p.k), go: () => { setMode("aerial"); flyTo({ tx: p.x, tz: p.z, dist: 300 }); } });
   for (const [k, l] of D.meta.types) index.push({ t: l, sub: "Building type", go: () => {
+    if (!blds.some((x) => shownType(x) === k)) { toast("No building of this type is confirmed. Turn on 'Show types guessed from size and shape' in Layers to see the guesses."); return; }
     highlightType = k;
     highlight(k);
     document.querySelectorAll("#type-legend button").forEach((x) => x.setAttribute("aria-pressed", x.dataset.type === k));
@@ -1738,15 +1849,17 @@
     setMode("pick");
   });
   $("sv-exit").addEventListener("click", exitStreet);
-  const svBtn = (a, b, on) => { $(a).setAttribute("aria-pressed", on); $(b).setAttribute("aria-pressed", !on); };
   $("sv-follow").addEventListener("click", () => {
     if (!SV.free) return;
     const ne = nearestEdge(SV.x, SV.z, 200);
     if (!ne) { toast("No road within 200 m - walk closer to a road"); return; }
-    SV.free = false; SV.e = ne.k; SV.s = ne.t * edgeLen[ne.k]; SV.atNode = -1;
+    SV.free = false; SV.e = ne.k; SV.s = ne.t * edgeLen[ne.k]; SV.atNode = -1; SV.vel = 0;
+    const eh = edgeHeading(ne.k, GE[ne.k][0]);
+    SV.dir = Math.cos(eh - SV.yaw) >= 0 ? 1 : -1;
+    [SV.x, SV.z] = svPosOnEdge();
     svBtn("sv-follow", "sv-free", true); updateArrows(); dirty = true;
   });
-  $("sv-free").addEventListener("click", () => { SV.free = true; SV.atNode = -1; svBtn("sv-follow", "sv-free", false); updateArrows(); dirty = true; });
+  $("sv-free").addEventListener("click", () => { SV.free = true; SV.atNode = -1; SV.fv = 0; SV.sv = 0; svBtn("sv-follow", "sv-free", false); updateArrows(); dirty = true; });
   $("sv-walk").addEventListener("click", () => { SV.drive = false; svBtn("sv-walk", "sv-drive", true); dirty = true; });
   $("sv-drive").addEventListener("click", () => { SV.drive = true; svBtn("sv-walk", "sv-drive", false); dirty = true; });
   $("zoom-in").addEventListener("click", () => flyTo({ dist: Math.max(25, goal.dist / 1.6) }));
@@ -1918,7 +2031,8 @@
       applyStreet();
       if (moving) updateArrows();
     } else {
-      const k = 1 - Math.exp(-dt * 6);
+      flyAerial(dt);
+      const k = reducedMotion() ? 1 : 1 - Math.exp(-dt * 6);
       let d = 0;
       for (const p of ["tx", "tz", "dist", "theta", "phi"]) {
         const diff = goal[p] - view[p];
@@ -1961,8 +2075,9 @@
   updateLods();
   requestAnimationFrame(frame);
   $("loading").classList.add("done");
+  if (!/street=|plan=/.test(location.hash)) setTimeout(() => { if (mode === "aerial" && !hinted.air) { hinted.air = true; toast("Tip: fly around with W A S D or the arrow keys · Q and E turn · Shift for speed"); } }, 1800);
   const m = location.hash.match(/street=(-?[\d.]+),(-?[\d.]+)(?:,(-?[\d.]+))?/);
-  if (m) { SV.yaw = +(m[3] || 0); enterStreet(+m[1], +m[2]); }
+  if (m) enterStreet(+m[1], +m[2], m[3] !== undefined ? +m[3] : undefined);
   // #view=x,z,distance,heading,tilt opens the aerial view there (shareable links).
   const mv = location.hash.match(/view=(-?[\d.]+),(-?[\d.]+),([\d.]+)(?:,(-?[\d.]+))?(?:,([\d.]+))?/);
   if (mv && !m) {
@@ -2152,7 +2267,7 @@
     gfx: {
       setHooks(h) { GFX = h; dirty = true; },
       setLit, isLit: () => LIT, setTreeKit, refreshTrees,
-      mode: () => mode, markDirty: () => { dirty = true; }, setBaseScale(v) { BASE_SCALE = scale = v; dirty = true; }, toast,
+      mode: () => mode, markDirty: () => { dirty = true; }, setBaseScale(v) { BASE_SCALE = scale = v; dirty = true; }, toast, setPanel,
       H, D, B, SG, satImage: () => SAT_IMG, ground: () => window.__ground, terrain: () => groups.terrain.getObjectByName("terrain"),
       lights: { sun, hemi }, MAT, TEX, ROAD_MAT, kerbChunks, lightChunks, treeChunks, TREEKIT, treeLodPatch, lampMat, TANK_GEO, blds, view, goal, SV, canvas, SKY, hexRGB, mulberry32, toRing, inCB, CB, buildingAt,
     },
