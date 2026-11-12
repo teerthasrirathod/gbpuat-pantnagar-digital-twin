@@ -54,7 +54,7 @@ impl Item {
     pub fn point(&self) -> P {
         match &self.geom {
             Geom::Point(p) => *p,
-            Geom::Line(l) => l[0],
+            Geom::Line(l) => l.first().copied().unwrap_or([0.0, 0.0]),
             Geom::Poly(r) => centroid(r),
         }
     }
@@ -92,11 +92,21 @@ impl Scenario {
 
 fn lonlat(v: &Value, f: &Frame) -> Option<P> {
     let a = v.as_array()?;
-    Some(f.proj(a.first()?.as_f64()?, a.get(1)?.as_f64()?))
+    let (lon, lat) = (a.first()?.as_f64()?, a.get(1)?.as_f64()?);
+    if !lon.is_finite() || !lat.is_finite() || !(-180.0..=180.0).contains(&lon) || !(-90.0..=90.0).contains(&lat) {
+        return None;
+    }
+    Some(f.proj(lon, lat))
 }
 
-fn line_of(v: &Value, f: &Frame) -> Vec<P> {
-    v.as_array().map(|a| a.iter().filter_map(|p| lonlat(p, f)).collect()).unwrap_or_default()
+/// Every position must be a valid [lon, lat]; one bad position rejects the whole line, so a
+/// shape is never silently changed into a different one.
+fn line_of(v: &Value, f: &Frame) -> Result<Vec<P>, String> {
+    let a = v.as_array().ok_or("coordinates must be an array of [longitude, latitude] positions")?;
+    a.iter()
+        .enumerate()
+        .map(|(j, p)| lonlat(p, f).ok_or_else(|| format!("position {} is not a valid [longitude, latitude] pair", j + 1)))
+        .collect()
 }
 
 pub fn parse(text: &str, frame: &Frame) -> Result<Scenario, String> {
@@ -109,16 +119,30 @@ pub fn parse(text: &str, frame: &Frame) -> Result<Scenario, String> {
         let Some(kind) = props.get("kind").and_then(|k| k.as_str()).map(|s| s.to_string()) else { continue };
         let g = f.get("geometry").unwrap_or(&Value::Null);
         let coords = g.get("coordinates").unwrap_or(&Value::Null);
+        let label = match f.get("id").or_else(|| props.get("id")) {
+            Some(Value::String(s)) => format!("feature {} (\"{s}\", {kind})", i + 1),
+            _ => format!("feature {} ({kind})", i + 1),
+        };
         let geom = match g.get("type").and_then(|t| t.as_str()) {
             Some("Point") => match lonlat(coords, frame) {
                 Some(p) => Geom::Point(p),
-                None => continue,
+                None => return Err(format!("{label}: the point needs coordinates [longitude, latitude]")),
             },
-            Some("LineString") => Geom::Line(line_of(coords, frame)),
+            Some("LineString") => {
+                let l = line_of(coords, frame).map_err(|e| format!("{label}: line {e}"))?;
+                if l.len() < 2 {
+                    return Err(format!("{label}: a line needs at least 2 positions, found {}", l.len()));
+                }
+                Geom::Line(l)
+            }
             Some("Polygon") => {
-                let mut r = coords.as_array().and_then(|a| a.first()).map(|r| line_of(r, frame)).unwrap_or_default();
+                let ring = coords.as_array().and_then(|a| a.first()).ok_or_else(|| format!("{label}: a polygon needs an outer ring"))?;
+                let mut r = line_of(ring, frame).map_err(|e| format!("{label}: polygon ring {e}"))?;
                 if r.len() > 1 && r[0] == r[r.len() - 1] {
                     r.pop();
+                }
+                if r.len() < 3 {
+                    return Err(format!("{label}: a polygon needs at least 3 distinct corners, found {}", r.len()));
                 }
                 Geom::Poly(r)
             }
@@ -141,4 +165,67 @@ pub fn parse(text: &str, frame: &Frame) -> Result<Scenario, String> {
         items.push(Item { id, kind, status, name, geom, props: params });
     }
     Ok(Scenario { meta, items })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn frame() -> Frame {
+        Frame::new(29.0205, 79.4935)
+    }
+    fn err(text: &str) -> String {
+        match parse(text, &frame()) {
+            Ok(_) => panic!("should be rejected: {text}"),
+            Err(e) => e,
+        }
+    }
+    fn one(kind: &str, geom: &str) -> String {
+        format!(r#"{{"type":"FeatureCollection","features":[{{"type":"Feature","id":"a1","geometry":{geom},"properties":{{"kind":"{kind}"}}}}]}}"#)
+    }
+
+    #[test]
+    fn rejects_empty_and_short_lines() {
+        for g in [r#"{"type":"LineString","coordinates":[]}"#, r#"{"type":"LineString","coordinates":[[79.49,29.02]]}"#, r#"{"type":"LineString","coordinates":"x"}"#] {
+            let e = err(&one("footpath", g));
+            assert!(e.contains("feature 1") && e.contains("footpath"), "{e}");
+        }
+    }
+
+    #[test]
+    fn rejects_bad_positions_instead_of_dropping_them() {
+        let e = err(&one("footpath", r#"{"type":"LineString","coordinates":[[79.49,29.02],[null,29.02],[79.5,29.03]]}"#));
+        assert!(e.contains("position 2"), "{e}");
+        let e = err(&one("bin", r#"{"type":"Point","coordinates":[500,29.02]}"#));
+        assert!(e.contains("point"), "{e}");
+    }
+
+    #[test]
+    fn rejects_degenerate_polygons() {
+        for g in [r#"{"type":"Polygon","coordinates":[[]]}"#, r#"{"type":"Polygon","coordinates":[]}"#, r#"{"type":"Polygon","coordinates":[[[79.49,29.02],[79.5,29.02],[79.49,29.02]]]}"#] {
+            assert!(parse(&one("garden", g), &frame()).is_err(), "{g}");
+        }
+    }
+
+    #[test]
+    fn accepts_valid_shapes() {
+        let sc = parse(&one("footpath", r#"{"type":"LineString","coordinates":[[79.49,29.02],[79.5,29.02]]}"#), &frame()).unwrap_or_else(|e| panic!("{e}"));
+        assert_eq!(sc.items.len(), 1);
+        let sc = parse(&one("garden", r#"{"type":"Polygon","coordinates":[[[79.49,29.02],[79.5,29.02],[79.5,29.03],[79.49,29.02]]]}"#), &frame()).unwrap_or_else(|e| panic!("{e}"));
+        assert!(matches!(&sc.items[0].geom, Geom::Poly(r) if r.len() == 3));
+    }
+
+    #[test]
+    fn every_sample_scenario_still_parses() {
+        let dir = concat!(env!("CARGO_MANIFEST_DIR"), "/../../scenarios");
+        let mut n = 0;
+        for e in std::fs::read_dir(dir).unwrap().flatten() {
+            if e.path().extension().is_some_and(|x| x == "geojson") {
+                let t = std::fs::read_to_string(e.path()).unwrap();
+                parse(&t, &frame()).unwrap_or_else(|err| panic!("{}: {err}", e.path().display()));
+                n += 1;
+            }
+        }
+        assert!(n > 0);
+    }
 }

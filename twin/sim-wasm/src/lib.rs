@@ -15,7 +15,8 @@ struct State {
 
 thread_local! {
     static ST: RefCell<State> = RefCell::new(State::default());
-    static PANIC: RefCell<String> = RefCell::new(String::new());
+    // Kept apart from ST: after a trap, ST may still be borrowed by the call that panicked.
+    static PANIC: RefCell<Vec<u8>> = RefCell::new(Vec::new());
 }
 
 fn text(p: *const u8, n: usize) -> String {
@@ -29,7 +30,11 @@ fn set_out(st: &mut State, v: Value) -> i32 {
 }
 
 fn hook() {
-    std::panic::set_hook(Box::new(|info| PANIC.with(|p| *p.borrow_mut() = info.to_string())));
+    std::panic::set_hook(Box::new(|info| PANIC.with(|p| {
+        if let Ok(mut b) = p.try_borrow_mut() {
+            *b = info.to_string().into_bytes();
+        }
+    })));
 }
 
 #[no_mangle]
@@ -60,12 +65,16 @@ pub extern "C" fn grid_ptr() -> *const f32 {
     ST.with(|s| s.borrow().grid.as_ptr())
 }
 
-/// Last panic message (as bytes in `out`), for error reports after a trap.
+/// Length of the last panic message; read it from `panic_ptr()`. Never touches ST, which a
+/// trapped call can leave borrowed.
 #[no_mangle]
 pub extern "C" fn last_panic() -> usize {
-    let m = PANIC.with(|p| p.borrow().clone());
-    ST.with(|s| s.borrow_mut().out = m.into_bytes());
-    out_len()
+    PANIC.with(|p| p.try_borrow().map(|b| b.len()).unwrap_or(0))
+}
+
+#[no_mangle]
+pub extern "C" fn panic_ptr() -> *const u8 {
+    PANIC.with(|p| p.try_borrow().map(|b| b.as_ptr()).unwrap_or(std::ptr::null()))
 }
 
 #[no_mangle]
@@ -146,7 +155,8 @@ fn grid_with(f: impl FnOnce(&World, &Ctx) -> Vec<f32>) -> *const f32 {
             _ => Vec::new(),
         };
         st.grid = g;
-        st.grid.as_ptr()
+        // Null (not a dangling pointer) when there is no plan, so the caller can tell.
+        if st.grid.is_empty() { std::ptr::null() } else { st.grid.as_ptr() }
     })
 }
 

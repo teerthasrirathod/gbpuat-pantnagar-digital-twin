@@ -172,7 +172,12 @@
             this.str("plan_suggest_wifi", JSON.stringify({ points: [[x, z]], band: "5", max: 2 }));
           }
           this.str("plan_set", JSON.stringify({ type: "FeatureCollection", features: [] }));
-        } catch (e) { console.warn("[sandbox] warm-up failed", e); }
+        } catch (e) {
+          // A trap leaves the instance unusable: do not report the engine as ready.
+          console.error("[sandbox] warm-up failed", e, this.panicText());
+          this.ex = null;
+          throw new Error("The planning calculator could not start. Reload the page to try again.");
+        }
         console.info("[sandbox] warm-up " + (performance.now() - t0).toFixed(0) + " ms");
       },
       read(n) { return dec.decode(new Uint8Array(this.ex.memory.buffer, this.ex.out_ptr(), n)); },
@@ -182,10 +187,13 @@
         try { const rc = this.ex[fn](p, b.length); return { rc, json: JSON.parse(this.read(this.ex.out_len())) }; } finally { this.ex.free(p, b.length); }
       },
       call(fn, ...a) { return JSON.parse(this.read(this.ex[fn](...a))); },
-      grid(fn, n, ...a) { const p = this.ex[fn](...a); return new Float32Array(this.ex.memory.buffer, p, n).slice(); },
+      grid(fn, n, ...a) { const p = this.ex[fn](...a); if (!p) throw new Error("no plan loaded"); return new Float32Array(this.ex.memory.buffer, p, n).slice(); },
+      // The panic text lives in its own buffer (the main one can still be borrowed after a trap).
+      panicText() {
+        try { const n = this.ex.last_panic(), p = this.ex.panic_ptr(); return n && p ? dec.decode(new Uint8Array(this.ex.memory.buffer, p, n)) : ""; } catch (_) { return ""; }
+      },
       fail(e) {
-        let m = "";
-        try { m = this.read(this.ex.last_panic()); } catch (_) { /* instance is gone */ }
+        const m = this.ex ? this.panicText() : "";
         console.error("[sandbox] engine error", e, m);
         this.ex = null; this.loading = null; R = null; failed = true; pending = false;
         toast("The calculator stopped unexpectedly. It starts again with your next change.");
@@ -253,15 +261,21 @@
     function fromGeoJSON(o) {
       if (!o || !Array.isArray(o.features)) throw new Error("Not a plan file (no features)");
       const items = [];
-      let seq = 1;
+      let seq = 1, skipped = 0;
       for (const f of o.features) {
         const p = { ...(f.properties || {}) }, g = f.geometry || {};
         if (!p.kind || !K[p.kind]) continue;
         let pts;
-        if (g.type === "Point") pts = [fromLL(g.coordinates[0], g.coordinates[1])];
-        else if (g.type === "LineString") pts = g.coordinates.map((c) => fromLL(c[0], c[1]));
-        else if (g.type === "Polygon") { pts = g.coordinates[0].map((c) => fromLL(c[0], c[1])); if (pts.length > 1 && Math.hypot(pts[0][0] - pts[pts.length - 1][0], pts[0][1] - pts[pts.length - 1][1]) < 0.01) pts.pop(); }
-        else continue;
+        const pos = (c) => Array.isArray(c) && Number.isFinite(c[0]) && Number.isFinite(c[1]) && Math.abs(c[0]) <= 180 && Math.abs(c[1]) <= 90;
+        const list = (a) => (Array.isArray(a) && a.every(pos) ? a.map((c) => fromLL(c[0], c[1])) : null);
+        if (g.type === "Point") pts = pos(g.coordinates) ? [fromLL(g.coordinates[0], g.coordinates[1])] : null;
+        else if (g.type === "LineString") { pts = list(g.coordinates); if (pts && pts.length < 2) pts = null; }
+        else if (g.type === "Polygon") {
+          pts = list(Array.isArray(g.coordinates) ? g.coordinates[0] : null);
+          if (pts && pts.length > 1 && Math.hypot(pts[0][0] - pts[pts.length - 1][0], pts[0][1] - pts[pts.length - 1][1]) < 0.01) pts.pop();
+          if (pts && pts.length < 3) pts = null;
+        } else continue;
+        if (!pts) { skipped++; continue; }
         let id = String(f.id != null ? f.id : p.id != null ? p.id : "i" + seq);
         if (!ID_OK.test(id)) id = "i" + seq++;
         const m = /^i(\d+)$/.exec(id); if (m) seq = Math.max(seq, +m[1] + 1);
@@ -275,7 +289,7 @@
       const meta = { ...freshMeta() };
       for (const k in o.sandbox || {}) if (!["version", "tool", "updated", "custom_kinds"].includes(k)) meta[k] = o.sandbox[k];
       if (!meta.notes && meta.summary) meta.notes = meta.summary;
-      return { meta, items, seq: Math.max(seq, items.length + 1) };
+      return { meta, items, seq: Math.max(seq, items.length + 1), skipped };
     }
     // Opening a file, a link or a sample always makes a new scenario, so nothing is overwritten.
     function loadPlan(o, msg) { newScenario(o, msg); emit("opened", {}); }
@@ -1319,10 +1333,22 @@
       const url = location.href.split("#")[0] + "#plan=" + code;
       try { await navigator.clipboard.writeText(url); toast("Link copied. Paste it into an email or a message: anyone who opens it sees this plan."); } catch (e) { window.prompt("Copy this link", url); }
     }
+    const SHARE_MAX = 8 * 1048576; // a shared plan larger than this is refused rather than unpacked
     async function readShared(code) {
       const raw = unb64u(code.slice(1));
-      if (code[0] === "z") return JSON.parse(await new Response(new Blob([raw]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).text());
-      return JSON.parse(dec.decode(raw));
+      if (code[0] !== "z") { if (raw.length > SHARE_MAX) throw new Error("shared plan too large"); return JSON.parse(dec.decode(raw)); }
+      const rd = new Blob([raw]).stream().pipeThrough(new DecompressionStream("deflate-raw")).getReader();
+      const parts = []; let n = 0;
+      for (;;) {
+        const { done, value } = await rd.read();
+        if (done) break;
+        n += value.length;
+        if (n > SHARE_MAX) { rd.cancel(); throw new Error("shared plan too large"); }
+        parts.push(value);
+      }
+      const all = new Uint8Array(n); let o = 0;
+      for (const v of parts) { all.set(v, o); o += v.length; }
+      return JSON.parse(dec.decode(all));
     }
 
     // ---------------------------------------------------------------------------------------
@@ -1905,7 +1931,7 @@
       setScenario(p, id);
       saveScenario();
       if (p.items.length) fitTo(S.items);
-      if (msg) toast(msg);
+      if (msg || p.skipped) toast((msg || "") + (p.skipped ? ` ${plural(p.skipped, "item")} with a broken shape could not be opened and ${p.skipped === 1 ? "was" : "were"} left out.` : ""));
     }
     async function deleteScenario() {
       if (busyNow()) return;
