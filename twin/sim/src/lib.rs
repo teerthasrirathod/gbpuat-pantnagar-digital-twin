@@ -6,7 +6,9 @@ pub mod engine;
 pub mod geo;
 pub mod graph;
 pub mod plan;
+pub mod types;
 pub mod world;
+// v3 modules: each workstream adds its own `pub mod` line below, one per line, alphabetical.
 
 pub use catalog::catalog;
 pub use engine::{evaluate, lux_grid, prepare, route, suggest_wifi, wifi_grid, Ctx};
